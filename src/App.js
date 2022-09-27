@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react"
+import AddTodo from "./components/AddTodo"
+import Todo from "./components/Todo"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const arrOfObjects = []
+Object.keys(localStorage).map(elem => arrOfObjects.push({ id: elem, text: localStorage.getItem(elem) }))
+
+export default function App() {
+
+	const [todos, setTodos] = React.useState(arrOfObjects)
+
+	function addTodo(inputText) {
+		setTodos(prevState => {
+			return [...prevState, { id: prevState.length + 1, text: inputText }]
+		})
+		localStorage.setItem(todos.length + 1, inputText)
+	}
+
+	const todoElems = todos.map((elem, ind) => <Todo key={ind} text={elem.text} />)
+
+	return (
+		<>
+			<AddTodo handleClick={addTodo} />
+			{todoElems}
+		</>
+	)
 }
-
-export default App;
