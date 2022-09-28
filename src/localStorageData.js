@@ -6,10 +6,10 @@ Object.keys(localStorage).map(elem => arrOfObjects.push(makeObj(localStorage.get
 
 // todo learn sort
 function compare(a, b) {
-	if (a.text < b.text) {
+	if (a.id < b.id) {
 		return -1;
 	}
-	if (a.text > b.text) {
+	if (a.id > b.id) {
 		return 1;
 	}
 	return 0;

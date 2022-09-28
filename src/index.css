@@ -12,7 +12,7 @@ code {
     monospace;
 }
 
-.todo{
+.todo,.todos-title{
 	width: 290px;
 	margin: 0 auto;
 	background: #ececec;
@@ -22,6 +22,40 @@ code {
 	justify-content: space-between;
 	margin-bottom: 8px;
 }
+.todos-title{
+	font-weight: 700;
+	padding: 10px 0;
+	justify-content: center;
+}
+.hidden-todos-wrapper .todos-title{
+	background: rgb(255, 157, 139);
+}
+.turned-on{
+	background: rgb(203, 252, 130) !important;
+}
+.todos-wrapper, .hidden-todos-wrapper{
+	display: inline-flex;
+	flex-direction: column;
+	padding: 0 8px;
+}
+.all-todos-wrapper{
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		padding: 15px 0 0 0;
+}
+/*  */
 .like{
+	margin-left: auto;
 	padding-right: 6px;
+}
+.hide{
+	padding-right: 6px;
+	transform: scale(0.9);
+}
+.hidden-todos{
+	display: none;
+}
+button{
+	margin-left: 20px;
 }
