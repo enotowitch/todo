@@ -7,6 +7,20 @@ export default function App() {
 
 	const [todos, setTodos] = React.useState(data)
 
+	let isLikedNum = 0
+	todos.map(elem => {
+		return elem.isLiked && isLikedNum++
+	})
+	let isHiddenNum = 0
+	todos.map(elem => {
+		return elem.isHidden && isHiddenNum++
+	})
+	let isDoneNum = 0
+	todos.map(elem => {
+		return elem.isDone && isDoneNum++
+	})
+	let allTodosNum = todos.length
+
 	function addTodo(inputText) {
 		setTodos(prevState => {
 			return [...prevState, { id: prevState.length + 1, text: inputText, isLiked: false, isDone: false, isHidden: false }]
@@ -26,8 +40,9 @@ export default function App() {
 		curTodoObj[propName] = !curTodoObj[propName]
 		localStorage.setItem(todoID, JSON.stringify(curTodoObj))
 		// style .todos-title .propName
-		document.querySelector(`[class*=${propName}]`).click()
-		document.querySelector(`[class*=${propName}]`).classList.remove(propName)
+		const todosTitle = document.querySelector(`[class*=${propName}]`)
+		todosTitle && todosTitle.click()
+		todosTitle && todosTitle.classList.remove(propName)
 	}
 
 	const todoElems = todos.map((elem, ind) => <Todo key={ind} {...elem} handleAction={action} />)
@@ -60,7 +75,9 @@ export default function App() {
 
 				{/* ! My Todos */}
 				<div className="todos-wrapper">
-					<p className="todos-title">My Todos</p>
+					<p className="todos-title">My Todos
+						<span className="todos-num">{allTodosNum - isHiddenNum}</span>
+					</p>
 					{todoElems}
 				</div>
 
@@ -68,7 +85,9 @@ export default function App() {
 				<div className="hidden-todos-wrapper">
 					<p className="todos-title isDone" onClick={(e) =>
 						styleHiddenSection(e)
-					}>Done Todos</p>
+					}>Done Todos
+						<span className="todos-num">{isDoneNum}</span>
+					</p>
 					<div className="hidden-todos">{doneTodos}</div>
 				</div>
 
@@ -76,7 +95,9 @@ export default function App() {
 				<div className="hidden-todos-wrapper">
 					<p className="todos-title isLiked" onClick={(e) =>
 						styleHiddenSection(e)
-					}>Liked Todos</p>
+					}>Liked Todos
+						<span className="todos-num">{isLikedNum}</span>
+					</p>
 					<div className="hidden-todos">{likedTodos}</div>
 				</div>
 
@@ -84,7 +105,9 @@ export default function App() {
 				<div className="hidden-todos-wrapper">
 					<p className="todos-title isHidden" onClick={(e) =>
 						styleHiddenSection(e)
-					}>Hidden Todos</p>
+					}>Hidden Todos
+						<span className="todos-num">{isHiddenNum}</span>
+					</p>
 					<div className="hidden-todos">{hiddenTodos}</div>
 				</div>
 			</div>

@@ -18,7 +18,7 @@ export default function AddTodo(props) {
 	}
 
 	return (
-		<>
+		<div className="add-todo">
 			<input className="input__text" type="text" placeholder="add todo" />
 
 			<button onClick={() =>
@@ -33,6 +33,6 @@ export default function AddTodo(props) {
 			<button onClick={() =>
 				test()
 			}>test</button>
-		</>
+		</div>
 	)
 }
