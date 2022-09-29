@@ -1,8 +1,6 @@
-import makeObj from "./functions/makeObj"
-
 // ! preparing localStorage
 const arrOfObjects = []
-Object.keys(localStorage).map(elem => arrOfObjects.push(makeObj(localStorage.getItem(elem))))
+Object.keys(localStorage).map(elem => arrOfObjects.push(JSON.parse(localStorage.getItem(elem))))
 
 // todo learn sort
 function compare(a, b) {

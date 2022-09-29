@@ -2,7 +2,6 @@ import React from "react"
 import AddTodo from "./components/AddTodo"
 import Todo from "./components/Todo"
 import data from "./localStorageData"
-import makeObj from "./functions/makeObj"
 
 export default function App() {
 
@@ -14,62 +13,41 @@ export default function App() {
 		})
 		localStorage.setItem(todos.length + 1, JSON.stringify({ id: todos.length + 1, text: inputText, isLiked: false, isDone: false, isHidden: false }))
 	}
-	// ! like
-	function like(todoID) {
+	// ! action: propName: isDone/isLiked/isHidden,etc... works only with BOOLS!
+	function action(todoID, propName) {
 		setTodos(prevState => {
 			return prevState.map(elem => {
-				return elem.id === todoID ? { ...elem, isLiked: !elem.isLiked } : elem
+				return elem.id === todoID ? { ...elem, [propName]: !elem[propName] } : elem
 			})
 		})
+		// localStorage
 		const curTodoStr = localStorage.getItem(todoID)
-		const curTodoObj = makeObj(curTodoStr)
-		curTodoObj.isLiked = !curTodoObj.isLiked
+		const curTodoObj = JSON.parse(curTodoStr)
+		curTodoObj[propName] = !curTodoObj[propName]
 		localStorage.setItem(todoID, JSON.stringify(curTodoObj))
-	}
-	// todo get a name of the argument passed to the function and place to 'isLiked','isDone', etc...
-	// ! done
-	function done(todoID) {
-		setTodos(prevState => {
-			return prevState.map(elem => {
-				return elem.id === todoID ? { ...elem, isDone: !elem.isDone } : elem
-			})
-		})
-		const curTodoStr = localStorage.getItem(todoID)
-		const curTodoObj = makeObj(curTodoStr)
-		curTodoObj.isDone = !curTodoObj.isDone
-		localStorage.setItem(todoID, JSON.stringify(curTodoObj))
-	}
-	// ! hide
-	function hide(todoID) {
-		setTodos(prevState => {
-			return prevState.map(elem => {
-				return elem.id === todoID ? { ...elem, isHidden: !elem.isHidden } : elem
-			})
-		})
-		const curTodoStr = localStorage.getItem(todoID)
-		const curTodoObj = makeObj(curTodoStr)
-		curTodoObj.isHidden = !curTodoObj.isHidden
-		localStorage.setItem(todoID, JSON.stringify(curTodoObj))
+		// style .todos-title .propName
+		document.querySelector(`[class*=${propName}]`).click()
+		document.querySelector(`[class*=${propName}]`).classList.remove(propName)
 	}
 
-	const todoElems = todos.map((elem, ind) => <Todo key={ind} {...elem} handleLike={like} handleDone={done} handleHide={hide} />)
+	const todoElems = todos.map((elem, ind) => <Todo key={ind} {...elem} handleAction={action} />)
 	const hiddenTodos = todos.map((elem, ind) => {
 		const newObj = { ...elem, isHidden: false }
 		if (elem.isHidden) {
-			return <Todo key={ind} {...newObj} handleLike={like} handleDone={done} handleHide={hide} />
+			return <Todo key={ind} {...newObj} handleAction={action} />
 		}
 	})
 	const likedTodos = todos.map((elem, ind) => {
 		if (elem.isLiked) {
-			return <Todo key={ind} {...elem} handleLike={like} handleDone={done} handleHide={hide} />
+			return <Todo key={ind} {...elem} handleAction={action} />
 		}
 	})
 	const doneTodos = todos.map((elem, ind) => {
 		if (elem.isDone) {
-			return <Todo key={ind} {...elem} handleLike={like} handleDone={done} handleHide={hide} />
+			return <Todo key={ind} {...elem} handleAction={action} />
 		}
 	})
-	function styleHiddenSection(e){
+	function styleHiddenSection(e) {
 		e.target.nextSibling.classList.toggle('hidden-todos')
 		e.target.classList.toggle('turned-on')
 	}
@@ -88,25 +66,25 @@ export default function App() {
 
 				{/* ! Done Todos */}
 				<div className="hidden-todos-wrapper">
-					<p className="todos-title" onClick={(e) =>
+					<p className="todos-title isDone" onClick={(e) =>
 						styleHiddenSection(e)
-					}>Show/Hide - Done Todos</p>
+					}>Done Todos</p>
 					<div className="hidden-todos">{doneTodos}</div>
 				</div>
 
 				{/* ! Liked Todos */}
 				<div className="hidden-todos-wrapper">
-					<p className="todos-title" onClick={(e) =>
+					<p className="todos-title isLiked" onClick={(e) =>
 						styleHiddenSection(e)
-					}>Show/Hide - Liked Todos</p>
+					}>Liked Todos</p>
 					<div className="hidden-todos">{likedTodos}</div>
 				</div>
 
 				{/* ! Hidden Todos */}
 				<div className="hidden-todos-wrapper">
-					<p className="todos-title" onClick={(e) =>
+					<p className="todos-title isHidden" onClick={(e) =>
 						styleHiddenSection(e)
-					}>Show/Hide - Hidden Todos</p>
+					}>Hidden Todos</p>
 					<div className="hidden-todos">{hiddenTodos}</div>
 				</div>
 			</div>
