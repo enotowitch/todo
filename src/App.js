@@ -41,7 +41,7 @@ export default function App() {
 		localStorage.setItem(todoID, JSON.stringify(curTodoObj))
 		// style .todos-title .propName
 		const todosTitle = document.querySelector(`[class*=${propName}]`)
-		todosTitle && todosTitle.click()
+		todosTitle && !todosTitle.classList.contains('turned-on') ? todosTitle.click() : console.log('do nothing')
 		todosTitle && todosTitle.classList.remove(propName)
 	}
 
