@@ -2,11 +2,15 @@ import React from "react"
 
 export default function AddTodo(props) {
 
-	function getText() {
-		return document.querySelector('.input__text').value
+	const [text, setText] = React.useState("")
+
+
+
+	function getText(event) {
+		setText(event.target.value)
 	}
 	function clearText() {
-		document.querySelector('.input__text').value = ""
+		setText("")
 	}
 	function clearAllTodos() {
 		localStorage.clear()
@@ -19,12 +23,22 @@ export default function AddTodo(props) {
 
 	return (
 		<div className="add-todo">
-			<input className="input__text" type="text" placeholder="add todo" />
+			<input
+				className="input__text"
+				type="text"
+				placeholder="ADD 1 todo or ADD MANY: todo1, todo2, todo3..."
+				value={text}
+				onChange={getText} />
 
 			<button onClick={() =>
-				props.handleClick(getText(),
+				props.handleClick(text,
 					clearText())
 			}>add</button>
+
+			<button onClick={() =>
+				props.handleClick(text, "many",
+					clearText())
+			}>add many</button>
 
 			<button onClick={() =>
 				clearAllTodos()

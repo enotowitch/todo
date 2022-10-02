@@ -79,6 +79,7 @@ button{
 }
 .input__text{
 	height: 30px;
+	width: 290px;
 }
 .add-todo{
 	margin: 15px;

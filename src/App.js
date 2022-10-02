@@ -21,7 +21,19 @@ export default function App() {
 	})
 	let allTodosNum = todos.length
 
-	function addTodo(inputText) {
+	function addTodo(inputText, quantity) {
+		// ! add MANY
+		if (inputText.match(",") && quantity === "many") {
+			const arr = inputText.split(",")
+			for (let i = 0; i < arr.length; i++) {
+				setTodos(prevState => {
+					return [...prevState, { id: prevState.length + 1, text: arr[i], isLiked: false, isDone: false, isHidden: false }]
+				})
+				localStorage.setItem(todos.length + 1 + i, JSON.stringify({ id: todos.length + 1 + i, text: arr[i], isLiked: false, isDone: false, isHidden: false }))
+			}
+			return false
+		}
+		// ! add SINGLE
 		setTodos(prevState => {
 			return [...prevState, { id: prevState.length + 1, text: inputText, isLiked: false, isDone: false, isHidden: false }]
 		})
