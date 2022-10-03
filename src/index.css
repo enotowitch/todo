@@ -59,7 +59,7 @@ code {
 .hidden-todos{
 	display: none;
 }
-.todos-num{
+.todos-num,.todos-num-hidden{
 	border: 2px solid;
 	border-radius: 50%;
 	width: 30px;
@@ -71,6 +71,9 @@ code {
 	margin-left: 10px;
 	padding-bottom: 2px;
 	pointer-events: none;
+}
+.todos-num-hidden{
+	color: tomato;
 }
 button{
 	margin-left: 20px;

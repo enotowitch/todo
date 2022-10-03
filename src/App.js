@@ -8,18 +8,24 @@ export default function App() {
 	const [todos, setTodos] = React.useState(data)
 
 	let isLikedNum = 0
-	todos.map(elem => {
-		return elem.isLiked && isLikedNum++
-	})
+	todos.map(elem => elem.isLiked && isLikedNum++)
 	let isHiddenNum = 0
-	todos.map(elem => {
-		return elem.isHidden && isHiddenNum++
-	})
+	todos.map(elem => elem.isHidden && isHiddenNum++)
 	let isDoneNum = 0
-	todos.map(elem => {
-		return elem.isDone && isDoneNum++
-	})
+	todos.map(elem => elem.isDone && isDoneNum++)
 	let allTodosNum = todos.length
+
+	// ! intersections
+	const isDoneIds = []
+	todos.map(elem => elem.isDone && isDoneIds.push(elem.id))
+	const isLikedIds = []
+	todos.map(elem => elem.isLiked && isLikedIds.push(elem.id))
+	const isHiddenIds = []
+	todos.map(elem => elem.isHidden && isHiddenIds.push(elem.id))
+
+	const isDoneAndisHiddenIntersection = isDoneIds.filter(elem => isHiddenIds.includes(elem))
+	const isLikedAndisHiddenIntersection = isLikedIds.filter(elem => isHiddenIds.includes(elem))
+	// ? intersections
 
 	function addTodo(inputText, quantity) {
 		// ! add MANY
@@ -89,6 +95,7 @@ export default function App() {
 				<div className="todos-wrapper">
 					<p className="todos-title">My Todos
 						<span className="todos-num">{allTodosNum - isHiddenNum}</span>
+						{isHiddenNum > 0 && <span className="todos-num-hidden">{isHiddenNum}</span>}
 					</p>
 					{todoElems}
 				</div>
@@ -99,6 +106,7 @@ export default function App() {
 						styleHiddenSection(e)
 					}>Done Todos
 						<span className="todos-num">{isDoneNum}</span>
+						{isDoneAndisHiddenIntersection.length > 0 && <span className="todos-num-hidden">{isDoneAndisHiddenIntersection.length}</span>}
 					</p>
 					<div className="hidden-todos">{doneTodos}</div>
 				</div>
@@ -109,6 +117,7 @@ export default function App() {
 						styleHiddenSection(e)
 					}>Liked Todos
 						<span className="todos-num">{isLikedNum}</span>
+						{isLikedAndisHiddenIntersection.length > 0 && <span className="todos-num-hidden">{isLikedAndisHiddenIntersection.length}</span>}
 					</p>
 					<div className="hidden-todos">{likedTodos}</div>
 				</div>

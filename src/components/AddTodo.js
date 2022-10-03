@@ -16,10 +16,6 @@ export default function AddTodo(props) {
 		localStorage.clear()
 		window.location.reload()
 	}
-	function test() {
-		localStorage.setItem(localStorage.length + 1, JSON.stringify({ id: localStorage.length + 1, text: `Test Task ${localStorage.length + 1}`, isLiked: false, isDone: false, isHidden: false }))
-		window.location.reload()
-	}
 
 	return (
 		<div className="add-todo">
@@ -45,7 +41,7 @@ export default function AddTodo(props) {
 			}>clear all todos</button>
 
 			<button onClick={() =>
-				test()
+				props.handleClick(`Test Task ${localStorage.length + 1}`)
 			}>test</button>
 		</div>
 	)
