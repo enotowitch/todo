@@ -85,10 +85,25 @@ button{
 	width: 290px;
 }
 .add-todo{
-	margin: 15px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	width: 100%;
+	padding: 20px 0;
+}
+.add-todo, .chosen-day{
+	background: #acc2ff;
 }
 /* cursor pointer */
 /* todo .todos-title:not(:first-child) */
 button,.todos-title,.like, .hide{
 	cursor: pointer;
+}
+/* DATE */
+.one-day-todos{
+	font-weight: 700;
+	font-style: italic;
+	border: 1px solid;
+	margin-bottom: 15px;
 }
