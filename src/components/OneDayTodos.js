@@ -2,7 +2,7 @@ import React from "react"
 import Todo from "./../components/Todo"
 import data from "./../localStorageData"
 
-export default function OneDayTodos({ todos, action, date }) {
+export default function OneDayTodos({ todos, action, date, moveTodo }) {
 
 	const thisDayTodos = []
 	todos.map(elem => {
@@ -29,21 +29,21 @@ export default function OneDayTodos({ todos, action, date }) {
 	const isLikedAndisHiddenIntersection = isLikedIds.filter(elem => isHiddenIds.includes(elem))
 	// ? intersections
 
-	const todoElems = thisDayTodos.map((elem, ind) => <Todo key={ind} {...elem} action={action} />)
+	const todoElems = thisDayTodos.map((elem, ind) => <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} />)
 	const hiddenTodos = thisDayTodos.map((elem, ind) => {
 		const newObj = { ...elem, isHidden: false }
 		if (elem.isHidden) {
-			return <Todo key={ind} {...newObj} action={action} />
+			return <Todo key={ind} {...newObj} action={action} moveTodo={moveTodo} />
 		}
 	})
 	const likedTodos = thisDayTodos.map((elem, ind) => {
 		if (elem.isLiked) {
-			return <Todo key={ind} {...elem} action={action} />
+			return <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} />
 		}
 	})
 	const doneTodos = thisDayTodos.map((elem, ind) => {
 		if (elem.isDone) {
-			return <Todo key={ind} {...elem} action={action} />
+			return <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} />
 		}
 	})
 	function styleHiddenSection(e) {

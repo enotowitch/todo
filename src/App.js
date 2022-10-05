@@ -9,7 +9,7 @@ export default function App() {
 
 	const [todos, setTodos] = React.useState(data)
 
-	const daysHtmlElements = allDaysList.map(elem => <OneDayTodos todos={todos} action={action} date={elem} />)
+	const daysHtmlElements = allDaysList.map(elem => <OneDayTodos todos={todos} action={action} date={elem} moveTodo={moveTodo} />)
 
 	function addTodo(inputText, quantity) {
 		// ! date
@@ -48,6 +48,27 @@ export default function App() {
 		const todosTitle = document.querySelector(`[class*=${propName}]`)
 		todosTitle && !todosTitle.classList.contains('turned-on') ? todosTitle.click() : console.log('do nothing')
 		todosTitle && todosTitle.classList.remove(propName)
+	}
+	// ! moveTodo
+	function moveTodo(todoID, downOrUp) {
+		// localStorage
+		const storageObj = JSON.parse(localStorage.getItem(todoID))
+
+		const curTodoDate = storageObj.date
+		const curDateInd = allDaysList.indexOf(curTodoDate)
+		const dayDown = allDaysList[curDateInd + 1]
+		const dayUp = allDaysList[curDateInd - 1]
+		const newDay = downOrUp == "down" ? dayDown : dayUp
+
+		storageObj.date = newDay
+		localStorage.setItem(todoID, JSON.stringify(storageObj))
+
+		// state
+		setTodos(prevState => {
+			return prevState.map(elem => {
+				return elem.id === todoID ? { ...elem, date: newDay } : elem
+			})
+		})
 	}
 
 	React.useEffect(() => {

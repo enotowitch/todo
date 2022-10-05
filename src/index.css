@@ -26,6 +26,9 @@ code {
 	justify-content: space-between;
 	margin-bottom: 8px;
 }
+.todo__text{
+	margin-right: auto;
+}
 .todos-title{
 	font-weight: 700;
 	padding: 10px 0;
@@ -112,4 +115,23 @@ button,.todos-title,.like, .hide{
 .date{
 	font-weight: 700;
 	padding-left: 8px;
+}
+/* MOVE */
+.move-down{
+	transform: rotate(90deg);
+	height: 19px;
+	/* rotated */
+	padding-top: 6px;
+}
+.move-up{
+	transform: rotate(-90deg);
+	height: 19px;
+	/* rotated */
+	padding-bottom: 6px;
+}
+.dn{
+	display: none;
+}
+.dots{
+	
 }
