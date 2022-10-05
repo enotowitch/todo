@@ -3,6 +3,7 @@ import AddTodo from "./components/AddTodo"
 import OneDayTodos from "./components/OneDayTodos"
 import data from "./localStorageData"
 import allDaysList from "./allDaysList"
+import getCookie from "./functions/getCookie"
 
 export default function App() {
 
@@ -12,7 +13,7 @@ export default function App() {
 
 	function addTodo(inputText, quantity) {
 		// ! date
-		const date = document.cookie.match(/dateForAddTodo=\w*\s\d*/)[0].replace('dateForAddTodo=', '')
+		const date = getCookie("dateForAddTodo")
 		// ? date
 		// ! add MANY
 		if (inputText.match(",") && quantity === "many") {
@@ -50,11 +51,18 @@ export default function App() {
 	}
 
 	React.useEffect(() => {
+		// scroll to today
 		const dateObj = new Date()
-		const date = dateObj.toLocaleString('en', { month: 'long' }) + dateObj.getDate()
+		const dateToScroll = dateObj.toLocaleString('en', { month: 'long' }) + dateObj.getDate()
 		const headerHeight = document.querySelector('.add-todo').offsetHeight
-		document.querySelector(`.${date}`).scrollIntoView()
+		document.querySelector(`.${dateToScroll}`).scrollIntoView()
 		window.scrollBy(0, -headerHeight)
+	}, [])
+
+	React.useEffect(() => {
+		// style chosen-day set in cookie "dateForAddTodo"
+		const dateChosen = getCookie("dateForAddTodo").replace(/\s/, '')
+		document.querySelector(`.${dateChosen}`).classList.add('chosen-day')
 	}, [])
 
 	return (

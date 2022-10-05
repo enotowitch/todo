@@ -1,3 +1,5 @@
+@import url("./media.css");
+
 body {
   margin: 0;
   padding: 0;
@@ -15,7 +17,7 @@ code {
 }
 
 .todo,.todos-title{
-	width: 290px;
+	width: 400px;
 	margin: 0 auto;
 	background: #ececec;
 	border-radius: 8px;
@@ -100,10 +102,14 @@ button{
 button,.todos-title,.like, .hide{
 	cursor: pointer;
 }
-/* DATE */
 .one-day-todos{
-	font-weight: 700;
 	font-style: italic;
 	border: 1px solid;
 	margin-bottom: 15px;
+	padding: 8px 0;
+}
+/* DATE */
+.date{
+	font-weight: 700;
+	padding-left: 8px;
 }

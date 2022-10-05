@@ -51,10 +51,13 @@ export default function OneDayTodos({ todos, action, date }) {
 		e.target.classList.toggle('turned-on')
 	}
 	function getTodoDate(event) {
+		// write to cookie => on which day AddTodo() is used
 		const dateForAddTodo = event.target.closest('.one-day-todos').querySelector('.date').innerText
+		document.cookie = `dateForAddTodo=${dateForAddTodo}`
+		// style
 		document.querySelectorAll('.one-day-todos').forEach(elem => elem.classList.remove('chosen-day'))
 		event.target.closest('.one-day-todos').classList.add('chosen-day')
-		document.cookie = `dateForAddTodo=${dateForAddTodo}`
+		document.querySelector('.input__text').focus()
 	}
 
 	const allTodosWrapper = <div className="all-todos-wrapper">

@@ -1,0 +1,17 @@
+/* ! MEDIA */
+@media(max-width:1665px) {
+	.todo,.todos-title{
+		width: 60vw !important;
+	}
+}
+@media(max-width:768px) {
+	.todo,.todos-title{
+		width: 80vw !important;
+	}
+}
+@media(max-width:600px) {
+	.todo,.todos-title{
+		width: 90vw !important;
+	}
+}
+/* ? MEDIA */
