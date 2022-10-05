@@ -30,16 +30,17 @@ code {
 	margin-right: auto;
 }
 .todos-title{
+	position: relative;
 	font-weight: 700;
 	padding: 10px 0;
 	justify-content: center;
 	user-select: none;
 }
 .hidden-todos-wrapper .todos-title{
-	background: #ffd9d3;
+	/* background: #fff1ee; */
 }
 .turned-on{
-	background: #cbfc82 !important;
+	background: #f5f5f5 !important;
 }
 .todos-wrapper, .hidden-todos-wrapper{
 	display: inline-flex;
@@ -84,7 +85,7 @@ code {
 	color: orange;
 }
 .todos-num_done{
-	color: dodgerblue;
+	color: #84db00;
 }
 button{
 	margin-left: 20px;
@@ -154,11 +155,20 @@ button,.todos-title,.like, .hide{
 .section-minimized .view-arrow{
 	transform: rotate(180deg);
 }
-.view-arrow{
+.view-arrow, .action-arrow{
 	width: 30px;
 	margin-left: auto;
 	margin-right: 8px;
 }
+.action-arrow{
+	position: absolute;
+	right: 8px;
+	pointer-events: none;
+}
+.turned-on .action-arrow{
+	transform: rotate(180deg);
+}
+
 .get-todo-date{
 	margin-left: 8px;
 }

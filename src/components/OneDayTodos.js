@@ -79,6 +79,7 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 			}>Done Todos
 				<span className="todos-num todos-num_done">{isDoneNum}</span>
 				{isDoneAndisHiddenIntersection.length > 0 && <span className="todos-num_hidden">{isDoneAndisHiddenIntersection.length}</span>}
+				{isDoneNum > 0 && <img className="action-arrow" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{doneTodos}</div>
 		</div>
@@ -90,6 +91,7 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 			}>Liked Todos
 				<span className="todos-num todos-num_liked">{isLikedNum}</span>
 				{isLikedAndisHiddenIntersection.length > 0 && <span className="todos-num_hidden">{isLikedAndisHiddenIntersection.length}</span>}
+				{isLikedNum > 0 && <img className="action-arrow" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{likedTodos}</div>
 		</div>
@@ -100,6 +102,7 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 				styleHiddenSection(e)
 			}>Hidden Todos
 				<span className="todos-num todos-num_hidden">{isHiddenNum}</span>
+				{isHiddenNum > 0 && <img className="action-arrow" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{hiddenTodos}</div>
 		</div>
