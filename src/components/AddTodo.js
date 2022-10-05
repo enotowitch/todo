@@ -16,6 +16,12 @@ export default function AddTodo(props) {
 		localStorage.clear()
 		window.location.reload()
 	}
+	React.useEffect(() => {
+		const headerHeight = document.querySelector('.add-todo').offsetHeight
+		const marginDiv = document.createElement('div')
+		marginDiv.style.marginBottom = headerHeight + 30 + "px"
+		document.querySelector('.add-todo').after(marginDiv)
+	}, [])
 
 	return (
 		<div className="add-todo">
@@ -27,12 +33,12 @@ export default function AddTodo(props) {
 				onChange={getText} />
 
 			<button onClick={() =>
-				props.handleClick(text,
+				props.addTodo(text,
 					clearText())
 			}>add</button>
 
 			<button onClick={() =>
-				props.handleClick(text, "many",
+				props.addTodo(text, "many",
 					clearText())
 			}>add many</button>
 
@@ -41,7 +47,7 @@ export default function AddTodo(props) {
 			}>clear all todos</button>
 
 			<button onClick={() =>
-				props.handleClick(`Test Task ${localStorage.length + 1}`)
+				props.addTodo(`Test Task ${localStorage.length + 1}`)
 			}>test</button>
 		</div>
 	)

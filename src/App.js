@@ -59,10 +59,7 @@ export default function App() {
 
 	return (
 		<>
-			{/* TODO - CSS :first-child does not work, so marginBottom div for now */}
-			<div style={{ marginBottom: "150px" }}></div>
-
-			<AddTodo handleClick={addTodo} />
+			<AddTodo addTodo={addTodo} />
 			{daysHtmlElements}
 		</>
 	)

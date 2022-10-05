@@ -29,21 +29,21 @@ export default function OneDayTodos({ todos, action, date }) {
 	const isLikedAndisHiddenIntersection = isLikedIds.filter(elem => isHiddenIds.includes(elem))
 	// ? intersections
 
-	const todoElems = thisDayTodos.map((elem, ind) => <Todo key={ind} {...elem} handleAction={action} />)
+	const todoElems = thisDayTodos.map((elem, ind) => <Todo key={ind} {...elem} action={action} />)
 	const hiddenTodos = thisDayTodos.map((elem, ind) => {
 		const newObj = { ...elem, isHidden: false }
 		if (elem.isHidden) {
-			return <Todo key={ind} {...newObj} handleAction={action} />
+			return <Todo key={ind} {...newObj} action={action} />
 		}
 	})
 	const likedTodos = thisDayTodos.map((elem, ind) => {
 		if (elem.isLiked) {
-			return <Todo key={ind} {...elem} handleAction={action} />
+			return <Todo key={ind} {...elem} action={action} />
 		}
 	})
 	const doneTodos = thisDayTodos.map((elem, ind) => {
 		if (elem.isDone) {
-			return <Todo key={ind} {...elem} handleAction={action} />
+			return <Todo key={ind} {...elem} action={action} />
 		}
 	})
 	function styleHiddenSection(e) {
