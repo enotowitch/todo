@@ -13,5 +13,11 @@
 	.todo,.todos-title{
 		width: 90vw !important;
 	}
+	.one-day-todos-nums{
+		padding-left: 4px !important;
+	}
+	.one-day-todos__top .todos-num{
+		margin-left: 6px;
+}
 }
 /* ? MEDIA */

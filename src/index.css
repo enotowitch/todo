@@ -36,10 +36,10 @@ code {
 	user-select: none;
 }
 .hidden-todos-wrapper .todos-title{
-	background: rgb(255, 157, 139);
+	background: #ffd9d3;
 }
 .turned-on{
-	background: rgb(203, 252, 130) !important;
+	background: #cbfc82 !important;
 }
 .todos-wrapper, .hidden-todos-wrapper{
 	display: inline-flex;
@@ -64,7 +64,7 @@ code {
 .hidden-todos{
 	display: none;
 }
-.todos-num,.todos-num-hidden{
+.todos-num,.todos-num_hidden{
 	border: 2px solid;
 	border-radius: 50%;
 	width: 30px;
@@ -77,8 +77,14 @@ code {
 	padding-bottom: 2px;
 	pointer-events: none;
 }
-.todos-num-hidden{
+.todos-num_hidden{
 	color: tomato;
+}
+.todos-num_liked{
+	color: orange;
+}
+.todos-num_done{
+	color: dodgerblue;
 }
 button{
 	margin-left: 20px;
@@ -98,7 +104,7 @@ button{
 	padding: 20px 0;
 }
 .add-todo, .chosen-day{
-	background: #acc2ff;
+	background: #d9e3ff;
 }
 /* cursor pointer */
 /* todo .todos-title:not(:first-child) */
@@ -132,6 +138,27 @@ button,.todos-title,.like, .hide{
 .dn{
 	display: none;
 }
-.dots{
-	
+/* ! .one-day-todos__top */
+.one-day-todos__top{
+	display: flex;
+	align-items: center;
+}
+.one-day-todos-nums{
+	display: flex;
+	padding-left: 10px;
+}
+.section-minimized{
+	height: 40px;
+	overflow: hidden;
+}
+.section-minimized .view-arrow{
+	transform: rotate(180deg);
+}
+.view-arrow{
+	width: 30px;
+	margin-left: auto;
+	margin-right: 8px;
+}
+.get-todo-date{
+	margin-left: 8px;
 }

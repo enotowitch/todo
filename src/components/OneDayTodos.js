@@ -1,6 +1,6 @@
 import React from "react"
 import Todo from "./../components/Todo"
-import data from "./../localStorageData"
+import arrow from "./../img/arrow.svg"
 
 export default function OneDayTodos({ todos, action, date, moveTodo }) {
 
@@ -60,13 +60,14 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 		document.querySelector('.input__text').focus()
 	}
 
+	// ! allTodosWrapper
 	const allTodosWrapper = <div className="all-todos-wrapper">
 
 		{/* ! My Todos */}
 		<div className="todos-wrapper">
 			<p className="todos-title">My Todos
 				<span className="todos-num">{allTodosNum - isHiddenNum}</span>
-				{isHiddenNum > 0 && <span className="todos-num-hidden">{isHiddenNum}</span>}
+				{isHiddenNum > 0 && <span className="todos-num_hidden">{isHiddenNum}</span>}
 			</p>
 			{todoElems}
 		</div>
@@ -76,8 +77,8 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 			<p className="todos-title isDone" onClick={(e) =>
 				styleHiddenSection(e)
 			}>Done Todos
-				<span className="todos-num">{isDoneNum}</span>
-				{isDoneAndisHiddenIntersection.length > 0 && <span className="todos-num-hidden">{isDoneAndisHiddenIntersection.length}</span>}
+				<span className="todos-num todos-num_done">{isDoneNum}</span>
+				{isDoneAndisHiddenIntersection.length > 0 && <span className="todos-num_hidden">{isDoneAndisHiddenIntersection.length}</span>}
 			</p>
 			<div className="hidden-todos">{doneTodos}</div>
 		</div>
@@ -87,8 +88,8 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 			<p className="todos-title isLiked" onClick={(e) =>
 				styleHiddenSection(e)
 			}>Liked Todos
-				<span className="todos-num">{isLikedNum}</span>
-				{isLikedAndisHiddenIntersection.length > 0 && <span className="todos-num-hidden">{isLikedAndisHiddenIntersection.length}</span>}
+				<span className="todos-num todos-num_liked">{isLikedNum}</span>
+				{isLikedAndisHiddenIntersection.length > 0 && <span className="todos-num_hidden">{isLikedAndisHiddenIntersection.length}</span>}
 			</p>
 			<div className="hidden-todos">{likedTodos}</div>
 		</div>
@@ -98,24 +99,39 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 			<p className="todos-title isHidden" onClick={(e) =>
 				styleHiddenSection(e)
 			}>Hidden Todos
-				<span className="todos-num">{isHiddenNum}</span>
+				<span className="todos-num todos-num_hidden">{isHiddenNum}</span>
 			</p>
 			<div className="hidden-todos">{hiddenTodos}</div>
 		</div>
 	</div>
+	// ? allTodosWrapper
 
+	function toggleOneDayTodosView(event) {
+		event.target.closest('.one-day-todos').classList.toggle('section-minimized')
+	}
 
+	const minifiedDate = date.slice(0, 3) + " " + date.match(/\d+/)
 
 	return (
 		// adding to this class each date of the year, so App can scroll to current date on load
-		<div className={`one-day-todos ${date.replace(/\s/, '')}`}>
+		<div className={`one-day-todos ${minifiedDate.replace(/\s/, '')}`}>
 
-			<span className="date">{date}</span>
+			<div className="one-day-todos__top">
+				<span className="date">{minifiedDate}</span>
 
-			<button onClick={getTodoDate}>+</button>
+				<button className="get-todo-date" onClick={getTodoDate}>+</button>
+
+				<div className="one-day-todos-nums">
+					{allTodosNum > 0 && <span className="todos-num">{allTodosNum}</span>}
+					{isDoneNum > 0 && <span className="todos-num todos-num_done">{isDoneNum}</span>}
+					{isLikedNum > 0 && <span className="todos-num todos-num_liked">{isLikedNum}</span>}
+					{isHiddenNum > 0 && <span className="todos-num todos-num_hidden">{isHiddenNum}</span>}
+				</div>
+
+				{thisDayTodos.length > 0 && <img className="view-arrow" src={arrow} onClick={toggleOneDayTodosView} />}
+			</div>
 
 			{thisDayTodos.length > 0 && allTodosWrapper}
-
 
 		</div>
 	)

@@ -74,7 +74,7 @@ export default function App() {
 	React.useEffect(() => {
 		// scroll to today
 		const dateObj = new Date()
-		const dateToScroll = dateObj.toLocaleString('en', { month: 'long' }) + dateObj.getDate()
+		const dateToScroll = dateObj.toLocaleString('en', { month: 'long' }).slice(0, 3) + dateObj.getDate()
 		const headerHeight = document.querySelector('.add-todo').offsetHeight
 		document.querySelector(`.${dateToScroll}`).scrollIntoView()
 		window.scrollBy(0, -headerHeight)
