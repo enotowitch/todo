@@ -119,7 +119,7 @@ button,.todos-title,.like, .hide{
 	padding: 8px 0;
 }
 /* DATE */
-.date{
+.date,.date_today{
 	font-weight: 700;
 	padding-left: 8px;
 }

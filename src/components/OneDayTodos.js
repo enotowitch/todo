@@ -1,6 +1,7 @@
 import React from "react"
 import Todo from "./../components/Todo"
 import arrow from "./../img/arrow.svg"
+import getToday from "./../functions/getToday"
 
 export default function OneDayTodos({ todos, action, date, moveTodo }) {
 
@@ -114,12 +115,16 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 	}
 
 	const dateWithSpace = date.slice(0, 3) + " " + date.match(/\d+/)
+
 	return (
 		// adding to this class each date of the year, so App can scroll to current date on load
 		<div className={`one-day-todos ${date}`}>
 
 			<div className="one-day-todos__top">
-				<span className="date">{dateWithSpace}</span>
+				<div>
+					{date === getToday() && <div className="date_today">Today</div>}
+					<div className="date">{dateWithSpace}</div>
+				</div>
 
 				<button className="get-todo-date" onClick={getTodoDate}>+</button>
 
