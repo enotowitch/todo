@@ -4,8 +4,14 @@ import OneDayTodos from "./components/OneDayTodos"
 import data from "./localStorageData"
 import allDaysList from "./allDaysList"
 import getCookie from "./functions/getCookie"
+import getToday from "./functions/getToday"
 
 export default function App() {
+
+	React.useEffect(() => {
+		// on reload AddTodo adds to today
+		document.cookie = `dateForAddTodo=${getToday()}`
+	}, [])
 
 	const [todos, setTodos] = React.useState(data)
 
@@ -73,16 +79,14 @@ export default function App() {
 
 	React.useEffect(() => {
 		// scroll to today
-		const dateObj = new Date()
-		const dateToScroll = dateObj.toLocaleString('en', { month: 'long' }).slice(0, 3) + dateObj.getDate()
 		const headerHeight = document.querySelector('.add-todo').offsetHeight
-		document.querySelector(`.${dateToScroll}`).scrollIntoView()
+		document.querySelector(`.${getToday()}`).scrollIntoView()
 		window.scrollBy(0, -headerHeight)
 	}, [])
 
 	React.useEffect(() => {
 		// style chosen-day set in cookie "dateForAddTodo"
-		const dateChosen = getCookie("dateForAddTodo").replace(/\s/, '')
+		const dateChosen = getCookie("dateForAddTodo")
 		document.querySelector(`.${dateChosen}`).classList.add('chosen-day')
 	}, [])
 

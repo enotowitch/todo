@@ -52,7 +52,7 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 	}
 	function getTodoDate(event) {
 		// write to cookie => on which day AddTodo() is used
-		const dateForAddTodo = event.target.closest('.one-day-todos').querySelector('.date').innerText
+		const dateForAddTodo = event.target.closest('.one-day-todos').querySelector('.date').innerText.replace(/\s/, '')
 		document.cookie = `dateForAddTodo=${dateForAddTodo}`
 		// style
 		document.querySelectorAll('.one-day-todos').forEach(elem => elem.classList.remove('chosen-day'))
@@ -113,14 +113,13 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 		event.target.closest('.one-day-todos').classList.toggle('section-minimized')
 	}
 
-	const minifiedDate = date.slice(0, 3) + " " + date.match(/\d+/)
-
+	const dateWithSpace = date.slice(0, 3) + " " + date.match(/\d+/)
 	return (
 		// adding to this class each date of the year, so App can scroll to current date on load
-		<div className={`one-day-todos ${minifiedDate.replace(/\s/, '')}`}>
+		<div className={`one-day-todos ${date}`}>
 
 			<div className="one-day-todos__top">
-				<span className="date">{minifiedDate}</span>
+				<span className="date">{dateWithSpace}</span>
 
 				<button className="get-todo-date" onClick={getTodoDate}>+</button>
 
