@@ -5,8 +5,7 @@ import data from "./localStorageData"
 import allDaysList from "./allDaysList"
 import getCookie from "./functions/getCookie"
 import getToday from "./functions/getToday"
-import arrow from "./img/arrow.svg"
-import normalizeDate from "./functions/normalizeDate"
+import ChangeWeek from "./components/ChangeWeek"
 
 export default function App() {
 
@@ -109,20 +108,13 @@ export default function App() {
 		nextOrPrev === "next" ? setWeekNum(prevState => prevState + 1) : setWeekNum(prevState => prevState - 1)
 	}
 
-
 	return (
 		<>
 			<AddTodo addTodo={addTodo} todos={todos} />
 			{/* todo arrow classes */}
-			{/* todo weeksChange Component */}
-			<div className="weeksChange">
-				<img className="week-arrow week-arrow_prev" src={arrow} onClick={() => changeWeek("prev")} />
-				{normalizeDate(allDaysList[weekNum][0])}
-				<span> - </span>
-				{normalizeDate(allDaysList[weekNum][allDaysList[weekNum].length - 1])}
-				<img className="week-arrow week-arrow_next" src={arrow} onClick={() => changeWeek("next")} />
-			</div>
+			<ChangeWeek changeWeek={changeWeek} weekNum={weekNum} />
 			{daysHtmlElements}
+			<ChangeWeek changeWeek={changeWeek} weekNum={weekNum} />
 		</>
 	)
 }
