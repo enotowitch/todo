@@ -16,31 +16,29 @@ export default function Todo(props) {
 		event.target.closest('.todo').querySelectorAll('img').forEach(elem => elem.className != "dots" && elem.classList.toggle('dn'))
 	}
 
-	// ! show only not hidden todos
-	if (!props.isHidden)
 
-		return (
-			<div className="todo">
-				{checkbox}
-				<p className="todo__text">{props.text}</p>
+	return (
+		<div className="todo">
+			{checkbox}
+			<p className="todo__text">{props.text}</p>
 
-				<img className="like dn" src={likedOrNot} onClick={() =>
-					props.action(props.id, 'isLiked')
-				} />
+			<img className="like dn" src={likedOrNot} onClick={() =>
+				props.action(props.id, 'isLiked')
+			} />
 
-				<img className="hide dn" src={hide} onClick={() =>
-					props.action(props.id, 'isHidden')
-				} />
+			<img className="hide dn" src={hide} onClick={() =>
+				props.action(props.id, 'isHidden')
+			} />
 
-				<img className="move-down dn" src={move} onClick={() =>
-					props.moveTodo(props.id, "down")
-				} />
+			<img className="move-down dn" src={move} onClick={() =>
+				props.moveTodo(props.id, "down")
+			} />
 
-				<img className="move-up dn" src={move} onClick={() =>
-					props.moveTodo(props.id, "up")
-				} />
+			<img className="move-up dn" src={move} onClick={() =>
+				props.moveTodo(props.id, "up")
+			} />
 
-				<img className="dots" src={dots} onClick={toggleActionImgsView} />
-			</div>
-		)
+			<img className="dots" src={dots} onClick={toggleActionImgsView} />
+		</div>
+	)
 }

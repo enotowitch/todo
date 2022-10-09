@@ -21,35 +21,14 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 	thisDayTodos.map(elem => elem.isDone && isDoneNum++)
 	let allTodosNum = thisDayTodos.length
 
-	// ! intersections
-	const isDoneIds = []
-	thisDayTodos.map(elem => elem.isDone && isDoneIds.push(elem.id))
-	const isLikedIds = []
-	thisDayTodos.map(elem => elem.isLiked && isLikedIds.push(elem.id))
-	const isHiddenIds = []
-	thisDayTodos.map(elem => elem.isHidden && isHiddenIds.push(elem.id))
 
-	const isDoneAndisHiddenIntersection = isDoneIds.filter(elem => isHiddenIds.includes(elem))
-	const isLikedAndisHiddenIntersection = isLikedIds.filter(elem => isHiddenIds.includes(elem))
-	// ? intersections
+	// ALLTODOS: -isHidden, -isDone
+	const todoElems = thisDayTodos.map((elem, ind) => (!elem.isHidden && !elem.isDone) && <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} />)
+	// DONETODOS: -isHidden
+	const doneTodos = thisDayTodos.map((elem, ind) => (elem.isDone && !elem.isHidden) && <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} />)
+	const likedTodos = thisDayTodos.map((elem, ind) => elem.isLiked && <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} />)
+	const hiddenTodos = thisDayTodos.map((elem, ind) => elem.isHidden && <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} />)
 
-	const todoElems = thisDayTodos.map((elem, ind) => <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} />)
-	const hiddenTodos = thisDayTodos.map((elem, ind) => {
-		const newObj = { ...elem, isHidden: false }
-		if (elem.isHidden) {
-			return <Todo key={ind} {...newObj} action={action} moveTodo={moveTodo} />
-		}
-	})
-	const likedTodos = thisDayTodos.map((elem, ind) => {
-		if (elem.isLiked) {
-			return <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} />
-		}
-	})
-	const doneTodos = thisDayTodos.map((elem, ind) => {
-		if (elem.isDone) {
-			return <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} />
-		}
-	})
 	function styleHiddenSection(e) {
 		e.target.nextSibling.classList.toggle('hidden-todos')
 		e.target.classList.toggle('turned-on')
@@ -70,8 +49,6 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 		{/* ! My Todos */}
 		<div className="todos-wrapper">
 			<p className="todos-title">My Todos
-				<span className="todos-num">{allTodosNum - isHiddenNum}</span>
-				{isHiddenNum > 0 && <span className="todos-num_hidden">{isHiddenNum}</span>}
 			</p>
 			{todoElems}
 		</div>
@@ -80,9 +57,7 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 		<div className="hidden-todos-wrapper">
 			<p className="todos-title isDone" onClick={(e) =>
 				styleHiddenSection(e)
-			}>Done Todos
-				<span className="todos-num todos-num_done">{isDoneNum}</span>
-				{isDoneAndisHiddenIntersection.length > 0 && <span className="todos-num_hidden">{isDoneAndisHiddenIntersection.length}</span>}
+			}><span className="done">Done&nbsp;&nbsp;</span>Todos
 				{isDoneNum > 0 && <img className="action-arrow" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{doneTodos}</div>
@@ -92,9 +67,7 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 		<div className="hidden-todos-wrapper">
 			<p className="todos-title isLiked" onClick={(e) =>
 				styleHiddenSection(e)
-			}>Liked Todos
-				<span className="todos-num todos-num_liked">{isLikedNum}</span>
-				{isLikedAndisHiddenIntersection.length > 0 && <span className="todos-num_hidden">{isLikedAndisHiddenIntersection.length}</span>}
+			}><span className="liked">Liked&nbsp;&nbsp;</span>Todos
 				{isLikedNum > 0 && <img className="action-arrow" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{likedTodos}</div>
@@ -104,8 +77,7 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 		<div className="hidden-todos-wrapper">
 			<p className="todos-title isHidden" onClick={(e) =>
 				styleHiddenSection(e)
-			}>Hidden Todos
-				<span className="todos-num todos-num_hidden">{isHiddenNum}</span>
+			}><span className="hidden">Hidden&nbsp;&nbsp;</span>Todos
 				{isHiddenNum > 0 && <img className="action-arrow" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{hiddenTodos}</div>

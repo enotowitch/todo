@@ -90,12 +90,11 @@ export default function App() {
 
 	React.useEffect(() => {
 		// scroll to today
-		// todo cookie memo document.querySelector('.date_today').offsetTop => onLoat scroolTo
 		setTimeout(() => {
 			const headerHeight = document.querySelector('.add-todo').offsetHeight
 			document.querySelector(`.${getToday()}`).scrollIntoView()
 			window.scrollBy(0, -headerHeight)
-		}, 1000);
+		}, 500);
 	}, [])
 
 	React.useEffect(() => {
