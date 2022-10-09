@@ -2,6 +2,8 @@ import React from "react"
 import Todo from "./../components/Todo"
 import arrow from "./../img/arrow.svg"
 import getToday from "./../functions/getToday"
+import normalizeDate from "./../functions/normalizeDate"
+import AllActionNums from "./AllActionNums"
 
 export default function OneDayTodos({ todos, action, date, moveTodo }) {
 
@@ -10,6 +12,7 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 		return elem.date === date ? thisDayTodos.push(elem) : elem
 	})
 
+	// todo HAS DUP
 	let isLikedNum = 0
 	thisDayTodos.map(elem => elem.isLiked && isLikedNum++)
 	let isHiddenNum = 0
@@ -114,8 +117,6 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 		event.target.closest('.one-day-todos').classList.toggle('section-minimized')
 	}
 
-	const dateWithSpace = date.slice(0, 3) + " " + date.match(/\d+/)
-
 	return (
 		// adding to this class each date of the year, so App can scroll to current date on load
 		<div className={`one-day-todos ${date}`}>
@@ -123,17 +124,12 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 			<div className="one-day-todos__top">
 				<div>
 					{date === getToday() && <div className="date_today">Today</div>}
-					<div className="date">{dateWithSpace}</div>
+					<div className="date">{normalizeDate(date)}</div>
 				</div>
 
 				<button className="get-todo-date" onClick={getTodoDate}>+</button>
 
-				<div className="one-day-todos-nums">
-					{allTodosNum > 0 && <span className="todos-num">{allTodosNum}</span>}
-					{isDoneNum > 0 && <span className="todos-num todos-num_done">{isDoneNum}</span>}
-					{isLikedNum > 0 && <span className="todos-num todos-num_liked">{isLikedNum}</span>}
-					{isHiddenNum > 0 && <span className="todos-num todos-num_hidden">{isHiddenNum}</span>}
-				</div>
+				<AllActionNums nums={{ allTodosNum, isDoneNum, isLikedNum, isHiddenNum }} />
 
 				{thisDayTodos.length > 0 && <img className="view-arrow" src={arrow} onClick={toggleOneDayTodosView} />}
 			</div>

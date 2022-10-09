@@ -5,8 +5,13 @@ import data from "./localStorageData"
 import allDaysList from "./allDaysList"
 import getCookie from "./functions/getCookie"
 import getToday from "./functions/getToday"
+import arrow from "./img/arrow.svg"
+import normalizeDate from "./functions/normalizeDate"
 
 export default function App() {
+
+	let curWeekNum
+	allDaysList.map((elem, ind) => elem.includes(getToday()) && (curWeekNum = ind))
 
 	React.useEffect(() => {
 		// on reload AddTodo adds to today
@@ -14,13 +19,20 @@ export default function App() {
 	}, [])
 
 	const [todos, setTodos] = React.useState(data)
+	const [weekNum, setWeekNum] = React.useState(curWeekNum)
 
-	const daysHtmlElements = allDaysList.map(elem => <OneDayTodos todos={todos} action={action} date={elem} moveTodo={moveTodo} />)
+	const daysHtmlElements = allDaysList[weekNum].map(elem => <OneDayTodos todos={todos} action={action} date={elem} moveTodo={moveTodo} />)
 
 	function addTodo(inputText, quantity) {
 		// ! date
 		const date = getCookie("dateForAddTodo")
 		// ? date
+		if (inputText === "" && quantity === "one") {
+			inputText = `Test Task ${localStorage.length + 1}`
+		}
+		if (inputText === "" && quantity === "many") {
+			inputText = `Test Task ${localStorage.length + 1}, Test Task ${localStorage.length + 2}, Test Task ${localStorage.length + 3}`
+		}
 		// ! add MANY
 		if (inputText.match(",") && quantity === "many") {
 			const arr = inputText.split(",")
@@ -61,9 +73,9 @@ export default function App() {
 		const storageObj = JSON.parse(localStorage.getItem(todoID))
 
 		const curTodoDate = storageObj.date
-		const curDateInd = allDaysList.indexOf(curTodoDate)
-		const dayDown = allDaysList[curDateInd + 1]
-		const dayUp = allDaysList[curDateInd - 1]
+		const curDateInd = allDaysList[weekNum].indexOf(curTodoDate)
+		const dayDown = allDaysList[weekNum][curDateInd + 1]
+		const dayUp = allDaysList[weekNum][curDateInd - 1]
 		const newDay = downOrUp == "down" ? dayDown : dayUp
 
 		storageObj.date = newDay
@@ -79,9 +91,12 @@ export default function App() {
 
 	React.useEffect(() => {
 		// scroll to today
-		const headerHeight = document.querySelector('.add-todo').offsetHeight
-		document.querySelector(`.${getToday()}`).scrollIntoView()
-		window.scrollBy(0, -headerHeight)
+		// todo cookie memo document.querySelector('.date_today').offsetTop => onLoat scroolTo
+		setTimeout(() => {
+			const headerHeight = document.querySelector('.add-todo').offsetHeight
+			document.querySelector(`.${getToday()}`).scrollIntoView()
+			window.scrollBy(0, -headerHeight)
+		}, 1000);
 	}, [])
 
 	React.useEffect(() => {
@@ -90,9 +105,23 @@ export default function App() {
 		document.querySelector(`.${dateChosen}`).classList.add('chosen-day')
 	}, [])
 
+	function changeWeek(nextOrPrev) {
+		nextOrPrev === "next" ? setWeekNum(prevState => prevState + 1) : setWeekNum(prevState => prevState - 1)
+	}
+
+
 	return (
 		<>
-			<AddTodo addTodo={addTodo} />
+			<AddTodo addTodo={addTodo} todos={todos} />
+			{/* todo arrow classes */}
+			{/* todo weeksChange Component */}
+			<div className="weeksChange">
+				<img className="week-arrow week-arrow_prev" src={arrow} onClick={() => changeWeek("prev")} />
+				{normalizeDate(allDaysList[weekNum][0])}
+				<span> - </span>
+				{normalizeDate(allDaysList[weekNum][allDaysList[weekNum].length - 1])}
+				<img className="week-arrow week-arrow_next" src={arrow} onClick={() => changeWeek("next")} />
+			</div>
 			{daysHtmlElements}
 		</>
 	)
