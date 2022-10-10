@@ -121,7 +121,7 @@ button{
 	left: 0;
 	z-index: 2;
 	width: 100%;
-	padding: 20px 0;
+	padding: 20px 0 0;
 }
 .add-todo, .chosen-day{
 	background-color: #567594;
@@ -227,4 +227,42 @@ button,.todos-title,.like, .hide{
 
 .get-todo-date{
 	margin-left: 8px;
+}
+.dots_add-todo{
+	position: relative;
+	left: 50%;
+	transform: translate(-50%) rotate(90deg);
+	/* rotated */
+	padding-left: 5px;
+	margin-top: 5px;
+}
+/* ! pick-color */
+[type="color"]{
+	border: 0px solid;
+	background: none;
+}
+.pick-color{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 200px;
+	margin: 0 auto;
+}
+.task{
+	width: 90px;
+	background: none;
+	border: none;
+	border-bottom: 1px solid;
+	outline: none;
+}
+.how-to-use{
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border: 1px solid;
+	border-radius: 50%;
+}
+.my-lists{
+	text-align: center;
+	font-weight: 600;
 }

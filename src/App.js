@@ -9,6 +9,14 @@ import ChangeWeek from "./components/ChangeWeek"
 
 export default function App() {
 
+	// default cookies
+	if (!document.cookie.match(/colors/)) {
+		document.cookie = ` colors={"work":"#7ec5fb","my task name":"#ff8585","editable text":"#aeffa3"};`
+	}
+	if (!document.cookie.match(/tasks/)) {
+		document.cookie = `tasks={"task1":"work","task2":"my task name","task3":"editable text"};`
+	}
+
 	let curWeekNum
 	allDaysList.map((elem, ind) => elem.includes(getToday()) && (curWeekNum = ind))
 

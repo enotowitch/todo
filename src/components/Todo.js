@@ -16,11 +16,31 @@ export default function Todo(props) {
 		event.target.closest('.todo').querySelectorAll('img').forEach(elem => elem.className != "dots" && elem.classList.toggle('dn'))
 	}
 
+	let color
+	let text
+	const colorsObj = JSON.parse(document.cookie.match(/colors={.*?}/)[0].replace(/colors=/, ''))
+	const tasksObj = JSON.parse(document.cookie.match(/tasks={.*?}/)[0].replace(/tasks=/, ''))
+
+	const tasksArr = []
+	Object.values(tasksObj).map(elem => tasksArr.push(elem)) // ['taskName1', 'taskName2', 'taskName3']
+
+	tasksArr.map(taskName => { // - taskName1,taskName2 ...
+		const exp = `\/${taskName}\/`
+		const regexp = new RegExp(exp) // - /\/taskName1\//
+		if (props.text.match(regexp)) { // if in props.text taskName from tasksObj (cookie)
+			color = colorsObj[taskName]
+			text = props.text.replace(taskName, '').replace(/\//g, '') // text without "//"
+		}
+	})
+
+	const style = {
+		background: color
+	}
 
 	return (
-		<div className="todo">
+		<div className="todo" style={style}>
 			{checkbox}
-			<p className="todo__text">{props.text}</p>
+			<p className="todo__text">{text || props.text}</p>
 
 			<img className="like dn" src={likedOrNot} onClick={() =>
 				props.action(props.id, 'isLiked')
