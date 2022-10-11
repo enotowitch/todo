@@ -1,6 +1,7 @@
 import React from "react"
 import AllActionNums from "./AllActionNums"
 import dots from "./../img/dots.svg"
+import PickColor from "./PickColor"
 
 export default function AddTodo(props) {
 
@@ -41,34 +42,41 @@ export default function AddTodo(props) {
 	const colorsObj = JSON.parse(document.cookie.match(/colors={.*?}/)[0].replace(/colors=/, '')) // {taskName1: '#0aff95', taskName2: '#ff8585', ... }
 	const tasksObj = JSON.parse(document.cookie.match(/tasks={.*?}/)[0].replace(/tasks=/, '')) // {task1: 'taskName1', task2: 'taskName2' ... }
 
-	const [colorsData, setColorsData] = React.useState({
-		[tasksObj.task1]: colorsObj[tasksObj.task1], // taskName1: #0aff95
-		[tasksObj.task2]: colorsObj[tasksObj.task2],
-		[tasksObj.task3]: colorsObj[tasksObj.task3],
-	}
-	)
-	function changeColorsData(event) {
+	const [colorState, setColorState] = React.useState(colorsObj)
+	function changeColorState(event) {
 		const { name, value } = event.target
-		setColorsData(prevState => {
+		setColorState(prevState => {
 			return { ...prevState, [name]: value }
 		})
-		document.cookie = `colors=${JSON.stringify(colorsData)}` // colors={"taskName1":"#8088ff","taskName2":"#ff8585" ... }
 	}
+	React.useEffect(() => {
+		document.cookie = `colors=${JSON.stringify(colorState)}` // colors={"taskName1":"#8088ff","taskName2":"#ff8585" ... }
+	}, [colorState])
 	// ? colors
 	// ! tasks
-	const [taskData, setTaskData] = React.useState({
-		task1: tasksObj.task1, // task1: 'taskName1'
-		task2: tasksObj.task2,
-		task3: tasksObj.task3,
-	})
-	function changeTaskData(event) {
+	const [taskState, setTaskState] = React.useState(tasksObj)
+	function changeTaskState(event) {
 		const { name, value } = event.target
-		setTaskData(prevState => {
+		setTaskState(prevState => {
 			return { ...prevState, [name]: value }
 		})
-		document.cookie = `tasks=${JSON.stringify(taskData)}` // tasks={"task1":"taskName1","task2":"taskName2" ... }
 	}
+	React.useEffect(() => {
+		document.cookie = `tasks=${JSON.stringify(taskState)}` // tasks={"task1":"taskName1","task2":"taskName2" ... }
+	}, [taskState])
 	// ? tasks
+
+	// ! pickColorHtmlElems
+	const pickColorHtmlElems = Object.values(taskState).map((taskName, ind) => {
+		const taskNum = "task" + (ind + 1)
+		return <PickColor
+			taskNum={taskNum}
+			taskName={taskName}
+			color={colorState[taskName]}
+			changeTaskState={changeTaskState}
+			changeColorState={changeColorState}
+		/>
+	})
 
 	return (
 		<div className="add-todo">
@@ -104,48 +112,8 @@ export default function AddTodo(props) {
 				show &&
 				<>
 					<div className="my-lists"><span className="how-to-use">?</span>My lists:</div>
-					<div className="pick-color">
-						<input
-							className="task"
-							type="text"
-							name="task1"
-							value={taskData.task1} // taskName1
-							onChange={changeTaskData}
-						/>
-						<input
-							type="color"
-							name={tasksObj.task1} // taskName1
-							value={colorsObj[tasksObj.task1]} // #000000
-							onChange={changeColorsData} />
-					</div>
-					<div className="pick-color">
-						<input
-							className="task"
-							type="text"
-							name="task2"
-							value={taskData.task2} // taskName2
-							onChange={changeTaskData}
-						/>
-						<input
-							type="color"
-							name={tasksObj.task2} // taskName2
-							value={colorsObj[tasksObj.task2]} // #000000
-							onChange={changeColorsData} />
-					</div>
-					<div className="pick-color">
-						<input
-							className="task"
-							type="text"
-							name="task3"
-							value={taskData.task3} // taskName3
-							onChange={changeTaskData}
-						/>
-						<input
-							type="color"
-							name={tasksObj.task3} // taskName3
-							value={colorsObj[tasksObj.task3]} // #000000
-							onChange={changeColorsData} />
-					</div>
+
+					{pickColorHtmlElems}
 
 					<div className="add-todo-nums">
 						<AllActionNums nums={{ allTodosNum, isDoneNum, isLikedNum, isHiddenNum }} />
