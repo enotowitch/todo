@@ -1,7 +1,7 @@
 import React from "react"
 import AllActionNums from "./AllActionNums"
 import dots from "./../img/dots.svg"
-import PickColor from "./PickColor"
+import Task from "./Task"
 
 export default function AddTodo(props) {
 
@@ -66,10 +66,13 @@ export default function AddTodo(props) {
 	}, [taskState])
 	// ? tasks
 
-	// ! pickColorHtmlElems
-	const pickColorHtmlElems = Object.values(taskState).map((taskName, ind) => {
-		const taskNum = "task" + (ind + 1)
-		return <PickColor
+	// ! taskHtmlElems
+	const reversedTaskStateKeys = []
+	Object.keys(taskState).reverse().map(elem => reversedTaskStateKeys.push(elem))
+
+	const taskHtmlElems = Object.values(taskState).reverse().map((taskName, ind) => {
+		const taskNum = reversedTaskStateKeys[ind]
+		return <Task
 			taskNum={taskNum}
 			taskName={taskName}
 			color={colorState[taskName]}
@@ -79,14 +82,20 @@ export default function AddTodo(props) {
 	})
 
 	function addTask() {
+		const colors = ['#ff94c6', '#08b4ff', '#39a33d', '#4387c7', '#ffc1a9', '#c25b7a', '#ffd06a', '#89b10e', '#ffbbd2', '#ff9be5', '#cbfff5', '#dc8d96', '#f6a6b8', '#c9c5e8', '#9c9dd2', '#ffc19d', '#a0ffe6', '#a8b69a', '#b4a0bf', '#ff9407', '#c9bbd8', '#f6a3c1', '#e098c1', '#817ecd', '#f1c570']
+		const randColor = Math.floor(Math.random() * colors.length)
+		const taskNum = "task" + (Object.keys(taskState).length + 1)
+
 		setTaskState(prevState => {
-			const taskNum = "task" + (Object.keys(prevState).length + 1)
 			return { ...prevState, [taskNum]: `${taskNum}` }
+		})
+		setColorState(prevState => {
+			return { ...prevState, [taskNum]: colors[randColor] }
 		})
 	}
 
-	function deleteLists() {
-		const conf = window.confirm("Delete my lists?\n\nDefault lists will remain!")
+	function deleteTasks() {
+		const conf = window.confirm("Delete my tasks?\n\nDefault tasks will remain!")
 		if (conf) {
 			document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
 			window.location.reload()
@@ -127,11 +136,14 @@ export default function AddTodo(props) {
 			{
 				show &&
 				<>
-					<div className="my-lists">
-						<span className="how-to-use">?</span>My lists:<span className="delete-lists" onClick={deleteLists}>delete</span>
+					<div className="my-tasks">
+						<span className="how-to-use">?</span>My tasks:<span className="delete-tasks" onClick={deleteTasks}>delete</span>
 					</div>
 
-					{pickColorHtmlElems}
+					<div className="tasks">
+						{taskHtmlElems}
+					</div>
+
 					<div className="add-task" onClick={addTask}>+</div>
 
 					<div className="add-todo-nums">

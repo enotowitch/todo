@@ -1,6 +1,6 @@
 import React from "react"
 
-export default function PickColor(props) {
+export default function Task(props) {
 	return (
 		<div className="pick-color">
 			<input

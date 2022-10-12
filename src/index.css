@@ -237,36 +237,45 @@ button,.todos-title,.like, .hide{
 	margin-top: 5px;
 }
 /* ! pick-color */
-[type="color"]{
-	border: 0px solid;
-	background: none;
-}
 .pick-color{
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 200px;
+	width: var(--input-width);
 	margin: 0 auto;
 }
 .task{
-	width: 90px;
+	width: 200px;
 	background: none;
 	border: none;
 	border-bottom: 1px solid;
 	outline: none;
+	height: 30px;
+	font-size: 20px;
+	font-style: italic;
+	font-family: Montserrat;
+	font-weight: 300;
+}
+[type="color"]{
+	border: 0px solid;
+	background: none;
+	height: 40px;
+	width: 80px;
 }
 .how-to-use{
 	display: inline-block;
-	width: 20px;
-	height: 20px;
+	width: 24px;
+	height: 24px;
 	border: 1px solid;
 	border-radius: 50%;
 }
-.my-lists{
+.my-tasks{
 	text-align: center;
 	font-weight: 500;
+	font-size: 18px;
+	margin: 5px 0;
 }
-.delete-lists{
+.delete-tasks{
 	margin-left: 10px;
 	text-decoration: underline;
 	font-weight: 700;
@@ -274,4 +283,29 @@ button,.todos-title,.like, .hide{
 .add-task{
 	font-size: 30px;
 	text-align: center;
+}
+.tasks{
+	max-height: 53vh;
+	overflow-y: auto;
+	max-width: calc(var(--input-width) + 30px);
+	margin: 0 auto;
+}
+/* ! scrollbar */
+body::-webkit-scrollbar{
+	width: 20px;
+}
+body::-webkit-scrollbar-thumb {
+	background: #d8d8d8;
+	border-radius: 20px;
+}
+.tasks::-webkit-scrollbar {
+	width: 10px;
+}
+.tasks::-webkit-scrollbar-thumb {
+	background: #000;
+	border-radius: 20px;
+}
+.tasks::-webkit-scrollbar-track {
+	background: #fff;
+	border-radius: 20px;
 }
