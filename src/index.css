@@ -264,5 +264,14 @@ button,.todos-title,.like, .hide{
 }
 .my-lists{
 	text-align: center;
-	font-weight: 600;
+	font-weight: 500;
+}
+.delete-lists{
+	margin-left: 10px;
+	text-decoration: underline;
+	font-weight: 700;
+}
+.add-task{
+	font-size: 30px;
+	text-align: center;
 }

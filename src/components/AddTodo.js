@@ -78,6 +78,22 @@ export default function AddTodo(props) {
 		/>
 	})
 
+	function addTask() {
+		setTaskState(prevState => {
+			const taskNum = "task" + (Object.keys(prevState).length + 1)
+			return { ...prevState, [taskNum]: `${taskNum}` }
+		})
+	}
+
+	function deleteLists() {
+		const conf = window.confirm("Delete my lists?\n\nDefault lists will remain!")
+		if (conf) {
+			document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+			window.location.reload()
+		}
+
+	}
+
 	return (
 		<div className="add-todo">
 			<input
@@ -111,9 +127,12 @@ export default function AddTodo(props) {
 			{
 				show &&
 				<>
-					<div className="my-lists"><span className="how-to-use">?</span>My lists:</div>
+					<div className="my-lists">
+						<span className="how-to-use">?</span>My lists:<span className="delete-lists" onClick={deleteLists}>delete</span>
+					</div>
 
 					{pickColorHtmlElems}
+					<div className="add-task" onClick={addTask}>+</div>
 
 					<div className="add-todo-nums">
 						<AllActionNums nums={{ allTodosNum, isDoneNum, isLikedNum, isHiddenNum }} />
