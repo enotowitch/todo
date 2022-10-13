@@ -12,6 +12,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow-x: hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -347,4 +348,44 @@ body::-webkit-scrollbar-thumb {
 	content: "";
 	top: 8px;
  }
- 
+ /* ! checkbox */
+ [type="checkbox"] {
+	width: 20px;
+	height: 20px;
+ }
+ /* ! popup */
+ .popup{
+	position: fixed;
+	z-index: 3;
+	bottom: 10px;
+	left: 15px;
+	width: var(--input-width);
+	display: flex;
+	align-items: center;
+	height: 60px;
+	border-radius: 8px;
+	background: #63B3ED;
+	border: 3px solid #29a6ff;
+ }
+ .popup__img{
+	margin-left: 4px;
+ }
+ .popup__title, .popup__text{
+	margin-left: 5px;
+ }
+ .popup__title{
+	font-weight: 700;
+ }
+ .popup__text{
+	max-width: 180px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-style: italic;
+ }
+ .popup__hide{
+	width: 20px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+ }

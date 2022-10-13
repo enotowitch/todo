@@ -7,6 +7,9 @@ import getCookie from "./functions/getCookie"
 import getToday from "./functions/getToday"
 import ChangeWeek from "./components/ChangeWeek"
 import Menu from "./components/Menu"
+import PopUp from "./components/PopUp"
+import normalizeDate from "./functions/normalizeDate"
+import makePopUp from "./functions/makePopUp"
 
 export default function App() {
 
@@ -29,6 +32,9 @@ export default function App() {
 	const [todos, setTodos] = React.useState(data)
 	const [weekNum, setWeekNum] = React.useState(curWeekNum)
 
+	const [popUpState, setPopUpState] = React.useState({})
+	const [showPopUp, setShowPopUp] = React.useState(false)
+
 	const daysHtmlElements = allDaysList[weekNum].map(elem => <OneDayTodos todos={todos} action={action} date={elem} moveTodo={moveTodo} />)
 
 	function addTodo(inputText, quantity) {
@@ -50,13 +56,16 @@ export default function App() {
 				})
 				localStorage.setItem(todos.length + 1 + i, JSON.stringify({ id: todos.length + 1 + i, date: date, text: arr[i], isLiked: false, isDone: false, isHidden: false }))
 			}
-			return false
 		}
-		// ! add SINGLE
-		setTodos(prevState => {
-			return [...prevState, { id: prevState.length + 1, date: date, text: inputText, isLiked: false, isDone: false, isHidden: false }]
-		})
-		localStorage.setItem(todos.length + 1, JSON.stringify({ id: todos.length + 1, date: date, text: inputText, isLiked: false, isDone: false, isHidden: false }))
+		if (quantity === "one") {
+			// ! add ONE
+			setTodos(prevState => {
+				return [...prevState, { id: prevState.length + 1, date: date, text: inputText, isLiked: false, isDone: false, isHidden: false }]
+			})
+			localStorage.setItem(todos.length + 1, JSON.stringify({ id: todos.length + 1, date: date, text: inputText, isLiked: false, isDone: false, isHidden: false }))
+		}
+		// ! PopUp
+		makePopUp("plus", normalizeDate(date), inputText, setPopUpState, setShowPopUp)
 	}
 	// ! action: propName: isDone/isLiked/isHidden,etc... works only with BOOLS!
 	function action(todoID, propName) {
@@ -74,6 +83,8 @@ export default function App() {
 		const todosTitle = document.querySelector(`[class*=${propName}]`)
 		todosTitle && !todosTitle.classList.contains('turned-on') ? todosTitle.click() : console.log('do nothing')
 		todosTitle && todosTitle.classList.remove(propName)
+		// ! PopUp
+		makePopUp(propName, propName.slice(2), curTodoObj.text, setPopUpState, setShowPopUp)
 	}
 	// ! moveTodo
 	function moveTodo(todoID, downOrUp) {
@@ -95,6 +106,8 @@ export default function App() {
 				return elem.id === todoID ? { ...elem, date: newDay } : elem
 			})
 		})
+		// ! PopUp
+		makePopUp(downOrUp, normalizeDate(newDay), storageObj.text, setPopUpState, setShowPopUp)
 	}
 
 	React.useEffect(() => {
@@ -119,9 +132,12 @@ export default function App() {
 		setShowAddTodo(prevState => !prevState)
 	}
 
+	function popUpHide() {
+		setShowPopUp(false)
+	}
+
 	return (
 		<>
-
 			<Menu toggleShowAddTodo={toggleShowAddTodo} />
 
 			{showAddTodo && <AddTodo addTodo={addTodo} todos={todos} />}
@@ -129,6 +145,7 @@ export default function App() {
 			<ChangeWeek changeWeek={changeWeek} weekNum={weekNum} />
 			{daysHtmlElements}
 			<ChangeWeek changeWeek={changeWeek} weekNum={weekNum} />
+			{showPopUp && <PopUp {...popUpState} popUpHide={popUpHide} />}
 		</>
 	)
 }
