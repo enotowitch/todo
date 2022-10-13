@@ -6,6 +6,7 @@ import allDaysList from "./allDaysList"
 import getCookie from "./functions/getCookie"
 import getToday from "./functions/getToday"
 import ChangeWeek from "./components/ChangeWeek"
+import Menu from "./components/Menu"
 
 export default function App() {
 
@@ -99,9 +100,7 @@ export default function App() {
 	React.useEffect(() => {
 		// scroll to today
 		setTimeout(() => {
-			const headerHeight = document.querySelector('.add-todo').offsetHeight
 			document.querySelector(`.${getToday()}`).scrollIntoView()
-			window.scrollBy(0, -headerHeight)
 		}, 500);
 	}, [])
 
@@ -115,9 +114,17 @@ export default function App() {
 		nextOrPrev === "next" ? setWeekNum(prevState => prevState + 1) : setWeekNum(prevState => prevState - 1)
 	}
 
+	const [showAddTodo, setShowAddTodo] = React.useState(false)
+	function toggleShowAddTodo() {
+		setShowAddTodo(prevState => !prevState)
+	}
+
 	return (
 		<>
-			<AddTodo addTodo={addTodo} todos={todos} />
+
+			<Menu toggleShowAddTodo={toggleShowAddTodo} />
+
+			{showAddTodo && <AddTodo addTodo={addTodo} todos={todos} />}
 			{/* todo arrow classes */}
 			<ChangeWeek changeWeek={changeWeek} weekNum={weekNum} />
 			{daysHtmlElements}

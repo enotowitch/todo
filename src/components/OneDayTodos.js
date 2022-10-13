@@ -37,10 +37,11 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 		// write to cookie => on which day AddTodo() is used
 		const dateForAddTodo = event.target.closest('.one-day-todos').querySelector('.date').innerText.replace(/\s/, '')
 		document.cookie = `dateForAddTodo=${dateForAddTodo}`
+		// turn on addTodo
+		document.querySelector('.menu__btn').click()
 		// style
 		document.querySelectorAll('.one-day-todos').forEach(elem => elem.classList.remove('chosen-day'))
 		event.target.closest('.one-day-todos').classList.add('chosen-day')
-		document.querySelector('.input__text').focus()
 	}
 
 	// ! allTodosWrapper
