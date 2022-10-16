@@ -383,7 +383,7 @@ body::-webkit-scrollbar-thumb {
 	height: 20px;
  }
  /* ! popup */
- .popup{
+ .popup, .confirm{
 	position: fixed;
 	z-index: 3;
 	bottom: 10px;
@@ -415,6 +415,23 @@ body::-webkit-scrollbar-thumb {
  .popup__hide{
 	width: 20px;
 	position: absolute;
-	top: 0px;
-	right: 0px;
+	top: 4px;
+	right: 4px;
+ }
+ /* ! confirm */
+ .confirm{
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+	height: 200px;	
+	flex-direction: column;
+	justify-content: space-evenly;
+ }
+ .confirm__buttons{
+	width: var(--input-width);
+	display: flex;
+	justify-content: space-evenly;
+ }
+ .confirm .popup__title{
+	margin: 0;
  }

@@ -1,6 +1,7 @@
 import React from "react"
 import Tutorial from "./Tutorial"
 import Task from "./Task"
+import makePopUp from "../functions/makePopUp"
 
 export default function AddTodo(props) {
 
@@ -68,19 +69,15 @@ export default function AddTodo(props) {
 			return { ...prevState, [taskNum]: colors[randColor] }
 		})
 	}
-
-	function deleteTasks() {
-		const conf = window.confirm("Delete my tasks?\n\nDefault tasks will remain!")
-		if (conf) {
-			document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-			window.location.reload()
-		}
-
-	}
 	// ! Tutorial
 	const [showTutorial, setShowTutorial] = React.useState(false)
 	function toggleTutorial() {
 		setShowTutorial(prevState => !prevState)
+	}
+	// !
+	function togglePopUp() {
+		props.setShowPopUp(prevState => !prevState)
+		makePopUp("", "Delete my tasks?", "Default tasks will remain!", props.setPopUpState, props.setShowPopUp, "confirm")
 	}
 
 	return (
@@ -115,7 +112,7 @@ export default function AddTodo(props) {
 
 			<div className="my-tasks">
 				<span className="tutorial-on" onClick={toggleTutorial}>?</span>
-				My tasks:<span className="delete-tasks" onClick={deleteTasks}>delete</span>
+				My tasks:<span className="delete-tasks" onClick={togglePopUp}>delete</span>
 			</div>
 
 			<button className="add-task" onClick={addTask}>add task</button>

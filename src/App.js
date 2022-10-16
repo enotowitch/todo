@@ -140,7 +140,7 @@ export default function App() {
 		<>
 			<Menu toggleShowAddTodo={toggleShowAddTodo} />
 
-			{showAddTodo && <AddTodo addTodo={addTodo} todos={todos} />}
+			{showAddTodo && <AddTodo addTodo={addTodo} todos={todos} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}
 			{/* todo arrow classes */}
 			<ChangeWeek changeWeek={changeWeek} weekNum={weekNum} />
 			{daysHtmlElements}
