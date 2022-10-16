@@ -1,4 +1,5 @@
 import React from "react"
+import Tutorial from "./Tutorial"
 import Task from "./Task"
 
 export default function AddTodo(props) {
@@ -76,6 +77,11 @@ export default function AddTodo(props) {
 		}
 
 	}
+	// ! Tutorial
+	const [showTutorial, setShowTutorial] = React.useState(false)
+	function toggleTutorial() {
+		setShowTutorial(prevState => !prevState)
+	}
 
 	return (
 		<div className="add-todo">
@@ -108,7 +114,8 @@ export default function AddTodo(props) {
 
 
 			<div className="my-tasks">
-				<span className="how-to-use">?</span>My tasks:<span className="delete-tasks" onClick={deleteTasks}>delete</span>
+				<span className="tutorial-on" onClick={toggleTutorial}>?</span>
+				My tasks:<span className="delete-tasks" onClick={deleteTasks}>delete</span>
 			</div>
 
 			<button className="add-task" onClick={addTask}>add task</button>
@@ -116,6 +123,8 @@ export default function AddTodo(props) {
 			<div className="tasks">
 				{taskHtmlElems}
 			</div>
+
+			{showTutorial && <Tutorial />}
 
 		</div>
 	)

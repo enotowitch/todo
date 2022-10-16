@@ -11,11 +11,13 @@ export default function Todo(props) {
 	const checkbox = props.isDone ? <input type="checkbox" checked onChange={() => props.action(props.id, 'isDone')} /> :
 		<input type="checkbox" onChange={() => props.action(props.id, 'isDone')} />
 
-	function toggleActionImgsView(event) {
-		document.querySelectorAll('.todo img').forEach(elem => elem.className != "dots" && elem.classList.add('dn'))
-		event.target.closest('.todo').querySelectorAll('img').forEach(elem => elem.className != "dots" && elem.classList.toggle('dn'))
+	// ! showActions
+	const [showActions, setShowActions] = React.useState(false)
+	function toggleActions() {
+		setShowActions(prevState => !prevState)
 	}
 
+	// ! color
 	let color
 	let text
 	const colorsObj = JSON.parse(document.cookie.match(/colors={.*?}/)[0].replace(/colors=/, ''))
@@ -36,29 +38,34 @@ export default function Todo(props) {
 	const style = {
 		background: color
 	}
+	// ? color
 
 	return (
 		<div className="todo" style={style}>
 			{checkbox}
 			<p className="todo__text">{text || props.text}</p>
 
-			<img className="like dn" src={likedOrNot} onClick={() =>
-				props.action(props.id, 'isLiked')
-			} />
+			{showActions &&
+				<div className="actions">
+					<img className="like" src={likedOrNot} onClick={() =>
+						props.action(props.id, 'isLiked')
+					} />
 
-			<img className="hide dn" src={hide} onClick={() =>
-				props.action(props.id, 'isHidden')
-			} />
+					<img className="hide" src={hide} onClick={() =>
+						props.action(props.id, 'isHidden')
+					} />
 
-			<img className="move-down dn" src={move} onClick={() =>
-				props.moveTodo(props.id, "down")
-			} />
+					<img className="move-down" src={move} onClick={() =>
+						props.moveTodo(props.id, "down")
+					} />
 
-			<img className="move-up dn" src={move} onClick={() =>
-				props.moveTodo(props.id, "up")
-			} />
+					<img className="move-up" src={move} onClick={() =>
+						props.moveTodo(props.id, "up")
+					} />
+				</div>
+			}
 
-			<img className="dots" src={dots} onClick={toggleActionImgsView} />
+			<img className="dots" src={dots} onClick={toggleActions} />
 		</div>
 	)
 }

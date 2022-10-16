@@ -26,6 +26,7 @@ code {
 }
 
 .todo,.todos-title{
+	position: relative;
 	width: 400px;
 	margin: 0 auto;
 	background: #ececec;
@@ -37,6 +38,7 @@ code {
 }
 .todo__text{
 	margin-right: auto;
+	word-break: break-word;
 }
 .todos-title{
 	position: relative;
@@ -65,11 +67,21 @@ code {
 /*  */
 .like{
 	margin-left: auto;
-	padding-right: 6px;
+	padding: 0 6px;
 }
 .hide{
 	padding-right: 6px;
 	transform: scale(0.9);
+}
+.actions{
+	display: flex;
+	align-items: center;
+	position: absolute;
+	right: 30px;
+	background-color: #fff;
+	padding: 4px 2px;
+	border-radius: 8px;
+	opacity: 0.9;
 }
 .hidden-todos{
 	display: none;
@@ -256,13 +268,30 @@ button,.todos-title,.like, .hide{
 	height: 40px;
 	width: 80px;
 }
-.how-to-use{
+/* ! tutorial */
+.tutorial-on{
 	display: inline-block;
 	width: 24px;
 	height: 24px;
 	border: 1px solid;
 	border-radius: 50%;
 }
+.tutorial-wrap{
+	height: 100vh;
+	width: 100vw;
+	background: #fff;
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+.tutorial{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	height: 80vh;
+}
+/* ? tutorial */
 .my-tasks{
 	text-align: center;
 	font-weight: 500;
