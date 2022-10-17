@@ -4,6 +4,8 @@ import liked from "./../img/liked.svg"
 import hide from "./../img/hide.svg"
 import move from "./../img/move.svg"
 import dots from "./../img/dots.svg"
+import edit from "./../img/edit.svg"
+import makePopUp from "../functions/makePopUp"
 
 export default function Todo(props) {
 
@@ -39,6 +41,12 @@ export default function Todo(props) {
 		background: color
 	}
 	// ? color
+	// ! togglePopUp
+	function togglePopUp() {
+		props.setShowPopUp(prevState => !prevState)
+		makePopUp("", "Editing...", props.text, props.setPopUpState, props.setShowPopUp, "prompt")
+	}
+
 
 	return (
 		<div className="todo" style={style}>
@@ -47,6 +55,9 @@ export default function Todo(props) {
 
 			{showActions &&
 				<div className="actions">
+
+					<img className="edit" src={edit} onClick={togglePopUp} />
+
 					<img className="like" src={likedOrNot} onClick={() =>
 						props.action(props.id, 'isLiked')
 					} />

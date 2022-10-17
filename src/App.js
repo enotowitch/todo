@@ -30,12 +30,19 @@ export default function App() {
 	}, [])
 
 	const [todos, setTodos] = React.useState(data)
+
+	React.useEffect(() => {
+		Object.values(todos).map(elem => {
+			localStorage.setItem(elem.id, JSON.stringify(elem))
+		})
+	}, [todos])
+
 	const [weekNum, setWeekNum] = React.useState(curWeekNum)
 
 	const [popUpState, setPopUpState] = React.useState({})
 	const [showPopUp, setShowPopUp] = React.useState(false)
 
-	const daysHtmlElements = allDaysList[weekNum].map(elem => <OneDayTodos todos={todos} action={action} date={elem} moveTodo={moveTodo} />)
+	const daysHtmlElements = allDaysList[weekNum].map(elem => <OneDayTodos todos={todos} action={action} date={elem} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />)
 
 	function addTodo(inputText, quantity) {
 		// ! date
@@ -54,7 +61,6 @@ export default function App() {
 				setTodos(prevState => {
 					return [...prevState, { id: prevState.length + 1, date: date, text: arr[i], isLiked: false, isDone: false, isHidden: false }]
 				})
-				localStorage.setItem(todos.length + 1 + i, JSON.stringify({ id: todos.length + 1 + i, date: date, text: arr[i], isLiked: false, isDone: false, isHidden: false }))
 			}
 		}
 		if (quantity === "one") {
@@ -62,7 +68,6 @@ export default function App() {
 			setTodos(prevState => {
 				return [...prevState, { id: prevState.length + 1, date: date, text: inputText, isLiked: false, isDone: false, isHidden: false }]
 			})
-			localStorage.setItem(todos.length + 1, JSON.stringify({ id: todos.length + 1, date: date, text: inputText, isLiked: false, isDone: false, isHidden: false }))
 		}
 		// ! PopUp
 		makePopUp("plus", normalizeDate(date), inputText, setPopUpState, setShowPopUp)
@@ -78,7 +83,8 @@ export default function App() {
 		const curTodoStr = localStorage.getItem(todoID)
 		const curTodoObj = JSON.parse(curTodoStr)
 		curTodoObj[propName] = !curTodoObj[propName]
-		localStorage.setItem(todoID, JSON.stringify(curTodoObj))
+		// todo remove localStorage.setItem
+		// localStorage.setItem(todoID, JSON.stringify(curTodoObj))
 		// style .todos-title .propName
 		const todosTitle = document.querySelector(`[class*=${propName}]`)
 		todosTitle && !todosTitle.classList.contains('turned-on') ? todosTitle.click() : console.log('do nothing')
@@ -98,7 +104,8 @@ export default function App() {
 		const newDay = downOrUp == "down" ? dayDown : dayUp
 
 		storageObj.date = newDay
-		localStorage.setItem(todoID, JSON.stringify(storageObj))
+		// todo remove localStorage.setItem
+		// localStorage.setItem(todoID, JSON.stringify(storageObj))
 
 		// state
 		setTodos(prevState => {
@@ -145,7 +152,7 @@ export default function App() {
 			<ChangeWeek changeWeek={changeWeek} weekNum={weekNum} />
 			{daysHtmlElements}
 			<ChangeWeek changeWeek={changeWeek} weekNum={weekNum} />
-			{showPopUp && <PopUp {...popUpState} popUpHide={popUpHide} />}
+			{showPopUp && <PopUp {...popUpState} popUpHide={popUpHide} todos={todos} setTodos={setTodos} />}
 		</>
 	)
 }

@@ -6,7 +6,7 @@ import normalizeDate from "./../functions/normalizeDate"
 import AllActionNums from "./AllActionNums"
 import plus from "./../img/plus.svg"
 
-export default function OneDayTodos({ todos, action, date, moveTodo }) {
+export default function OneDayTodos({ todos, action, date, moveTodo, setPopUpState, setShowPopUp }) {
 
 	const thisDayTodos = []
 	todos.map(elem => {
@@ -24,11 +24,11 @@ export default function OneDayTodos({ todos, action, date, moveTodo }) {
 
 
 	// ALLTODOS: -isHidden, -isDone
-	const todoElems = thisDayTodos.map((elem, ind) => (!elem.isHidden && !elem.isDone) && <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} />)
+	const todoElems = thisDayTodos.map((elem, ind) => (!elem.isHidden && !elem.isDone) && <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />)
 	// DONETODOS: -isHidden
-	const doneTodos = thisDayTodos.map((elem, ind) => (elem.isDone && !elem.isHidden) && <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} />)
-	const likedTodos = thisDayTodos.map((elem, ind) => elem.isLiked && <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} />)
-	const hiddenTodos = thisDayTodos.map((elem, ind) => elem.isHidden && <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} />)
+	const doneTodos = thisDayTodos.map((elem, ind) => (elem.isDone && !elem.isHidden) && <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />)
+	const likedTodos = thisDayTodos.map((elem, ind) => elem.isLiked && <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />)
+	const hiddenTodos = thisDayTodos.map((elem, ind) => elem.isHidden && <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />)
 
 	function styleHiddenSection(e) {
 		e.target.nextSibling.classList.toggle('hidden-todos')

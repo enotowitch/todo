@@ -314,21 +314,14 @@ button,.todos-title,.like, .hide{
 	margin: 0 auto;
 }
 /* ! scrollbar */
-body::-webkit-scrollbar{
-	width: 20px;
-}
-body::-webkit-scrollbar-thumb {
-	background: #d8d8d8;
-	border-radius: 20px;
-}
-.tasks::-webkit-scrollbar {
+::-webkit-scrollbar {
 	width: 10px;
 }
-.tasks::-webkit-scrollbar-thumb {
-	background: #000;
+::-webkit-scrollbar-thumb {
+	background: #b6b6b6;
 	border-radius: 20px;
 }
-.tasks::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
 	background: #fff;
 	border-radius: 20px;
 }
@@ -383,12 +376,22 @@ body::-webkit-scrollbar-thumb {
 	height: 20px;
  }
  /* ! popup */
- .popup, .confirm{
+.popup__bg{
+	width: 100vw;
+	height: 100vh;
 	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: rgba(255, 255, 255, 0.95);
 	z-index: 3;
+ }
+ .popup, .confirm, .prompt{
+	position: fixed;
+	z-index: 4;
 	bottom: 10px;
 	left: 15px;
-	width: var(--input-width);
+	min-width: var(--input-width);
+	width: 50vw;
 	display: flex;
 	align-items: center;
 	height: 60px;
@@ -419,7 +422,7 @@ body::-webkit-scrollbar-thumb {
 	right: 4px;
  }
  /* ! confirm */
- .confirm{
+ .confirm, .prompt{
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%,-50%);
@@ -434,4 +437,14 @@ body::-webkit-scrollbar-thumb {
  }
  .confirm .popup__title{
 	margin: 0;
+ }
+ /* ! prompt */
+ .prompt{
+	height: 300px;
+ }
+ .prompt [name="edit"]{
+	height: 190px;
+	min-width: calc(var(--input-width) - 30px);
+	width: calc(50vw - 30px);
+	resize: none;
  }

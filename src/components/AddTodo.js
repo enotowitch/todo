@@ -74,10 +74,10 @@ export default function AddTodo(props) {
 	function toggleTutorial() {
 		setShowTutorial(prevState => !prevState)
 	}
-	// !
+	// ! togglePopUp
 	function togglePopUp() {
 		props.setShowPopUp(prevState => !prevState)
-		makePopUp("", "Delete my tasks?", "Default tasks will remain!", props.setPopUpState, props.setShowPopUp, "confirm")
+		makePopUp("", "Delete my tasks?", "", props.setPopUpState, props.setShowPopUp, "confirm")
 	}
 
 	return (
