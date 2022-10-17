@@ -46,7 +46,7 @@ export default function PopUp(props) {
 				<img className="popup__img" src={path} />
 				<span className="popup__title">{props.title}</span>
 				<span className="popup__text">{props.text}</span>
-				<img className="popup__hide" src="img/delete.svg" onClick={props.popUpHide} />
+				<img className="popup__hide" src="img/del.svg" onClick={props.popUpHide} />
 
 				{props.modalWindowType === "prompt" &&
 					<textarea

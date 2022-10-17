@@ -5,6 +5,7 @@ import hide from "./../img/hide.svg"
 import move from "./../img/move.svg"
 import dots from "./../img/dots.svg"
 import edit from "./../img/edit.svg"
+import del from "./../img/del.svg"
 import makePopUp from "../functions/makePopUp"
 
 export default function Todo(props) {
@@ -29,11 +30,11 @@ export default function Todo(props) {
 	Object.values(tasksObj).map(elem => tasksArr.push(elem)) // ['taskName1', 'taskName2', 'taskName3']
 
 	tasksArr.map(taskName => { // - taskName1,taskName2 ...
-		const exp = `\/${taskName}\/`
-		const regexp = new RegExp(exp) // - /\/taskName1\//
-		if (props.text.match(regexp)) { // if in props.text taskName from tasksObj (cookie)
+		// todo only works with one word 
+		const firstWord = props.text.match(/[a-zA-Zа-яА-Я0-9]*/)[0].trim()
+		if (firstWord.match(taskName.trim())) { // if in props.text taskName from tasksObj (cookie)
 			color = colorsObj[taskName]
-			text = props.text.replace(taskName, '').replace(/\//g, '') // text without "//"
+			text = props.text.replace(taskName, '') // text without taskName
 		}
 	})
 
@@ -45,6 +46,11 @@ export default function Todo(props) {
 	function togglePopUp() {
 		props.setShowPopUp(prevState => !prevState)
 		makePopUp("", "Editing...", props.text, props.setPopUpState, props.setShowPopUp, "prompt")
+	}
+	// ! delete todo
+	function delTodo() {
+		makePopUp("", "Delete?", props.text, props.setPopUpState, props.setShowPopUp, "confirm")
+		localStorage.removeItem(props.id)
 	}
 
 
@@ -73,6 +79,8 @@ export default function Todo(props) {
 					<img className="move-up" src={move} onClick={() =>
 						props.moveTodo(props.id, "up")
 					} />
+
+					<img className="del" src={del} onClick={delTodo} />
 				</div>
 			}
 
