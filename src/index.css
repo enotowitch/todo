@@ -146,7 +146,7 @@ background-image: linear-gradient(62deg, #567594 0%, #E0C3FC 100%);
 	flex-wrap: wrap;
 	justify-content: space-evenly;
 	width: var(--input-width);
-	margin: 15px auto 0;
+	margin: 15px auto;
 }
 /* cursor pointer */
 /* todo .todos-title:not(:first-child) */
@@ -208,8 +208,10 @@ button,.todos-title,.like, .hide{
 	transform: rotate(180deg);
 }
 /* todo arrow classes */
-.view-arrow, .action-arrow, .week-arrow{
+.arrow{
 	width: 30px;
+}
+.view-arrow, .action-arrow, .week-arrow{
 	margin-left: auto;
 	margin-right: 8px;
 }
@@ -325,25 +327,25 @@ button,.todos-title,.like, .hide{
 	background: #fff;
 	border-radius: 20px;
 }
-/* Menu */
-#menu__toggle {
+/* Burger */
+#burger__toggle {
 	opacity: 0;
  }
- #menu__toggle:checked + .menu__btn > span {
+ #burger__toggle:checked + .burger__btn > span {
 	transform: rotate(45deg);
  }
- #menu__toggle:checked + .menu__btn > span::before {
+ #burger__toggle:checked + .burger__btn > span::before {
 	top: 0;
 	transform: rotate(0deg);
  }
- #menu__toggle:checked + .menu__btn > span::after {
+ #burger__toggle:checked + .burger__btn > span::after {
 	top: 0;
 	transform: rotate(90deg);
  }
- #menu__toggle:checked ~ .menu__box {
+ #burger__toggle:checked ~ .burger__box {
 	left: 0 !important;
  }
- .menu__btn {
+ .burger__btn {
 	position: fixed;
 	top: 35px;
 	left: 15px;
@@ -352,9 +354,9 @@ button,.todos-title,.like, .hide{
 	cursor: pointer;
 	z-index: 3;
  }
- .menu__btn > span,
- .menu__btn > span::before,
- .menu__btn > span::after {
+ .burger__btn > span,
+ .burger__btn > span::before,
+ .burger__btn > span::after {
 	display: block;
 	position: absolute;
 	width: 100%;
@@ -362,11 +364,11 @@ button,.todos-title,.like, .hide{
 	background-color: #616161;
 	transition-duration: 0.25s;
  }
- .menu__btn > span::before {
+ .burger__btn > span::before {
 	content: "";
 	top: -8px;
  }
- .menu__btn > span::after {
+ .burger__btn > span::after {
 	content: "";
 	top: 8px;
  }
@@ -447,4 +449,14 @@ button,.todos-title,.like, .hide{
 	min-width: calc(var(--input-width) - 30px);
 	width: calc(50vw - 30px);
 	resize: none;
+ }
+/* ! menu-item */
+.menu__title{
+	border-top: 1px solid;
+	border-bottom: 1px solid;
+	padding: 10px 15px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-weight: 700;
  }

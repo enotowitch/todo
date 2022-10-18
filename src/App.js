@@ -6,7 +6,7 @@ import allDaysList from "./allDaysList"
 import getCookie from "./functions/getCookie"
 import getToday from "./functions/getToday"
 import ChangeWeek from "./components/ChangeWeek"
-import Menu from "./components/Menu"
+import Burger from "./components/Burger"
 import PopUp from "./components/PopUp"
 import normalizeDate from "./functions/normalizeDate"
 import makePopUp from "./functions/makePopUp"
@@ -145,7 +145,7 @@ export default function App() {
 
 	return (
 		<>
-			<Menu toggleShowAddTodo={toggleShowAddTodo} />
+			<Burger toggleShowAddTodo={toggleShowAddTodo} />
 
 			{showAddTodo && <AddTodo addTodo={addTodo} todos={todos} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}
 			{/* todo arrow classes */}

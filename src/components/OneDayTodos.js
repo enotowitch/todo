@@ -39,7 +39,7 @@ export default function OneDayTodos({ todos, action, date, moveTodo, setPopUpSta
 		const dateForAddTodo = event.target.closest('.one-day-todos').querySelector('.date').innerText.replace(/\s/, '')
 		document.cookie = `dateForAddTodo=${dateForAddTodo}`
 		// turn on addTodo
-		document.querySelector('.menu__btn').click()
+		document.querySelector('.burger__btn').click()
 		// style
 		document.querySelectorAll('.one-day-todos').forEach(elem => elem.classList.remove('chosen-day'))
 		event.target.closest('.one-day-todos').classList.add('chosen-day')
@@ -60,7 +60,7 @@ export default function OneDayTodos({ todos, action, date, moveTodo, setPopUpSta
 			<p className="todos-title isDone" onClick={(e) =>
 				styleHiddenSection(e)
 			}><span className="done">Done&nbsp;&nbsp;</span>Todos
-				{isDoneNum > 0 && <img className="action-arrow" src={arrow} />}
+				{isDoneNum > 0 && <img className="arrow action-arrow" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{doneTodos}</div>
 		</div>
@@ -70,7 +70,7 @@ export default function OneDayTodos({ todos, action, date, moveTodo, setPopUpSta
 			<p className="todos-title isLiked" onClick={(e) =>
 				styleHiddenSection(e)
 			}><span className="liked">Liked&nbsp;&nbsp;</span>Todos
-				{isLikedNum > 0 && <img className="action-arrow" src={arrow} />}
+				{isLikedNum > 0 && <img className="arrow action-arrow" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{likedTodos}</div>
 		</div>
@@ -80,7 +80,7 @@ export default function OneDayTodos({ todos, action, date, moveTodo, setPopUpSta
 			<p className="todos-title isHidden" onClick={(e) =>
 				styleHiddenSection(e)
 			}><span className="hidden">Hidden&nbsp;&nbsp;</span>Todos
-				{isHiddenNum > 0 && <img className="action-arrow" src={arrow} />}
+				{isHiddenNum > 0 && <img className="arrow action-arrow" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{hiddenTodos}</div>
 		</div>
@@ -105,7 +105,7 @@ export default function OneDayTodos({ todos, action, date, moveTodo, setPopUpSta
 
 				<AllActionNums nums={{ allTodosNum, isDoneNum, isLikedNum, isHiddenNum }} />
 
-				{thisDayTodos.length > 0 && <img className="view-arrow" src={arrow} onClick={toggleOneDayTodosView} />}
+				{thisDayTodos.length > 0 && <img className="arrow view-arrow" src={arrow} onClick={toggleOneDayTodosView} />}
 			</div>
 
 			{thisDayTodos.length > 0 && allTodosWrapper}
