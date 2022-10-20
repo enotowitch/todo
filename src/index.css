@@ -36,6 +36,10 @@ code {
 	justify-content: space-between;
 	margin-bottom: 8px;
 }
+.todo__date{
+	font-weight: 700;
+	margin-right: 4px;
+}
 .todo__text{
 	margin-right: auto;
 	word-break: break-word;
@@ -235,7 +239,7 @@ button,.todos-title,.like, .hide{
 	align-items: center;
 	font-weight: 700;
 	width: 200px;
-	margin: 0 auto 15px;
+	margin: 22px auto 15px;
 }
 .turned-on .action-arrow{
 	transform: rotate(180deg);
@@ -330,6 +334,7 @@ button,.todos-title,.like, .hide{
 /* Burger */
 #burger__toggle {
 	opacity: 0;
+	position: absolute;
  }
  #burger__toggle:checked + .burger__btn > span {
 	transform: rotate(45deg);
@@ -460,3 +465,36 @@ button,.todos-title,.like, .hide{
 	justify-content: space-between;
 	font-weight: 700;
  }
+ /* ! search */
+ .search {
+	position: fixed;
+	top: 16px;
+	right: 10px;
+	width: 38px;
+}
+.search_del{
+	transform: scale(.75);
+}
+.search__title{
+	position: relative;
+	top: 20px;
+	font-size: 20px;
+	margin-bottom: 40px;
+	text-align: center;
+}
+[name="select"], [name="text"] {
+	display: block;
+	margin: 0 auto;
+	padding: 5px;
+	border-radius: 4px;
+	font-size: 16px;
+	margin-bottom: 15px;
+	width: 200px;
+}
+[name="select"]{
+	width: 214px;
+}
+[name="text"]{
+	border: 1px solid;
+	text-indent: 4px;
+}

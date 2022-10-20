@@ -21,6 +21,7 @@ export default function AddTodo(props) {
 		makePopUp("", "Delete my tasks?", "", props.setPopUpState, props.setShowPopUp, "confirm")
 	}
 
+	// todo HAS DUP
 	const [menu, setMenu] = React.useState([
 		{
 			title: "My Tasks",

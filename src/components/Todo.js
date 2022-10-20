@@ -57,6 +57,7 @@ export default function Todo(props) {
 	return (
 		<div className="todo" style={style}>
 			{checkbox}
+			{props.showDate && <p className="todo__date">{props.date}</p>}
 			<p className="todo__text">{text || props.text}</p>
 
 			{showActions &&

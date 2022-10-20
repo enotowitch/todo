@@ -10,6 +10,7 @@ import Burger from "./components/Burger"
 import PopUp from "./components/PopUp"
 import normalizeDate from "./functions/normalizeDate"
 import makePopUp from "./functions/makePopUp"
+import Search from "./components/Search"
 
 export default function App() {
 
@@ -117,18 +118,19 @@ export default function App() {
 		makePopUp(downOrUp, normalizeDate(newDay), storageObj.text, setPopUpState, setShowPopUp)
 	}
 
-	React.useEffect(() => {
-		// scroll to today
-		setTimeout(() => {
-			document.querySelector(`.${getToday()}`).scrollIntoView()
-		}, 500);
-	}, [])
-
-	React.useEffect(() => {
-		// style chosen-day set in cookie "dateForAddTodo"
-		const dateChosen = getCookie("dateForAddTodo")
-		document.querySelector(`.${dateChosen}`).classList.add('chosen-day')
-	}, [])
+	// todo
+	// React.useEffect(() => {
+	// 	// scroll to today
+	// 	setTimeout(() => {
+	// 		document.querySelector(`.${getToday()}`).scrollIntoView()
+	// 	}, 500);
+	// }, [])
+	// todo
+	// React.useEffect(() => {
+	// 	// style chosen-day set in cookie "dateForAddTodo"
+	// 	const dateChosen = getCookie("dateForAddTodo")
+	// 	document.querySelector(`.${dateChosen}`).classList.add('chosen-day')
+	// }, [])
 
 	function changeWeek(nextOrPrev) {
 		nextOrPrev === "next" ? setWeekNum(prevState => prevState + 1) : setWeekNum(prevState => prevState - 1)
@@ -143,16 +145,27 @@ export default function App() {
 		setShowPopUp(false)
 	}
 
+	const [showWeek, setShowWeek] = React.useState(true)
+	function toggleWeek() {
+		setShowWeek(prevState => !prevState)
+	}
+
 	return (
 		<>
 			<Burger toggleShowAddTodo={toggleShowAddTodo} />
 
 			{showAddTodo && <AddTodo addTodo={addTodo} todos={todos} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}
 			{/* todo arrow classes */}
-			<ChangeWeek changeWeek={changeWeek} weekNum={weekNum} />
-			{daysHtmlElements}
-			<ChangeWeek changeWeek={changeWeek} weekNum={weekNum} />
+			{showWeek &&
+				<>
+					<ChangeWeek changeWeek={changeWeek} weekNum={weekNum} />
+					{daysHtmlElements}
+					<ChangeWeek changeWeek={changeWeek} weekNum={weekNum} />
+				</>
+			}
 			{showPopUp && <PopUp {...popUpState} popUpHide={popUpHide} todos={todos} setTodos={setTodos} />}
+
+			<Search showWeek={showWeek} toggleWeek={toggleWeek} todos={todos} action={action} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />
 		</>
 	)
 }
