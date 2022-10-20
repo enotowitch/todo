@@ -26,23 +26,32 @@ export default function AddTodo(props) {
 			title: "My Tasks",
 			content: <MyTasks togglePopUp={togglePopUp} />,
 			id: 0,
-			isShown: false
+			isShown: true,
+			hasClose: false
 		},
 		{
 			title: "Settings",
 			content: <Settings />,
 			id: 1,
-			isShown: false
+			isShown: true,
+			hasClose: false
 		}
 	])
 
+	// ! toggleMenuContent
 	function toggleMenuContent(toggleId) {
 		setMenu(prevState => prevState.map(elem => {
-			return elem.id === toggleId ? { ...elem, isShown: !elem.isShown } : elem
+			return elem.id === toggleId ? { ...elem, isShown: true, hasClose: true } : { ...elem, isShown: false }
+		}))
+	}
+	// ! showAllmenu
+	function showAllmenu() {
+		setMenu(prevState => prevState.map(elem => {
+			return { ...elem, isShown: true, hasClose: false }
 		}))
 	}
 
-	const menuHtmlElems = menu.map(elem => <MenuItem {...elem} toggleMenuContent={toggleMenuContent} />)
+	const menuHtmlElems = menu.map(elem => <MenuItem {...elem} toggleMenuContent={toggleMenuContent} showAllmenu={showAllmenu} />)
 
 	return (
 		<div className="add-todo">
