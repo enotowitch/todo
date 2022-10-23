@@ -4,7 +4,7 @@ import arrow from "./../img/arrow.svg"
 import getToday from "./../functions/getToday"
 import normalizeDate from "./../functions/normalizeDate"
 import AllActionNums from "./AllActionNums"
-import plus from "./../img/plus.svg"
+import add from "./../img/add.svg"
 
 export default function OneDayTodos({ todos, action, date, moveTodo, setPopUpState, setShowPopUp }) {
 
@@ -101,7 +101,7 @@ export default function OneDayTodos({ todos, action, date, moveTodo, setPopUpSta
 					<div className="date">{normalizeDate(date)}</div>
 				</div>
 
-				<img className="get-todo-date" src={plus} onClick={getTodoDate} />
+				<img className="get-todo-date" src={add} onClick={getTodoDate} />
 
 				<AllActionNums nums={{ allTodosNum, isDoneNum, isLikedNum, isHiddenNum }} />
 

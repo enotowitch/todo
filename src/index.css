@@ -498,3 +498,8 @@ button,.todos-title,.like, .hide{
 	border: 1px solid;
 	text-indent: 4px;
 }
+/* ! moveDate */
+[name="moveDate"]{
+	height: 26px;
+	margin-right: 6px;
+}

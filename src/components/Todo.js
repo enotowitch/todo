@@ -2,11 +2,11 @@ import React from "react"
 import like from "./../img/like.svg"
 import liked from "./../img/liked.svg"
 import hide from "./../img/hide.svg"
-import move from "./../img/move.svg"
 import dots from "./../img/dots.svg"
 import edit from "./../img/edit.svg"
 import del from "./../img/del.svg"
 import makePopUp from "../functions/makePopUp"
+import year from "./../year"
 
 export default function Todo(props) {
 
@@ -42,8 +42,8 @@ export default function Todo(props) {
 		background: color
 	}
 	// ? color
-	// ! togglePopUp
-	function togglePopUp() {
+	// ! editPopUp
+	function editPopUp() {
 		props.setShowPopUp(prevState => !prevState)
 		makePopUp("", "Editing...", props.text, props.setPopUpState, props.setShowPopUp, "prompt")
 	}
@@ -52,7 +52,16 @@ export default function Todo(props) {
 		makePopUp("", "Delete?", props.text, props.setPopUpState, props.setShowPopUp, "confirm")
 		localStorage.removeItem(props.id)
 	}
+	const [moveSelectState, setMoveSelectState] = React.useState({ moveDate: props.date })
 
+	function changeMoveSelect(event) {
+		const { name, value } = event.target
+		setMoveSelectState(prevState => ({ ...prevState, [name]: value }))
+		props.moveTodo(props.id, value)
+		setShowActions(false)
+	}
+
+	const options = year.map(elem => <option>{elem}</option>)
 
 	return (
 		<div className="todo" style={style}>
@@ -63,7 +72,7 @@ export default function Todo(props) {
 			{showActions &&
 				<div className="actions">
 
-					<img className="edit" src={edit} onClick={togglePopUp} />
+					<img className="edit" src={edit} onClick={editPopUp} />
 
 					<img className="like" src={likedOrNot} onClick={() =>
 						props.action(props.id, 'isLiked')
@@ -73,13 +82,13 @@ export default function Todo(props) {
 						props.action(props.id, 'isHidden')
 					} />
 
-					<img className="move-down" src={move} onClick={() =>
-						props.moveTodo(props.id, "down")
-					} />
-
-					<img className="move-up" src={move} onClick={() =>
-						props.moveTodo(props.id, "up")
-					} />
+					<select
+						name="moveDate"
+						value={moveSelectState.moveDate}
+						onChange={changeMoveSelect}
+					>
+						{options}
+					</select>
 
 					<img className="del" src={del} onClick={delTodo} />
 				</div>

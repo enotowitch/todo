@@ -2,7 +2,7 @@ import React from "react"
 import AddTodo from "./components/AddTodo"
 import OneDayTodos from "./components/OneDayTodos"
 import data from "./localStorageData"
-import allDaysList from "./allDaysList"
+import weeks from "./weeks"
 import getCookie from "./functions/getCookie"
 import getToday from "./functions/getToday"
 import ChangeWeek from "./components/ChangeWeek"
@@ -23,7 +23,7 @@ export default function App() {
 	}
 
 	let curWeekNum
-	allDaysList.map((elem, ind) => elem.includes(getToday()) && (curWeekNum = ind))
+	weeks.map((elem, ind) => elem.includes(getToday()) && (curWeekNum = ind))
 
 	React.useEffect(() => {
 		// on reload AddTodo adds to today
@@ -43,7 +43,7 @@ export default function App() {
 	const [popUpState, setPopUpState] = React.useState({})
 	const [showPopUp, setShowPopUp] = React.useState(false)
 
-	const daysHtmlElements = allDaysList[weekNum].map(elem => <OneDayTodos todos={todos} action={action} date={elem} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />)
+	const daysHtmlElements = weeks[weekNum].map(elem => <OneDayTodos todos={todos} action={action} date={elem} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />)
 
 	function addTodo(inputText, quantity) {
 		// ! date
@@ -71,7 +71,7 @@ export default function App() {
 			})
 		}
 		// ! PopUp
-		makePopUp("plus", normalizeDate(date), inputText, setPopUpState, setShowPopUp)
+		makePopUp("add", normalizeDate(date), inputText, setPopUpState, setShowPopUp)
 	}
 	// ! action: propName: isDone/isLiked/isHidden,etc... works only with BOOLS!
 	function action(todoID, propName) {
@@ -94,28 +94,13 @@ export default function App() {
 		makePopUp(propName, propName.slice(2), curTodoObj.text, setPopUpState, setShowPopUp)
 	}
 	// ! moveTodo
-	function moveTodo(todoID, downOrUp) {
-		// localStorage
-		const storageObj = JSON.parse(localStorage.getItem(todoID))
-
-		const curTodoDate = storageObj.date
-		const curDateInd = allDaysList[weekNum].indexOf(curTodoDate)
-		const dayDown = allDaysList[weekNum][curDateInd + 1]
-		const dayUp = allDaysList[weekNum][curDateInd - 1]
-		const newDay = downOrUp == "down" ? dayDown : dayUp
-
-		storageObj.date = newDay
-		// todo remove localStorage.setItem
-		// localStorage.setItem(todoID, JSON.stringify(storageObj))
-
+	function moveTodo(todoId, newDate) {
 		// state
-		setTodos(prevState => {
-			return prevState.map(elem => {
-				return elem.id === todoID ? { ...elem, date: newDay } : elem
-			})
-		})
-		// ! PopUp
-		makePopUp(downOrUp, normalizeDate(newDay), storageObj.text, setPopUpState, setShowPopUp)
+		setTodos(prevState => prevState.map(elem => {
+			return elem.id === todoId ? { ...elem, date: newDate } : elem
+		}))
+		// PopUp
+		makePopUp("add", normalizeDate(newDate), todos[todoId - 1].text, setPopUpState, setShowPopUp)
 	}
 
 	// todo
