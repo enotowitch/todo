@@ -82,7 +82,7 @@ code {
 	align-items: center;
 	position: absolute;
 	right: 30px;
-	background-color: #fff;
+	background: #fff;
 	padding: 4px 2px;
 	border-radius: 8px;
 	opacity: 0.9;
@@ -129,21 +129,22 @@ button{
 	height: 30px;
 	width: var(--input-width);
 	display: block;
-	margin: 0 auto;
+	margin: 15px auto 0;
 	text-indent: 2px;
 }
-.add-todo{
+.add-todo {
 	position: fixed;
 	top: 0px;
 	left: 0;
 	z-index: 2;
 	width: 100%;
-	height:100%;
-	padding: 66px 0 0;
+	height: 100%;
+	padding: 22px 0 0;
+	text-align: center;
 }
 .add-todo, .chosen-day{
-	background-color: #567594;
-background-image: linear-gradient(62deg, #567594 0%, #E0C3FC 100%);
+	background: #567594;
+	background-image: linear-gradient(62deg, #567594 0%, #E0C3FC 100%);
 }
 .add-todo__buttons{
 	display: flex;
@@ -151,6 +152,15 @@ background-image: linear-gradient(62deg, #567594 0%, #E0C3FC 100%);
 	justify-content: space-evenly;
 	width: var(--input-width);
 	margin: 15px auto;
+}
+.add-todo__date{
+	width: var(--input-width);
+	height: 30px;
+	margin: 0 auto;
+	font-family: Montserrat;
+	line-height: 1.5;
+	font-size: 18px;
+	font-weight: 300;
 }
 /* cursor pointer */
 /* todo .todos-title:not(:first-child) */
@@ -366,7 +376,7 @@ button,.todos-title,.like, .hide{
 	position: absolute;
 	width: 100%;
 	height: 2px;
-	background-color: #616161;
+	background: #616161;
 	transition-duration: 0.25s;
  }
  .burger__btn > span::before {
@@ -379,8 +389,8 @@ button,.todos-title,.like, .hide{
  }
  /* ! checkbox */
  [type="checkbox"] {
-	width: 20px;
-	height: 20px;
+	min-width: 20px;
+	min-height: 20px;
  }
  /* ! popup */
 .popup__bg{
@@ -389,7 +399,7 @@ button,.todos-title,.like, .hide{
 	position: fixed;
 	top: 0;
 	left: 0;
-	background-color: rgba(255, 255, 255, 0.95);
+	background: rgba(255, 255, 255, 0.95);
 	z-index: 3;
  }
  .popup, .confirm, .prompt{
@@ -507,14 +517,14 @@ button,.todos-title,.like, .hide{
 .search-tag{
 	border: 1px solid;
 	border-radius: 6px;
-	padding: 2px 4px;
+	padding: 4px 6px;
 	display: inline-flex;
 	align-items: center;
-	margin: 5px 0 0 10px;
+	margin: 5px 0 0 5px;
 }
 .search-tag_del{
 	width: 20px;
-	padding: 0 2px 1px 6px;
+	padding: 0px 0px 1px 10px;
 }
 .search-tag__title{
 	font-style: italic;
@@ -523,9 +533,12 @@ button,.todos-title,.like, .hide{
 	padding-left: 6px;
 	font-weight: 700;
 }
-.search-tags{
-	margin: 0 auto 30px auto;
-	width: var(--input-width);
+.search-tags {
+    margin: 0 auto 30px auto;
+    width: var(--input-width);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 .add-todo-task{
 	position: absolute;

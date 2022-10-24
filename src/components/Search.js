@@ -4,6 +4,7 @@ import del from "./../img/del.svg"
 import add from "./../img/add.svg"
 import Todo from "./Todo"
 import SearchTag from "./SearchTag"
+import getToday from "../functions/getToday"
 
 export default function Search(props) {
 
@@ -73,11 +74,21 @@ export default function Search(props) {
 	}
 
 	function addTodoTask() {
+		document.cookie = `dateForAddTodo=${getToday()}`
 		document.querySelector('.burger__btn').click()
 		setTimeout(() => {
 			document.querySelector('.input__text').value = searchState.task + " "
 		}, 1);
 	}
+
+	const [reverseState, setReverseState] = React.useState(false)
+
+	function toggleReverse() {
+		setReverseState(prevState => !prevState)
+	}
+
+	let reverseNums
+	reverseState ? (reverseNums = `1-${result.length}`) : (reverseNums = `${result.length}-1`)
 
 	return (
 		<>
@@ -120,13 +131,14 @@ export default function Search(props) {
 						</div>
 
 						<div className="search-tags">
-							{result.length > 0 && <SearchTag text={result.length} title="found" showDel={false} />}
+							{result.length > 0 && <SearchTag text={reverseNums} title="order" showDel={false} toggleReverse={toggleReverse} />}
 							{searchState.text && <SearchTag text={searchState.text} title="text" showDel={true} delTag={delTag} />}
 							{searchState.status && <SearchTag text={searchState.status} title="status" showDel={true} delTag={delTag} />}
 							{searchState.task && <SearchTag text={searchState.task} title="task" showDel={true} delTag={delTag} />}
 						</div>
 
-						{searched}
+						{reverseState && searched}
+						{!reverseState && searched.reverse()}
 					</>
 
 				</>

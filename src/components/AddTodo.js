@@ -3,6 +3,7 @@ import makePopUp from "../functions/makePopUp"
 import MenuItem from "./MenuItem"
 import MyTasks from "./MyTasks"
 import Settings from "./Settings"
+import getCookie from "./../functions/getCookie"
 
 export default function AddTodo(props) {
 
@@ -54,8 +55,11 @@ export default function AddTodo(props) {
 
 	const menuHtmlElems = menu.map(elem => <MenuItem {...elem} toggleMenuContent={toggleMenuContent} showAllmenu={showAllmenu} />)
 
+	const date = getCookie("dateForAddTodo")
+
 	return (
 		<div className="add-todo">
+		<div className="add-todo__date">Todo Date: {date}</div>
 			<input
 				className="input__text"
 				type="text"
