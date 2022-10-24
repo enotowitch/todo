@@ -1,6 +1,7 @@
 import React from "react"
 import search from "./../img/search.svg"
 import del from "./../img/del.svg"
+import add from "./../img/add.svg"
 import Todo from "./Todo"
 import SearchTag from "./SearchTag"
 
@@ -71,7 +72,12 @@ export default function Search(props) {
 		setSearchState(prevState => ({ ...prevState, [name]: "" }))
 	}
 
-
+	function addTodoTask() {
+		document.querySelector('.burger__btn').click()
+		setTimeout(() => {
+			document.querySelector('.input__text').value = searchState.task + " "
+		}, 1);
+	}
 
 	return (
 		<>
@@ -101,14 +107,17 @@ export default function Search(props) {
 							<option>hidden</option>
 							<option>not done</option>
 						</select>
-						<select
-							name="task"
-							value={searchState.task}
-							onChange={changeSearchState}
-						>
-							<option value="" selected>task</option>
-							{taskOptions}
-						</select>
+						<div className="task-wrap">
+							<select
+								name="task"
+								value={searchState.task}
+								onChange={changeSearchState}
+							>
+								<option value="" selected>task</option>
+								{taskOptions}
+							</select>
+							{searchState.task && <img className="add-todo-task" src={add} onClick={addTodoTask} />}
+						</div>
 
 						<div className="search-tags">
 							{result.length > 0 && <SearchTag text={result.length} title="found" showDel={false} />}

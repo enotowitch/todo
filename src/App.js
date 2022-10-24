@@ -122,7 +122,7 @@ export default function App() {
 	}
 
 	const [showAddTodo, setShowAddTodo] = React.useState(false)
-	function toggleShowAddTodo() {
+	function toggleAddTodo() {
 		setShowAddTodo(prevState => !prevState)
 	}
 
@@ -137,7 +137,7 @@ export default function App() {
 
 	return (
 		<>
-			<Burger toggleShowAddTodo={toggleShowAddTodo} />
+			<Burger toggleAddTodo={toggleAddTodo} />
 
 			{showAddTodo && <AddTodo addTodo={addTodo} todos={todos} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}
 			{/* todo arrow classes */}
