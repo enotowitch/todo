@@ -482,7 +482,7 @@ button,.todos-title,.like, .hide{
 	margin-bottom: 40px;
 	text-align: center;
 }
-[name="select"], [name="text"] {
+[name="status"], [name="task"], [name="text"] {
 	display: block;
 	margin: 0 auto;
 	padding: 5px;
@@ -491,7 +491,7 @@ button,.todos-title,.like, .hide{
 	margin-bottom: 15px;
 	width: 200px;
 }
-[name="select"]{
+[name="status"], [name="task"]{
 	width: 214px;
 }
 [name="text"]{
@@ -502,4 +502,27 @@ button,.todos-title,.like, .hide{
 [name="moveDate"]{
 	height: 26px;
 	margin-right: 6px;
+}
+/* ! search-tag */
+.search-tag{
+	border: 1px solid;
+	border-radius: 6px;
+	padding: 2px 4px;
+	display: inline-flex;
+	align-items: center;
+	margin: 5px 0 0 10px;
+}
+.search-tag_del{
+	width: 20px;
+	padding: 0 2px 1px 6px;
+}
+.search-tag__title{
+	font-style: italic;
+}
+.search-tag__text{
+	padding-left: 6px;
+	font-weight: 700;
+}
+.search-tags{
+	margin: 0 15px 30px 0;
 }
