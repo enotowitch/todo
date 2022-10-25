@@ -43,7 +43,7 @@ export default function App() {
 	const [popUpState, setPopUpState] = React.useState({})
 	const [showPopUp, setShowPopUp] = React.useState(false)
 
-	const daysHtmlElements = weeks[weekNum].map(elem => <OneDayTodos todos={todos} action={action} date={elem} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />)
+	const daysHtmlElements = weeks[weekNum].map(elem => <OneDayTodos todos={todos} action={action} date={elem} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />)
 
 	function addTodo(inputText, quantity) {
 		// ! date
@@ -60,14 +60,14 @@ export default function App() {
 			const arr = inputText.split(",")
 			for (let i = 0; i < arr.length; i++) {
 				setTodos(prevState => {
-					return [...prevState, { id: prevState.length + 1, date: date, text: arr[i], isLiked: false, isDone: false, isHidden: false }]
+					return [...prevState, { id: prevState.length + 1, date: date, text: arr[i], isLiked: false, isDone: false, isHidden: false, showAction: false }]
 				})
 			}
 		}
 		if (quantity === "one") {
 			// ! add ONE
 			setTodos(prevState => {
-				return [...prevState, { id: prevState.length + 1, date: date, text: inputText, isLiked: false, isDone: false, isHidden: false }]
+				return [...prevState, { id: prevState.length + 1, date: date, text: inputText, isLiked: false, isDone: false, isHidden: false, showAction: false }]
 			})
 		}
 		// ! PopUp
@@ -92,6 +92,13 @@ export default function App() {
 		todosTitle && todosTitle.classList.remove(propName)
 		// ! PopUp
 		makePopUp(propName, propName.slice(2), curTodoObj.text, setPopUpState, setShowPopUp)
+	}
+	function toggleAction(todoId) {
+		setTodos(prevState => {
+			return prevState.map(elem => {
+				return elem.id === todoId ? { ...elem, showAction: !elem.showAction } : { ...elem, showAction: false }
+			})
+		})
 	}
 	// ! moveTodo
 	function moveTodo(todoId, newDate) {
@@ -150,7 +157,7 @@ export default function App() {
 			}
 			{showPopUp && <PopUp {...popUpState} popUpHide={popUpHide} todos={todos} setTodos={setTodos} />}
 
-			<Search showWeek={showWeek} toggleWeek={toggleWeek} todos={todos} action={action} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />
+			<Search showWeek={showWeek} toggleWeek={toggleWeek} todos={todos} action={action} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />
 		</>
 	)
 }

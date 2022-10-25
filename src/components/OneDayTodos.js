@@ -6,11 +6,11 @@ import normalizeDate from "./../functions/normalizeDate"
 import AllActionNums from "./AllActionNums"
 import add from "./../img/add.svg"
 
-export default function OneDayTodos({ todos, action, date, moveTodo, setPopUpState, setShowPopUp }) {
+export default function OneDayTodos(props) {
 
 	const thisDayTodos = []
-	todos.map(elem => {
-		return elem.date === date ? thisDayTodos.push(elem) : elem
+	props.todos.map(elem => {
+		return elem.date === props.date ? thisDayTodos.push(elem) : elem
 	})
 
 	// todo HAS DUP
@@ -22,13 +22,16 @@ export default function OneDayTodos({ todos, action, date, moveTodo, setPopUpSta
 	thisDayTodos.map(elem => elem.isDone && isDoneNum++)
 	let allTodosNum = thisDayTodos.length
 
+	function shortTodo(todo, ind) {
+		return <Todo key={ind} {...todo} action={props.action} moveTodo={props.moveTodo} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
+	}
 
 	// ALLTODOS: -isHidden, -isDone
-	const todoElems = thisDayTodos.map((elem, ind) => (!elem.isHidden && !elem.isDone) && <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />)
+	const todoElems = thisDayTodos.map((todo, ind) => (!todo.isHidden && !todo.isDone) && shortTodo(todo, ind))
 	// DONETODOS: -isHidden
-	const doneTodos = thisDayTodos.map((elem, ind) => (elem.isDone && !elem.isHidden) && <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />)
-	const likedTodos = thisDayTodos.map((elem, ind) => elem.isLiked && <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />)
-	const hiddenTodos = thisDayTodos.map((elem, ind) => elem.isHidden && <Todo key={ind} {...elem} action={action} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />)
+	const doneTodos = thisDayTodos.map((todo, ind) => (todo.isDone && !todo.isHidden) && shortTodo(todo, ind))
+	const likedTodos = thisDayTodos.map((todo, ind) => todo.isLiked && shortTodo(todo, ind))
+	const hiddenTodos = thisDayTodos.map((todo, ind) => todo.isHidden && shortTodo(todo, ind))
 
 	function styleHiddenSection(e) {
 		e.target.nextSibling.classList.toggle('hidden-todos')
@@ -93,12 +96,12 @@ export default function OneDayTodos({ todos, action, date, moveTodo, setPopUpSta
 
 	return (
 		// adding to this class each date of the year, so App can scroll to current date on load
-		<div className={`one-day-todos ${date}`}>
+		<div className={`one-day-todos ${props.date}`}>
 
 			<div className="one-day-todos__top">
 				<div>
-					{date === getToday() && <div className="date_today">Today</div>}
-					<div className="date">{normalizeDate(date)}</div>
+					{props.date === getToday() && <div className="date_today">Today</div>}
+					<div className="date">{normalizeDate(props.date)}</div>
 				</div>
 
 				<img className="get-todo-date" src={add} onClick={getTodoDate} />

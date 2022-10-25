@@ -14,12 +14,6 @@ export default function Todo(props) {
 	const checkbox = props.isDone ? <input type="checkbox" checked onChange={() => props.action(props.id, 'isDone')} /> :
 		<input type="checkbox" onChange={() => props.action(props.id, 'isDone')} />
 
-	// ! showActions
-	const [showActions, setShowActions] = React.useState(false)
-	function toggleActions() {
-		setShowActions(prevState => !prevState)
-	}
-
 	// ! color
 	let color
 	let text
@@ -58,7 +52,6 @@ export default function Todo(props) {
 		const { name, value } = event.target
 		setMoveSelectState(prevState => ({ ...prevState, [name]: value }))
 		props.moveTodo(props.id, value)
-		setShowActions(false)
 	}
 
 	const options = year.map(elem => <option>{elem}</option>)
@@ -69,7 +62,7 @@ export default function Todo(props) {
 			{props.showDate && <p className="todo__date">{props.date}</p>}
 			<p className="todo__text">{text || props.text}</p>
 
-			{showActions &&
+			{props.showAction &&
 				<div className="actions">
 
 					<img className="edit" src={edit} onClick={editPopUp} />
@@ -94,7 +87,7 @@ export default function Todo(props) {
 				</div>
 			}
 
-			<img className="dots" src={dots} onClick={toggleActions} />
+			<img className="dots" src={dots} onClick={() => props.toggleAction(props.id)} />
 		</div>
 	)
 }

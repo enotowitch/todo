@@ -38,7 +38,7 @@ export default function Search(props) {
 	statusIds = statusIds.filter(isTrue => isTrue)
 	// ! define taskIds	
 	let taskIds = props.todos.map((todo) => {
-		return todo.text.match(/\w+/) == searchState.task && todo.id
+		return todo.text.match(/\S+/) == searchState.task && todo.id
 	})
 	taskIds = taskIds.filter(isTrue => isTrue)
 
@@ -62,11 +62,25 @@ export default function Search(props) {
 	searchState.status && statusIds.length == 0 && (result = [])
 	searchState.task && taskIds.length == 0 && (result = [])
 
+
+	function shortTodo(todo, ind) {
+		return <Todo showDate={true} key={ind} {...todo} action={props.action} moveTodo={props.moveTodo} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
+	}
+
 	let searched = []
 	for (let i = 0; i < result.length; i++) {
-		props.todos.map((todo, ind) => {
-			todo.id === result[i] && searched.push(<Todo showDate={true} key={ind} {...todo} action={props.action} moveTodo={props.moveTodo} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} />)
-		})
+		// exclude HIDDEN and DONE todos
+		if (searchState.status !== "hidden") {
+			props.todos.map((todo, ind) => {
+				todo.id === result[i] && !todo.isHidden && !todo.isDone && searched.push(shortTodo(todo, ind))
+			})
+		}
+		// include HIDDEN or DONE todos
+		if (searchState.status === "hidden" || searchState.status === "done") {
+			props.todos.map((todo, ind) => {
+				todo.id === result[i] && searched.push(shortTodo(todo, ind))
+			})
+		}
 	}
 
 	function delTag(name) {
