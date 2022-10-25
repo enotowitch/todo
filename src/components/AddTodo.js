@@ -4,6 +4,7 @@ import MenuItem from "./MenuItem"
 import MyTasks from "./MyTasks"
 import Settings from "./Settings"
 import getCookie from "./../functions/getCookie"
+import Tutorial from "./Tutorial"
 
 export default function AddTodo(props) {
 
@@ -16,8 +17,8 @@ export default function AddTodo(props) {
 		setText("")
 	}
 
-	// ! togglePopUp
-	function togglePopUp() {
+	// ! delTasksPopUp
+	function delTasksPopUp() {
 		props.setShowPopUp(prevState => !prevState)
 		makePopUp("", "Delete my tasks?", "", props.setPopUpState, props.setShowPopUp, "confirm")
 	}
@@ -26,14 +27,14 @@ export default function AddTodo(props) {
 	const [menu, setMenu] = React.useState([
 		{
 			title: "My Tasks",
-			content: <MyTasks togglePopUp={togglePopUp} />,
+			content: <MyTasks />,
 			id: 0,
 			isShown: true,
 			hasClose: false
 		},
 		{
 			title: "Settings",
-			content: <Settings />,
+			content: <Settings delTasksPopUp={delTasksPopUp} />,
 			id: 1,
 			isShown: true,
 			hasClose: false
@@ -52,6 +53,11 @@ export default function AddTodo(props) {
 			return { ...elem, isShown: true, hasClose: false }
 		}))
 	}
+	// ! Tutorial
+	const [showTutorial, setShowTutorial] = React.useState(false)
+	function toggleTutorial() {
+		setShowTutorial(prevState => !prevState)
+	}
 
 	const menuHtmlElems = menu.map(elem => <MenuItem {...elem} toggleMenuContent={toggleMenuContent} showAllmenu={showAllmenu} />)
 
@@ -59,7 +65,7 @@ export default function AddTodo(props) {
 
 	return (
 		<div className="add-todo">
-		<div className="add-todo__date">Todo Date: {date}</div>
+			<div className="add-todo__date">Todo Date: {date}</div>
 			<input
 				className="input__text"
 				type="text"
@@ -77,13 +83,11 @@ export default function AddTodo(props) {
 					props.addTodo(text, "many",
 						clearText())
 				}>add many</button>
-
-				{/* <button onClick={() =>
-					props.addTodo(`Test Task ${localStorage.length + 1}`)
-				}>test</button> */}
+				<span className="tutorial-on" onClick={toggleTutorial}>?</span>
 			</div>
 
 			{menuHtmlElems}
+			{showTutorial && <Tutorial />}
 		</div>
 	)
 }

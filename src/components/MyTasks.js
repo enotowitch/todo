@@ -1,6 +1,5 @@
 import React from "react"
 import Task from "./Task"
-import Tutorial from "./Tutorial"
 
 export default function MyTasks(props) {
 
@@ -72,28 +71,16 @@ export default function MyTasks(props) {
 			return { ...prevState, [taskNum]: colors[randColor] }
 		})
 	}
-	// ! Tutorial
-	const [showTutorial, setShowTutorial] = React.useState(false)
-	function toggleTutorial() {
-		setShowTutorial(prevState => !prevState)
-	}
 
 
 
 	return (
 		<>
-			<div className="my-tasks">
-				<span className="tutorial-on" onClick={toggleTutorial}>?</span>
-				My tasks:<span className="delete-tasks" onClick={props.togglePopUp}>delete</span>
-			</div>
-
 			<button className="add-task" onClick={addTask}>add task</button>
 
 			<div className="tasks">
 				{taskHtmlElems}
 			</div>
-
-			{showTutorial && <Tutorial />}
 		</>
 	)
 }
