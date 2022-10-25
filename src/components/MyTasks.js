@@ -34,8 +34,19 @@ export default function MyTasks(props) {
 	// ? tasks
 	// ! taskHtmlElems
 	const reversedTaskStateKeys = []
+	// todo make arr
 	Object.keys(taskState).reverse().map(elem => reversedTaskStateKeys.push(elem))
 
+	const addState = {}
+	// todo make arr
+	Object.keys(taskState).reverse().map(task => addState[task] = false)
+
+	const [showAdd, setShowAdd] = React.useState(addState) // {"task2": false,"task1": false} ...
+	function toggleAdd(taskNum) {
+		setShowAdd(addState)
+		setShowAdd(prevState => ({ ...prevState, [taskNum]: true }))
+	}
+	// todo make arr
 	const taskHtmlElems = Object.values(taskState).reverse().map((taskName, ind) => {
 		const taskNum = reversedTaskStateKeys[ind]
 		return <Task
@@ -44,6 +55,8 @@ export default function MyTasks(props) {
 			color={colorState[taskName]}
 			changeTaskState={changeTaskState}
 			changeColorState={changeColorState}
+			showAdd={showAdd[taskNum]}
+			toggleAdd={toggleAdd}
 		/>
 	})
 	// ! addTask

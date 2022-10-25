@@ -267,7 +267,7 @@ button,.todos-title,.like, .hide{
 	margin: 0 auto;
 }
 .task{
-	width: 200px;
+	width: 180px;
 	background: none;
 	border: none;
 	border-bottom: 1px solid;
@@ -283,6 +283,7 @@ button,.todos-title,.like, .hide{
 	background: none;
 	height: 40px;
 	width: 80px;
+	flex-shrink: 0;
 }
 /* ! tutorial */
 .tutorial-on{
