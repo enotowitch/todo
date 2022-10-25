@@ -11,6 +11,7 @@ import PopUp from "./components/PopUp"
 import normalizeDate from "./functions/normalizeDate"
 import makePopUp from "./functions/makePopUp"
 import Search from "./components/Search"
+import arrow from "./img/arrow.svg"
 
 export default function App() {
 
@@ -109,14 +110,25 @@ export default function App() {
 		// PopUp
 		makePopUp("add", normalizeDate(newDate), todos[todoId - 1].text, setPopUpState, setShowPopUp)
 	}
+	// ! scroll
+	let scrollCounter = 0
 
-	// todo
-	// React.useEffect(() => {
-	// 	// scroll to today
-	// 	setTimeout(() => {
-	// 		document.querySelector(`.${getToday()}`).scrollIntoView()
-	// 	}, 500);
-	// }, [])
+	function scroll() {
+		const getTodayDiv = document.querySelector(`.${getToday()}`)
+		scrollCounter++
+		if (scrollCounter % 2 === 0 && getTodayDiv) {
+			// scroll to today
+			setTimeout(() => {
+				getTodayDiv.scrollIntoView()
+			}, 1000);
+		} else {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
+	}
+	React.useEffect(() => {
+		scroll()
+	}, [])
+	// ? scroll
 	// todo
 	// React.useEffect(() => {
 	// 	// style chosen-day set in cookie "dateForAddTodo"
@@ -158,6 +170,7 @@ export default function App() {
 			{showPopUp && <PopUp {...popUpState} popUpHide={popUpHide} todos={todos} setTodos={setTodos} />}
 
 			<Search showWeek={showWeek} toggleWeek={toggleWeek} todos={todos} action={action} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />
+			<img src={arrow} className="arrow scroll" onClick={scroll} />
 		</>
 	)
 }
