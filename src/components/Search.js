@@ -92,7 +92,7 @@ export default function Search(props) {
 		document.querySelector('.burger__btn').click()
 		setTimeout(() => {
 			document.querySelector('.input__text').value = searchState.task + " "
-		}, 1);
+		}, 100);
 	}
 
 	const [reverseState, setReverseState] = React.useState(false)

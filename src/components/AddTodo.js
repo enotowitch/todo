@@ -17,10 +17,10 @@ export default function AddTodo(props) {
 		setText("")
 	}
 
-	// ! delTasksPopUp
-	function delTasksPopUp() {
+	// ! deleteTasksPopUp
+	function deleteTasksPopUp() {
 		props.setShowPopUp(prevState => !prevState)
-		makePopUp("", "Delete my tasks?", "", props.setPopUpState, props.setShowPopUp, "confirm")
+		makePopUp("", "Delete my tasks?", "", props.setPopUpState, props.setShowPopUp, "confirm", "deleteTasks")
 	}
 
 	// todo HAS DUP
@@ -34,7 +34,7 @@ export default function AddTodo(props) {
 		},
 		{
 			title: "Settings",
-			content: <Settings delTasksPopUp={delTasksPopUp} />,
+			content: <Settings deleteTasksPopUp={deleteTasksPopUp} />,
 			id: 1,
 			isShown: true,
 			hasClose: false

@@ -39,11 +39,11 @@ export default function Todo(props) {
 	// ! editPopUp
 	function editPopUp() {
 		props.setShowPopUp(prevState => !prevState)
-		makePopUp("", "Editing...", props.text, props.setPopUpState, props.setShowPopUp, "prompt")
+		makePopUp("", "Editing...", props.text, props.setPopUpState, props.setShowPopUp, "prompt", "editTodo")
 	}
 	// ! delete todo
-	function delTodo() {
-		makePopUp("", "Delete?", props.text, props.setPopUpState, props.setShowPopUp, "confirm")
+	function deleteTodo() {
+		makePopUp("", "Delete?", props.text, props.setPopUpState, props.setShowPopUp, "confirm", "deleteTodo")
 		localStorage.removeItem(props.id)
 	}
 	const [moveSelectState, setMoveSelectState] = React.useState({ moveDate: props.date })
@@ -83,7 +83,7 @@ export default function Todo(props) {
 						{options}
 					</select>
 
-					<img className="del" src={del} onClick={delTodo} />
+					<img className="del" src={del} onClick={deleteTodo} />
 				</div>
 			}
 

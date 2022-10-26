@@ -5,6 +5,7 @@ export default function Task(props) {
 
 	function addTaskName() {
 		document.querySelector('.input__text').value = props.taskName + " "
+		document.querySelector('.input__text').focus()
 	}
 
 	return (

@@ -30,9 +30,11 @@ export default function PopUp(props) {
 	}
 	const firstButtonText = props.modalWindowType === "confirm" ? "Delete" : "Edit"
 
+	// todo REDO popUp, makePopUp (take object in params), pass only todo.id => not todo.text
 	function modalWindowFunction() {
-		props.modalWindowType === "confirm" && deleteTasks()
-		props.modalWindowType === "prompt" && editTodo()
+		props.doFunction === "deleteTasks" && deleteTasks()
+		props.doFunction === "editTodo" && editTodo()
+		props.doFunction === "deleteTodo" && window.location.reload()
 	}
 
 	React.useEffect(() => {

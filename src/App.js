@@ -17,7 +17,7 @@ export default function App() {
 
 	// default cookies
 	if (!document.cookie.match(/colors/)) {
-		document.cookie = ` colors={"work":"#7ec5fb","buy":"#ff8585","cook":"#aeffa3"};`
+		document.cookie = `colors={"work":"#7ec5fb","buy":"#ff8585","cook":"#aeffa3"};`
 	}
 	if (!document.cookie.match(/tasks/)) {
 		document.cookie = `tasks={"task1":"work","task2":"buy","task3":"cook"};`

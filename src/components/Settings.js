@@ -10,7 +10,7 @@ export default function Settings(props) {
 	return (
 		<div className="add-todo__buttons">
 			<button onClick={clearAllTodos}>delete all todos</button>
-			<button onClick={props.delTasksPopUp}>clear all tasks</button>
+			<button onClick={props.deleteTasksPopUp}>clear all tasks</button>
 		</div>
 	)
 }
