@@ -10,9 +10,9 @@ import year from "./../year"
 
 export default function Todo(props) {
 
-	const likedOrNot = props.isLiked ? liked : like
-	const checkbox = props.isDone ? <input type="checkbox" checked onChange={() => props.action(props.id, 'isDone')} /> :
-		<input type="checkbox" onChange={() => props.action(props.id, 'isDone')} />
+	const likedOrNot = props.doing ? liked : like
+	const checkbox = props.done ? <input type="checkbox" checked onChange={() => props.action(props.id, "done")} /> :
+		<input type="checkbox" onChange={() => props.action(props.id, "done")} />
 
 	// ! color
 	let color
@@ -68,11 +68,11 @@ export default function Todo(props) {
 					<img className="edit" src={edit} onClick={editPopUp} />
 
 					<img className="like" src={likedOrNot} onClick={() =>
-						props.action(props.id, 'isLiked')
+						props.action(props.id, "doing")
 					} />
 
 					<img className="hide" src={hide} onClick={() =>
-						props.action(props.id, 'isHidden')
+						props.action(props.id, "canceled")
 					} />
 
 					<select

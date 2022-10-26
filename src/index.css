@@ -4,12 +4,12 @@
 :root{
 	--input-width: 290px;
 	--done: #97f50a;
-	--liked: orange;
-	--hidden: tomato;
+	--doing: orange;
+	--canceled: tomato;
 	/* todo lighten or connect sass */
 	--done-light:#daffa7;
-	--liked-light:rgb(255, 228, 179);
-	--hidden-light:rgb(255, 202, 193);
+	--doing-light:rgb(255, 228, 179);
+	--canceled-light:rgb(255, 202, 193);
 }
 
 body {
@@ -96,7 +96,7 @@ code {
 .hidden-todos{
 	display: none;
 }
-.todos-num,.todos-num_hidden{
+.todos-num,.todos-num_canceled{
 	border: 2px solid;
 	border-radius: 50%;
 	width: 30px;
@@ -109,17 +109,17 @@ code {
 	padding-bottom: 2px;
 	pointer-events: none;
 }
-.todos-num_hidden,.hidden{
-	color: var(--hidden);
+.todos-num_canceled,.canceled{
+	color: var(--canceled);
 }
-.todos-num_liked,.liked{
-	color: var(--liked);
+.todos-num_doing,.doing{
+	color: var(--doing);
 }
 .todos-num_done,.done{
 	color: var(--done);
 }
-.hidden,
-.liked,
+.canceled,
+.doing,
 .done{
 	pointer-events:none;
 }
@@ -586,15 +586,15 @@ button,.todos-title,.like, .hide{
 	border-radius: 50%;
 	padding: 4px;
 }
-.borderdone, .borderliked, .borderhidden, .borderall{
+.borderdone, .borderdoing, .bordercanceled, .borderall{
 	margin-right: 12px;
 	border-left: 5px solid var(--done-light);
 }
-.borderliked{
-	border-left: 5px solid var(--liked-light);
+.borderdoing{
+	border-left: 5px solid var(--doing-light);
 }
-.borderhidden{
-	border-left: 5px solid var(--hidden-light);
+.bordercanceled{
+	border-left: 5px solid var(--canceled-light);
 }
 .borderall{
 	border-left: 5px solid #f1f1f1;

@@ -61,20 +61,20 @@ export default function App() {
 			const arr = inputText.split(",")
 			for (let i = 0; i < arr.length; i++) {
 				setTodos(prevState => {
-					return [...prevState, { id: prevState.length + 1, date: date, text: arr[i], isLiked: false, isDone: false, isHidden: false, showAction: false }]
+					return [...prevState, { id: prevState.length + 1, date: date, text: arr[i], doing: false, done: false, canceled: false, showAction: false }]
 				})
 			}
 		}
 		if (quantity === "one") {
 			// ! add ONE
 			setTodos(prevState => {
-				return [...prevState, { id: prevState.length + 1, date: date, text: inputText, isLiked: false, isDone: false, isHidden: false, showAction: false }]
+				return [...prevState, { id: prevState.length + 1, date: date, text: inputText, doing: false, done: false, canceled: false, showAction: false }]
 			})
 		}
 		// ! PopUp
 		makePopUp("add", normalizeDate(date), inputText, setPopUpState, setShowPopUp)
 	}
-	// ! action: propName: isDone/isLiked/isHidden,etc... works only with BOOLS!
+	// ! action: propName: done/doing/canceled,etc... works only with BOOLS!
 	function action(todoID, propName) {
 		setTodos(prevState => {
 			return prevState.map(elem => {
@@ -88,7 +88,7 @@ export default function App() {
 		// todo remove localStorage.setItem
 		// localStorage.setItem(todoID, JSON.stringify(curTodoObj))
 		// ! PopUp
-		makePopUp(propName, propName.slice(2), curTodoObj.text, setPopUpState, setShowPopUp)
+		makePopUp(propName, propName, curTodoObj.text, setPopUpState, setShowPopUp)
 	}
 	function toggleAction(todoId) {
 		setTodos(prevState => {

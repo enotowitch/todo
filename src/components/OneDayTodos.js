@@ -14,24 +14,28 @@ export default function OneDayTodos(props) {
 	})
 
 	// todo HAS DUP
-	let isLikedNum = 0
-	thisDayTodos.map(elem => elem.isLiked && isLikedNum++)
-	let isHiddenNum = 0
-	thisDayTodos.map(elem => elem.isHidden && isHiddenNum++)
-	let isDoneNum = 0
-	thisDayTodos.map(elem => elem.isDone && isDoneNum++)
+	let doingNum = 0
+	thisDayTodos.map(elem => elem.doing && doingNum++)
+	let canceledNum = 0
+	thisDayTodos.map(elem => elem.canceled && canceledNum++)
+	let doneNum = 0
+	thisDayTodos.map(elem => elem.done && doneNum++)
 	let allTodosNum = thisDayTodos.length
 
 	function shortTodo(todo, ind) {
 		return <Todo key={ind} {...todo} action={props.action} moveTodo={props.moveTodo} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
 	}
 
-	// ALLTODOS: -isHidden, -isDone
-	const todoElems = thisDayTodos.map((todo, ind) => (!todo.isHidden && !todo.isDone) && shortTodo(todo, ind))
-	// DONETODOS: -isHidden
-	const doneTodos = thisDayTodos.map((todo, ind) => (todo.isDone && !todo.isHidden) && shortTodo(todo, ind))
-	const likedTodos = thisDayTodos.map((todo, ind) => todo.isLiked && shortTodo(todo, ind))
-	const hiddenTodos = thisDayTodos.map((todo, ind) => todo.isHidden && shortTodo(todo, ind))
+	// ! OUTPUT LOGIC
+	// ALL aka TODO: -doing, -done, -canceled
+	const todoElems = thisDayTodos.map((todo, ind) => (!todo.doing && !todo.done && !todo.canceled) && shortTodo(todo, ind))
+	// DOING: +doing, -done, -canceled
+	const doingTodos = thisDayTodos.map((todo, ind) => (todo.doing && !todo.done && !todo.canceled) && shortTodo(todo, ind))
+	// DONE: +done, -canceled
+	const doneTodos = thisDayTodos.map((todo, ind) => (todo.done && !todo.canceled) && shortTodo(todo, ind))
+	// CANCELED: +canceled
+	const canceledTodos = thisDayTodos.map((todo, ind) => todo.canceled && shortTodo(todo, ind))
+	// ? OUTPUT LOGIC
 
 	function styleHiddenSection(e) {
 		e.target.nextSibling.classList.toggle('hidden-todos')
@@ -54,44 +58,44 @@ export default function OneDayTodos(props) {
 	// ! allTodosWrapper
 	const allTodosWrapper = <div className="all-todos-wrapper">
 
-		{/* ! My Todos */}
+		{/* ! All Todos */}
 		<div className="todos-wrapper">
 			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
-			}><span className="all">My Todos</span>
-				{allTodosNum - isDoneNum - isHiddenNum > 0 && <img className="arrow action-arrow" src={arrow} />}
+			}><span className="all">Todo</span>
+				{allTodosNum - doingNum - doneNum - canceledNum > 0 && <img className="arrow action-arrow" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{todoElems}</div>
+		</div>
+
+		{/* ! Doing Todos */}
+		<div className="todos-wrapper">
+			<p className="todos-title" onClick={(e) =>
+				styleHiddenSection(e)
+			}><span className="doing">Doing&nbsp;&nbsp;</span>
+				{doingNum > 0 && <img className="arrow action-arrow" src={arrow} />}
+			</p>
+			<div className="hidden-todos">{doingTodos}</div>
 		</div>
 
 		{/* ! Done Todos */}
 		<div className="todos-wrapper">
 			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
-			}><span className="done">Done&nbsp;&nbsp;</span>Todos
-				{isDoneNum > 0 && <img className="arrow action-arrow" src={arrow} />}
+			}><span className="done">Done&nbsp;&nbsp;</span>
+				{doneNum > 0 && <img className="arrow action-arrow" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{doneTodos}</div>
 		</div>
 
-		{/* ! Liked Todos */}
+		{/* ! Canceled Todos */}
 		<div className="todos-wrapper">
 			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
-			}><span className="liked">Liked&nbsp;&nbsp;</span>Todos
-				{isLikedNum > 0 && <img className="arrow action-arrow" src={arrow} />}
+			}><span className="canceled">Canceled&nbsp;&nbsp;</span>
+				{canceledNum > 0 && <img className="arrow action-arrow" src={arrow} />}
 			</p>
-			<div className="hidden-todos">{likedTodos}</div>
-		</div>
-
-		{/* ! Hidden Todos */}
-		<div className="todos-wrapper">
-			<p className="todos-title" onClick={(e) =>
-				styleHiddenSection(e)
-			}><span className="hidden">Hidden&nbsp;&nbsp;</span>Todos
-				{isHiddenNum > 0 && <img className="arrow action-arrow" src={arrow} />}
-			</p>
-			<div className="hidden-todos">{hiddenTodos}</div>
+			<div className="hidden-todos">{canceledTodos}</div>
 		</div>
 	</div>
 	// ? allTodosWrapper
@@ -114,7 +118,7 @@ export default function OneDayTodos(props) {
 
 				<img className="get-todo-date" src={add} onClick={getTodoDate} />
 
-				<AllActionNums nums={{ allTodosNum, isDoneNum, isLikedNum, isHiddenNum }} />
+				<AllActionNums nums={{ allTodosNum, doneNum, doingNum, canceledNum }} />
 
 				{thisDayTodos.length > 0 && <img className="arrow view-arrow" src={arrow} onClick={toggleOneDayTodosView} />}
 			</div>

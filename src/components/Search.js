@@ -24,16 +24,24 @@ export default function Search(props) {
 	textIds = textIds.filter(isTrue => isTrue)
 	// ! define statusIds
 	let statusIds = props.todos.map((todo) => {
-		if (searchState.status === "all") {
-			return todo.id
+		// ! OUTPUT LOGIC
+		// ALL aka TODO: -doing, -done, -canceled
+		if (searchState.status === "todo") {
+			return (!todo.doing && !todo.done && !todo.canceled) && todo.id
 		}
-		if (searchState.status === "not done") {
-			return !todo.isDone && todo.id
+		// DOING: +doing, -done, -canceled
+		if (searchState.status === "doing") {
+			return (todo.doing && !todo.done && !todo.canceled) && todo.id
 		}
-		const s = searchState.status
-		let status
-		s && (status = "is" + s.charAt(0).toUpperCase() + s.slice(1))
-		return todo[status] && todo.id
+		// DONE: +done, -canceled
+		if (searchState.status === "done") {
+			return (todo.done && !todo.canceled) && todo.id
+		}
+		// CANCELED: +canceled
+		if (searchState.status === "canceled") {
+			return todo.canceled && todo.id
+		}
+		// ? OUTPUT LOGIC
 	})
 	statusIds = statusIds.filter(isTrue => isTrue)
 	// ! define taskIds	
@@ -69,18 +77,10 @@ export default function Search(props) {
 
 	let searched = []
 	for (let i = 0; i < result.length; i++) {
-		// exclude HIDDEN and DONE todos
-		if (searchState.status !== "hidden") {
-			props.todos.map((todo, ind) => {
-				todo.id === result[i] && !todo.isHidden && !todo.isDone && searched.push(shortTodo(todo, ind))
-			})
-		}
-		// include HIDDEN or DONE todos
-		if (searchState.status === "hidden" || searchState.status === "done") {
-			props.todos.map((todo, ind) => {
-				todo.id === result[i] && searched.push(shortTodo(todo, ind))
-			})
-		}
+
+		props.todos.map((todo, ind) => {
+			todo.id === result[i] && searched.push(shortTodo(todo, ind))
+		})
 	}
 
 	function delTag(name) {
@@ -101,8 +101,8 @@ export default function Search(props) {
 		setReverseState(prevState => !prevState)
 	}
 
-	let reverseNums
-	reverseState ? (reverseNums = `1-${result.length}`) : (reverseNums = `${result.length}-1`)
+	let searchedNum
+	reverseState ? (searchedNum = `1-${searched.length}`) : (searchedNum = `${searched.length}-1`)
 
 	return (
 		<>
@@ -126,11 +126,10 @@ export default function Search(props) {
 							onChange={changeSearchState}
 						>
 							<option value="" selected>status</option>
-							<option>all</option>
+							<option>todo</option>
+							<option>doing</option>
 							<option>done</option>
-							<option>liked</option>
-							<option>hidden</option>
-							<option>not done</option>
+							<option>canceled</option>
 						</select>
 						<div className="task-wrap">
 							<select
@@ -145,7 +144,7 @@ export default function Search(props) {
 						</div>
 
 						<div className="search-tags">
-							{result.length > 0 && <SearchTag text={reverseNums} title="order" showDel={false} toggleReverse={toggleReverse} />}
+							{searched.length > 1 && <SearchTag text={searchedNum} title="order" showDel={false} toggleReverse={toggleReverse} />}
 							{searchState.text && <SearchTag text={searchState.text} title="text" showDel={true} delTag={delTag} />}
 							{searchState.status && <SearchTag text={searchState.status} title="status" showDel={true} delTag={delTag} />}
 							{searchState.task && <SearchTag text={searchState.task} title="task" showDel={true} delTag={delTag} />}
