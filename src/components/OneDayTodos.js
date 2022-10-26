@@ -36,6 +36,9 @@ export default function OneDayTodos(props) {
 	function styleHiddenSection(e) {
 		e.target.nextSibling.classList.toggle('hidden-todos')
 		e.target.classList.toggle('turned-on')
+		let borderClassName = e.target.closest('.todos-wrapper').querySelector('.todos-title span').className
+		borderClassName = "border" + borderClassName
+		e.target.closest('.todos-wrapper').classList.toggle(borderClassName)
 	}
 	function getTodoDate(event) {
 		// write to cookie => on which day AddTodo() is used
@@ -53,14 +56,17 @@ export default function OneDayTodos(props) {
 
 		{/* ! My Todos */}
 		<div className="todos-wrapper">
-			<p className="todos-title">My Todos
+			<p className="todos-title" onClick={(e) =>
+				styleHiddenSection(e)
+			}><span className="all">My Todos</span>
+				{allTodosNum - isDoneNum - isHiddenNum > 0 && <img className="arrow action-arrow" src={arrow} />}
 			</p>
-			{todoElems}
+			<div className="hidden-todos">{todoElems}</div>
 		</div>
 
 		{/* ! Done Todos */}
-		<div className="hidden-todos-wrapper">
-			<p className="todos-title isDone" onClick={(e) =>
+		<div className="todos-wrapper">
+			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
 			}><span className="done">Done&nbsp;&nbsp;</span>Todos
 				{isDoneNum > 0 && <img className="arrow action-arrow" src={arrow} />}
@@ -69,8 +75,8 @@ export default function OneDayTodos(props) {
 		</div>
 
 		{/* ! Liked Todos */}
-		<div className="hidden-todos-wrapper">
-			<p className="todos-title isLiked" onClick={(e) =>
+		<div className="todos-wrapper">
+			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
 			}><span className="liked">Liked&nbsp;&nbsp;</span>Todos
 				{isLikedNum > 0 && <img className="arrow action-arrow" src={arrow} />}
@@ -79,8 +85,8 @@ export default function OneDayTodos(props) {
 		</div>
 
 		{/* ! Hidden Todos */}
-		<div className="hidden-todos-wrapper">
-			<p className="todos-title isHidden" onClick={(e) =>
+		<div className="todos-wrapper">
+			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
 			}><span className="hidden">Hidden&nbsp;&nbsp;</span>Todos
 				{isHiddenNum > 0 && <img className="arrow action-arrow" src={arrow} />}
@@ -92,11 +98,13 @@ export default function OneDayTodos(props) {
 
 	function toggleOneDayTodosView(event) {
 		event.target.closest('.one-day-todos').classList.toggle('section-minimized')
+		document.querySelectorAll('.one-day-todos').forEach(elem => elem.classList.remove('chosen-day'))
+		event.target.closest('.one-day-todos').classList.add('chosen-day')
 	}
 
 	return (
 		// adding to this class each date of the year, so App can scroll to current date on load
-		<div className={`one-day-todos ${props.date}`}>
+		<div className={`one-day-todos ${props.date} section-minimized`}>
 
 			<div className="one-day-todos__top">
 				<div>

@@ -3,9 +3,13 @@
 /* todo more vars */
 :root{
 	--input-width: 290px;
-	--done: #84db00;
+	--done: #97f50a;
 	--liked: orange;
 	--hidden: tomato;
+	/* todo lighten or connect sass */
+	--done-light:#daffa7;
+	--liked-light:rgb(255, 228, 179);
+	--hidden-light:rgb(255, 202, 193);
 }
 
 body {
@@ -51,13 +55,15 @@ code {
 	justify-content: center;
 	user-select: none;
 }
-.hidden-todos-wrapper .todos-title{
-	background: #ffe6e0;
+.todos-title{
+	/* background: #ffe6e0; */
+	border: 2px solid #727272;
 }
 .turned-on{
-	background: #d8ffc1 !important;
+	/* background: #d8ffc1 !important; */
+	border: 1px solid #727272 !important;
 }
-.todos-wrapper, .hidden-todos-wrapper{
+.todos-wrapper{
 	display: inline-flex;
 	flex-direction: column;
 	padding: 0 8px;
@@ -136,15 +142,18 @@ button{
 	position: fixed;
 	top: 0px;
 	left: 0;
-	z-index: 2;
+	z-index: 4;
 	width: 100%;
 	height: 100%;
 	padding: 22px 0 0;
 	text-align: center;
 }
-.add-todo, .chosen-day{
-	background: #567594;
-	background-image: linear-gradient(62deg, #567594 0%, #E0C3FC 100%);
+.add-todo{
+	background: rgb(255,255,255);
+	background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(249,180,255,1) 0%, rgba(254,225,255,1) 100%);
+}
+.chosen-day{
+	background: #f3fcff;
 }
 .add-todo__buttons{
 	position: relative;
@@ -170,7 +179,6 @@ button,.todos-title,.like, .hide{
 }
 .one-day-todos{
 	font-style: italic;
-	border-left: 5px solid #d9b0ff;
 	border-top: 2px solid #f8f1ff;
 	border-bottom: 2px solid #f8f1ff;
 	margin-left: 2px;
@@ -245,6 +253,8 @@ button,.todos-title,.like, .hide{
 	transform: rotate(270deg);
 }
 .changeWeek{
+	position: relative;
+	z-index: 3;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -372,7 +382,7 @@ button,.todos-title,.like, .hide{
 	width: 30px;
 	height: 30px;
 	cursor: pointer;
-	z-index: 3;
+	z-index: 5;
  }
  .burger__btn > span,
  .burger__btn > span::before,
@@ -418,8 +428,8 @@ button,.todos-title,.like, .hide{
 	align-items: center;
 	height: 60px;
 	border-radius: 8px;
-	background: #63B3ED;
-	border: 3px solid #29a6ff;
+	background: #fff;
+	border: 2px solid #29a6ff;
  }
  .popup__img{
 	margin-left: 4px;
@@ -481,18 +491,27 @@ button,.todos-title,.like, .hide{
 	font-weight: 700;
  }
  /* ! search */
- .search {
+ .search{
+	padding: 80px 0 0 0;
+	min-height: 100vh;
+	background: rgb(121,205,255);
+	background: linear-gradient(0deg, rgba(121,205,255,1) 0%, rgba(217,255,253,1) 100%);
+ }
+ .search__icon {
 	position: fixed;
+	z-index: 2;
 	top: 16px;
 	right: 10px;
 	width: 38px;
 }
-.search_del{
+.search__icon_del{
 	transform: scale(.75);
 }
 .search__title{
-	position: relative;
+	position: fixed;
+	z-index: 2;
 	top: 20px;
+	width: 100%;
 	font-size: 20px;
 	margin-bottom: 40px;
 	text-align: center;
@@ -515,13 +534,15 @@ button,.todos-title,.like, .hide{
 }
 /* ! moveDate */
 [name="moveDate"]{
+	border: 2px solid;
+	border-radius: 8px;
 	height: 26px;
 	margin-right: 6px;
 }
 /* ! search-tag */
 .search-tag{
 	border: 1px solid;
-	border-radius: 6px;
+	border-radius: 8px;
 	padding: 4px 6px;
 	display: inline-flex;
 	align-items: center;
@@ -558,10 +579,34 @@ button,.todos-title,.like, .hide{
 /* ! scroll */
 .scroll{
 	position: fixed;
-	bottom: 8px;
-	right: 8px;
+	bottom: 12px;
+	right: 12px;
 	transform: rotate(180deg);
 	background: #fff;
 	border-radius: 50%;
 	padding: 4px;
+}
+.borderdone, .borderliked, .borderhidden, .borderall{
+	margin-right: 12px;
+	border-left: 5px solid var(--done-light);
+}
+.borderliked{
+	border-left: 5px solid var(--liked-light);
+}
+.borderhidden{
+	border-left: 5px solid var(--hidden-light);
+}
+.borderall{
+	border-left: 5px solid #f1f1f1;
+}
+.top-icons-bg{
+	position: fixed;
+	z-index: 2;
+	top: 0px;
+	left: 0px;
+	height: 70px;
+	width: 100%;
+	background: #fff;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
 }

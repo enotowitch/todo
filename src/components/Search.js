@@ -106,12 +106,12 @@ export default function Search(props) {
 
 	return (
 		<>
-			{props.showWeek && <img className="search" src={search} onClick={props.toggleWeek} />}
+			{props.showWeek && <img className="search__icon" src={search} onClick={props.toggleWeek} />}
 
 			{!props.showWeek &&
-				<>
+				<div className="search">
 					<div className="search__title">Search</div>
-					<img className="search search_del" src={del} onClick={props.toggleWeek} />
+					<img className="search__icon search__icon_del" src={del} onClick={props.toggleWeek} />
 
 					<>
 						<input type="text"
@@ -155,7 +155,7 @@ export default function Search(props) {
 						{!reverseState && searched.reverse()}
 					</>
 
-				</>
+				</div>
 			}
 		</>
 	)

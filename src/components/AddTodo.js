@@ -65,7 +65,7 @@ export default function AddTodo(props) {
 
 	return (
 		<div className="add-todo">
-			<div className="add-todo__date">Todo Date: {date}</div>
+			<div className="add-todo__date">Add Todo: {date}</div>
 			<input
 				className="input__text"
 				type="text"

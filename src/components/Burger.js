@@ -7,6 +7,7 @@ export default function Burger(props) {
 			<label className="burger__btn" htmlFor="burger__toggle">
 				<span></span>
 			</label>
+			<div className="top-icons-bg"></div>
 		</>
 	)
 }

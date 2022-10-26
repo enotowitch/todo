@@ -87,10 +87,6 @@ export default function App() {
 		curTodoObj[propName] = !curTodoObj[propName]
 		// todo remove localStorage.setItem
 		// localStorage.setItem(todoID, JSON.stringify(curTodoObj))
-		// style .todos-title .propName
-		const todosTitle = document.querySelector(`[class*=${propName}]`)
-		todosTitle && !todosTitle.classList.contains('turned-on') ? todosTitle.click() : console.log('do nothing')
-		todosTitle && todosTitle.classList.remove(propName)
 		// ! PopUp
 		makePopUp(propName, propName.slice(2), curTodoObj.text, setPopUpState, setShowPopUp)
 	}
@@ -110,25 +106,9 @@ export default function App() {
 		// PopUp
 		makePopUp("add", normalizeDate(newDate), todos[todoId - 1].text, setPopUpState, setShowPopUp)
 	}
-	// ! scroll
-	let scrollCounter = 0
-
-	function scroll() {
-		const getTodayDiv = document.querySelector(`.${getToday()}`)
-		scrollCounter++
-		if (scrollCounter % 2 === 0 && getTodayDiv) {
-			// scroll to today
-			setTimeout(() => {
-				getTodayDiv.scrollIntoView()
-			}, 1000);
-		} else {
-			window.scrollTo({ top: 0, behavior: "smooth" });
-		}
+	function scrollTop() {
+		window.scrollTo({ top: 0, behavior: "smooth" });
 	}
-	React.useEffect(() => {
-		scroll()
-	}, [])
-	// ? scroll
 	// todo
 	// React.useEffect(() => {
 	// 	// style chosen-day set in cookie "dateForAddTodo"
@@ -170,7 +150,7 @@ export default function App() {
 			{showPopUp && <PopUp {...popUpState} popUpHide={popUpHide} todos={todos} setTodos={setTodos} />}
 
 			<Search showWeek={showWeek} toggleWeek={toggleWeek} todos={todos} action={action} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />
-			<img src={arrow} className="arrow scroll" onClick={scroll} />
+			<img src={arrow} className="arrow scroll" onClick={scrollTop} />
 		</>
 	)
 }
