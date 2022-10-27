@@ -33,7 +33,8 @@ code {
 	position: relative;
 	width: 400px;
 	margin: 0 auto;
-	background: #ececec;
+	background: #ffffff;
+	box-shadow:  2px 2px 6px #d9d9d9, -2px -2px 6px #ffffff;
 	border-radius: 8px;
 	display: flex;
 	align-items: center;
@@ -154,8 +155,8 @@ button{
 	text-align: center;
 }
 .add-todo{
-	background: rgb(255,255,255);
-	background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(249,180,255,1) 0%, rgba(254,225,255,1) 100%);
+	background: #fff;
+	border-left: 10px solid #ffd5dc;
 }
 .chosen-day{
 	/* background: #f3fcff; */
@@ -232,8 +233,11 @@ button,.todos-title,.like, .hide{
 	height: 40px;
 	overflow: hidden;
 }
-.section-minimized .view-arrow{
+.view-arrow{
 	transform: rotate(180deg);
+}
+.section-minimized .view-arrow{
+	transform: rotate(0deg);
 }
 /* todo arrow classes */
 .arrow{
@@ -497,11 +501,20 @@ button,.todos-title,.like, .hide{
 	font-weight: 700;
  }
  /* ! search */
+ .search__bg{
+	position: absolute;
+	z-index: 2;
+	top: 0px;
+	left: -10px;
+	pointer-events: none;
+	height: 100%;
+	width: 100%;
+	border-right: 10px solid #c2fff2;
+ }
  .search{
+	position: relative;
 	padding: 95px 0 0 0;
 	min-height: 100vh;
-	background: rgb(121,205,255);
-	background: linear-gradient(0deg, rgba(121,205,255,1) 0%, rgba(217,255,253,1) 100%);
  }
  .search__icon {
 	position: fixed;
