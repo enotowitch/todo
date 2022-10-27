@@ -7,21 +7,28 @@ export default function PopUp(props) {
 		document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
 		window.location.reload()
 	}
+	// ! editTodo
 	function editTodo() {
-		// get todo id by text
-		let editId
-		props.todos.map(elem => {
-			elem.text === props.text && (editId = elem.id)
-		})
+		const editText = document.querySelector('[name="edit"]').value
 		// state
 		props.setTodos(prevState => {
 			return prevState.map(elem => {
-				return elem.id === editId ? { ...elem, text: inputState.edit } : elem
+				return elem.id === props.todoId ? { ...elem, text: editText } : elem
 			})
 		})
 		// popUpHide
 		props.popUpHide()
 	}
+	React.useEffect(() => {
+		let text
+		props.todos.map(elem => {
+			return elem.id === props.todoId && (text = elem.text)
+		})
+		const edit = document.querySelector('[name="edit"]')
+		edit && (edit.value = text + " ")
+		edit && edit.focus()
+	}, [props.todoId])
+	// ? editTodo
 	// ! deleteTodo
 	function deleteTodo() {
 		props.setTodos(prevState => prevState.filter(todo => {
@@ -29,12 +36,6 @@ export default function PopUp(props) {
 		}))
 		props.popUpHide()
 		localStorage.removeItem(props.todoId)
-	}
-
-	const [inputState, setInputState] = React.useState({ edit: props.text })
-	function changeInputState(event) {
-		const { name, value } = event.target
-		setInputState(prevState => ({ ...prevState, [name]: value }))
 	}
 	const firstButtonText = props.modalWindowType === "confirm" ? "Delete" : "Edit"
 
@@ -44,11 +45,6 @@ export default function PopUp(props) {
 		props.doFunction === "editTodo" && editTodo()
 		props.doFunction === "deleteTodo" && deleteTodo()
 	}
-
-	React.useEffect(() => {
-		// trigger change in textarea name="edit" so props.text works CORRECT
-		document.querySelector('[name="edit"]') && (document.querySelector('[name="edit"]').value = props.text + " ")
-	}, [props.text])
 
 	return (
 		<>
@@ -62,8 +58,6 @@ export default function PopUp(props) {
 					<textarea
 						type="textarea"
 						name="edit"
-						value={inputState.edit}
-						onChange={changeInputState}
 					/>
 				}
 

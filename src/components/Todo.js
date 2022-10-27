@@ -39,7 +39,7 @@ export default function Todo(props) {
 	// ! editPopUp
 	function editPopUp() {
 		props.setShowPopUp(prevState => !prevState)
-		makePopUp({ title: "Editing...", text: props.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "prompt", doFunction: "editTodo" })
+		makePopUp({ title: "Editing...", text: props.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "prompt", doFunction: "editTodo", todoId: props.id })
 	}
 	// ! delete todo
 	function deleteTodo() {
