@@ -46,7 +46,14 @@ export default function Search(props) {
 	statusIds = statusIds.filter(isTrue => isTrue)
 	// ! define taskIds	
 	let taskIds = props.todos.map((todo) => {
-		return todo.text.match(/\S+/) == searchState.task && todo.id
+		// if search status is chosen add all task ids to search
+		if (searchState.status) {
+			return todo.text.match(/\S+/) == searchState.task && todo.id
+		}
+		// if search status is NOT chosen: -doing, -done, -canceled
+		if (!searchState.status) {
+			return (todo.text.match(/\S+/) == searchState.task && !todo.doing && !todo.done && !todo.canceled) && todo.id
+		}
 	})
 	taskIds = taskIds.filter(isTrue => isTrue)
 
