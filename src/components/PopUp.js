@@ -22,6 +22,14 @@ export default function PopUp(props) {
 		// popUpHide
 		props.popUpHide()
 	}
+	// ! deleteTodo
+	function deleteTodo() {
+		props.setTodos(prevState => prevState.filter(todo => {
+			return todo.id !== props.todoId
+		}))
+		props.popUpHide()
+		localStorage.removeItem(props.todoId)
+	}
 
 	const [inputState, setInputState] = React.useState({ edit: props.text })
 	function changeInputState(event) {
@@ -34,7 +42,7 @@ export default function PopUp(props) {
 	function modalWindowFunction() {
 		props.doFunction === "deleteTasks" && deleteTasks()
 		props.doFunction === "editTodo" && editTodo()
-		props.doFunction === "deleteTodo" && window.location.reload()
+		props.doFunction === "deleteTodo" && deleteTodo()
 	}
 
 	React.useEffect(() => {

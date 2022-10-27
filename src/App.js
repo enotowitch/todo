@@ -72,7 +72,7 @@ export default function App() {
 			})
 		}
 		// ! PopUp
-		makePopUp("add", normalizeDate(date), inputText, setPopUpState, setShowPopUp)
+		makePopUp({ imgName: "add", title: normalizeDate(date), text: inputText, setPopUpState, setShowPopUp })
 	}
 	// ! action: propName: done/doing/canceled,etc... works only with BOOLS!
 	function action(todoID, propName) {
@@ -88,7 +88,7 @@ export default function App() {
 		// todo remove localStorage.setItem
 		// localStorage.setItem(todoID, JSON.stringify(curTodoObj))
 		// ! PopUp
-		makePopUp(propName, propName, curTodoObj.text, setPopUpState, setShowPopUp)
+		makePopUp({ imgName: propName, title: propName, text: curTodoObj.text, setPopUpState, setShowPopUp })
 	}
 	function toggleAction(todoId) {
 		setTodos(prevState => {
@@ -104,7 +104,7 @@ export default function App() {
 			return elem.id === todoId ? { ...elem, date: newDate } : elem
 		}))
 		// PopUp
-		makePopUp("add", normalizeDate(newDate), todos[todoId - 1].text, setPopUpState, setShowPopUp)
+		makePopUp({ imgName: "add", title: normalizeDate(newDate), text: todos[todoId - 1].text, setPopUpState, setShowPopUp })
 	}
 	function scrollTop() {
 		window.scrollTo({ top: 0, behavior: "smooth" });

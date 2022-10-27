@@ -20,7 +20,7 @@ export default function AddTodo(props) {
 	// ! deleteTasksPopUp
 	function deleteTasksPopUp() {
 		props.setShowPopUp(prevState => !prevState)
-		makePopUp("", "Delete my tasks?", "", props.setPopUpState, props.setShowPopUp, "confirm", "deleteTasks")
+		makePopUp({ title: "Delete my tasks?", setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTasks" })
 	}
 
 	// todo HAS DUP

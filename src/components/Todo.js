@@ -39,12 +39,11 @@ export default function Todo(props) {
 	// ! editPopUp
 	function editPopUp() {
 		props.setShowPopUp(prevState => !prevState)
-		makePopUp("", "Editing...", props.text, props.setPopUpState, props.setShowPopUp, "prompt", "editTodo")
+		makePopUp({ title: "Editing...", text: props.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "prompt", doFunction: "editTodo" })
 	}
 	// ! delete todo
 	function deleteTodo() {
-		makePopUp("", "Delete?", props.text, props.setPopUpState, props.setShowPopUp, "confirm", "deleteTodo")
-		localStorage.removeItem(props.id)
+		makePopUp({ title: "Delete?", text: props.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTodo", todoId: props.id })
 	}
 	const [moveSelectState, setMoveSelectState] = React.useState({ moveDate: props.date })
 
