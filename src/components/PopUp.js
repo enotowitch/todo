@@ -3,6 +3,7 @@ import React from "react"
 export default function PopUp(props) {
 	const path = props.imgName ? `img/${props.imgName}.svg` : ""
 
+	// ! deleteTasks
 	function deleteTasks() {
 		document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
 		window.location.reload()
@@ -37,14 +38,19 @@ export default function PopUp(props) {
 		props.popUpHide()
 		localStorage.removeItem(props.todoId)
 	}
-	const firstButtonText = props.modalWindowType === "confirm" ? "Delete" : "Edit"
-
-	// todo REDO popUp, makePopUp (take object in params), pass only todo.id => not todo.text
+	// ! deleteTodos
+	function deleteTodos() {
+		localStorage.clear()
+		window.location.reload()
+	}
 	function modalWindowFunction() {
 		props.doFunction === "deleteTasks" && deleteTasks()
 		props.doFunction === "editTodo" && editTodo()
 		props.doFunction === "deleteTodo" && deleteTodo()
+		props.doFunction === "deleteTodos" && deleteTodos()
 	}
+
+	const firstButtonText = props.modalWindowType === "confirm" ? "Delete" : "Edit"
 
 	return (
 		<>

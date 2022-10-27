@@ -22,6 +22,11 @@ export default function AddTodo(props) {
 		props.setShowPopUp(prevState => !prevState)
 		makePopUp({ title: "Delete my tasks?", setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTasks" })
 	}
+	// ! deleteTodosPopUp
+	function deleteTodosPopUp() {
+		props.setShowPopUp(prevState => !prevState)
+		makePopUp({ title: "Delete all todos?", setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTodos" })
+	}
 
 	// todo HAS DUP
 	const [menu, setMenu] = React.useState([
@@ -34,7 +39,7 @@ export default function AddTodo(props) {
 		},
 		{
 			title: "Settings",
-			content: <Settings deleteTasksPopUp={deleteTasksPopUp} />,
+			content: <Settings deleteTasksPopUp={deleteTasksPopUp} deleteTodosPopUp={deleteTodosPopUp} />,
 			id: 1,
 			isShown: true,
 			hasClose: false

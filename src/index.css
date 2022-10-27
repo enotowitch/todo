@@ -130,6 +130,11 @@ button{
 	border-radius: 8px;
 	outline: none;
 	border: 2px solid #000;
+	font-weight: 700;
+}
+.danger-button{
+	border: 2px solid var(--canceled);
+	color: var(--canceled);
 }
 .input__text{
 	height: 30px;
@@ -421,9 +426,9 @@ button,.todos-title,.like, .hide{
 	position: fixed;
 	z-index: 4;
 	bottom: 10px;
-	left: 15px;
+	left: 50%;
+	transform: translate(-50%);
 	min-width: var(--input-width);
-	width: 50vw;
 	display: flex;
 	align-items: center;
 	height: 60px;
@@ -455,6 +460,7 @@ button,.todos-title,.like, .hide{
  }
  /* ! confirm */
  .confirm, .prompt{
+	width: 50vw;
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%,-50%);

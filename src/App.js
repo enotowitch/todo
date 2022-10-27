@@ -11,7 +11,7 @@ import PopUp from "./components/PopUp"
 import normalizeDate from "./functions/normalizeDate"
 import makePopUp from "./functions/makePopUp"
 import Search from "./components/Search"
-import arrow from "./img/arrow.svg"
+import Scroll from "./components/Scroll"
 
 export default function App() {
 
@@ -106,9 +106,6 @@ export default function App() {
 		// PopUp
 		makePopUp({ imgName: "add", title: normalizeDate(newDate), text: todos[todoId - 1].text, setPopUpState, setShowPopUp })
 	}
-	function scrollTop() {
-		window.scrollTo({ top: 0, behavior: "smooth" });
-	}
 	// todo
 	// React.useEffect(() => {
 	// 	// style chosen-day set in cookie "dateForAddTodo"
@@ -150,7 +147,7 @@ export default function App() {
 			{showPopUp && <PopUp {...popUpState} popUpHide={popUpHide} todos={todos} setTodos={setTodos} />}
 
 			<Search showWeek={showWeek} toggleWeek={toggleWeek} todos={todos} action={action} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />
-			<img src={arrow} className="arrow scroll" onClick={scrollTop} />
+			<Scroll />
 		</>
 	)
 }
