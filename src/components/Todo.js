@@ -71,6 +71,12 @@ export default function Todo(props) {
 
 	const moveTaskOptions = tasksArr.reverse().map(taskName => <option>{taskName}</option>)
 
+	// ! todo bg
+	let bg
+	props.doing && (bg = "doing-bg")
+	props.done && (bg = "done-bg")
+	props.canceled && (bg = "canceled-bg")
+	!props.doing && !props.done && !props.canceled && (bg = "no-bg")
 
 	return (
 		<div className="todo" style={style}>
@@ -114,6 +120,9 @@ export default function Todo(props) {
 			}
 
 			<img className="dots" src={props.showAction ? dots2 : dots} onClick={() => props.toggleAction(props.id)} />
+
+			<span className={`todo__bg ${bg}`}></span>
+
 		</div>
 	)
 }

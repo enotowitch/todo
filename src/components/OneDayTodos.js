@@ -40,9 +40,9 @@ export default function OneDayTodos(props) {
 	function styleHiddenSection(e) {
 		e.target.nextSibling.classList.toggle('hidden-todos')
 		e.target.classList.toggle('turned-on')
-		let borderClassName = e.target.closest('.todos-wrapper').querySelector('.todos-title span').className
-		borderClassName = "border" + borderClassName
-		e.target.closest('.todos-wrapper').classList.toggle(borderClassName)
+		// let borderClassName = e.target.closest('.todos-wrapper').querySelector('.todos-title span').className
+		// borderClassName = "border" + borderClassName
+		// e.target.closest('.todos-wrapper').classList.toggle(borderClassName)
 	}
 	function getTodoDate(event) {
 		// write to cookie => on which day AddTodo() is used
