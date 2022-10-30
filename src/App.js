@@ -44,7 +44,7 @@ export default function App() {
 	const [popUpState, setPopUpState] = React.useState({})
 	const [showPopUp, setShowPopUp] = React.useState(false)
 
-	const daysHtmlElements = weeks[weekNum].map(elem => <OneDayTodos todos={todos} action={action} date={elem} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />)
+	const daysHtmlElements = weeks[weekNum].map(elem => <OneDayTodos todos={todos} action={action} date={elem} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />)
 
 	function addTodo(inputText, quantity) {
 		// ! date
@@ -56,19 +56,30 @@ export default function App() {
 		if (inputText === "" && quantity === "many") {
 			inputText = `Test Task ${localStorage.length + 1}, Test Task ${localStorage.length + 2}, Test Task ${localStorage.length + 3}`
 		}
+		// ! define task
+		// todo HAS DUP
+		const tasksObj = JSON.parse(document.cookie.match(/tasks={.*?}/)[0].replace(/tasks=/, ''))
+
+		const tasksArr = []
+		Object.values(tasksObj).map(elem => tasksArr.push(elem)) // ['taskName1', 'taskName2', 'taskName3']
+
+		const firstWord = inputText.match(/\S+/)[0]
+		let task
+		tasksArr.map(taskName => taskName === firstWord && (task = firstWord))
+		// ? define task
 		// ! add MANY
 		if (inputText.match(",") && quantity === "many") {
 			const arr = inputText.split(",")
 			for (let i = 0; i < arr.length; i++) {
 				setTodos(prevState => {
-					return [...prevState, { id: prevState.length + 1, date: date, text: arr[i], doing: false, done: false, canceled: false, showAction: false }]
+					return [...prevState, { task: task, id: prevState.length + 1, date: date, text: arr[i], doing: false, done: false, canceled: false, showAction: false }]
 				})
 			}
 		}
 		if (quantity === "one") {
 			// ! add ONE
 			setTodos(prevState => {
-				return [...prevState, { id: prevState.length + 1, date: date, text: inputText, doing: false, done: false, canceled: false, showAction: false }]
+				return [...prevState, { task: task, id: prevState.length + 1, date: date, text: inputText, doing: false, done: false, canceled: false, showAction: false }]
 			})
 		}
 		// ! PopUp
@@ -105,6 +116,12 @@ export default function App() {
 		}))
 		// PopUp
 		makePopUp({ imgName: "add", title: normalizeDate(newDate), text: todos[todoId - 1].text, setPopUpState, setShowPopUp })
+	}
+	// ! moveTask
+	function moveTask(todoId, newTask) {
+		setTodos(prevState => prevState.map(elem => {
+			return elem.id === todoId ? { ...elem, task: newTask } : elem
+		}))
 	}
 	// todo
 	// React.useEffect(() => {
@@ -146,7 +163,7 @@ export default function App() {
 			}
 			{showPopUp && <PopUp {...popUpState} popUpHide={popUpHide} todos={todos} setTodos={setTodos} />}
 
-			<Search showWeek={showWeek} toggleWeek={toggleWeek} todos={todos} action={action} moveTodo={moveTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />
+			<Search showWeek={showWeek} toggleWeek={toggleWeek} todos={todos} action={action} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />
 			<Scroll />
 		</>
 	)

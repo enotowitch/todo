@@ -23,7 +23,7 @@ export default function OneDayTodos(props) {
 	let allTodosNum = thisDayTodos.length
 
 	function shortTodo(todo, ind) {
-		return <Todo key={ind} {...todo} action={props.action} moveTodo={props.moveTodo} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
+		return <Todo key={ind} {...todo} action={props.action} moveTodo={props.moveTodo} moveTask={props.moveTask} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
 	}
 
 	// ! OUTPUT LOGIC

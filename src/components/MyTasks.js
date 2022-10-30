@@ -18,6 +18,7 @@ export default function MyTasks(props) {
 	}, [colorState])
 	// ? colors
 	// ! tasks
+	// todo HAS DUP
 	const tasksObj = JSON.parse(document.cookie.match(/tasks={.*?}/)[0].replace(/tasks=/, '')) // {task1: 'taskName1', task2: 'taskName2' ... }
 
 	const [taskState, setTaskState] = React.useState(tasksObj)

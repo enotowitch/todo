@@ -76,23 +76,25 @@ code {
 		padding: 15px 0 0 0;
 }
 /*  */
-.like{
-	margin-left: auto;
-	padding: 0 6px;
-}
-.hide, .del{
-	padding-right: 6px;
-	transform: scale(0.9);
+.like, .hide, .del{
+	margin: 2px;
+
 }
 .actions{
-	display: flex;
-	align-items: center;
 	position: absolute;
+	z-index: 2;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+	align-items: center;
 	right: 30px;
 	background: #fff;
 	padding: 4px 2px;
 	border-radius: 8px;
-	opacity: 0.9;
+	width: 80px;
+}
+.dots{
+	padding-right: 8px;
 }
 .hidden-todos{
 	display: none;
@@ -551,12 +553,12 @@ button,.todos-title,.like, .hide{
 	border: 1px solid;
 	text-indent: 4px;
 }
-/* ! moveDate */
-[name="moveDate"]{
+/* ! moveDate, moveTask */
+[name="moveDate"],[name="moveTask"]{
 	border: 2px solid;
 	border-radius: 8px;
 	height: 26px;
-	margin-right: 6px;
+	margin: 2px;
 }
 /* ! search-tag */
 .search-tag{
