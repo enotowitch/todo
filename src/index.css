@@ -55,10 +55,8 @@ code {
 	padding: 10px 0;
 	justify-content: center;
 	user-select: none;
-}
-.todos-title{
-	/* background: #ffe6e0; */
 	border: 2px solid #727272;
+	border-radius: 50px;
 }
 .turned-on{
 	/* background: #d8ffc1 !important; */
@@ -135,6 +133,7 @@ button{
 	outline: none;
 	border: 2px solid #000;
 	font-weight: 700;
+	border-radius: 50px;
 }
 .danger-button{
 	border: 2px solid var(--canceled);
@@ -159,12 +158,13 @@ button{
 }
 .add-todo{
 	background: #fff;
-	border-left: 10px solid #ffd5dc;
+	left: 10px;
+	border-left: 2px solid #000;
 }
 .chosen-day{
 	/* background: #f3fcff; */
 }
-.add-todo__buttons{
+.buttons{
 	position: relative;
 	display: flex;
 	flex-wrap: wrap;
@@ -311,8 +311,8 @@ button,.todos-title,.like, .hide{
 /* ! tutorial */
 .tutorial-on{
 	position: absolute;
-	right: 0;
-	top: 4px;
+	right: 20%;
+	top: 30%;
 	display: inline-block;
 	width: 24px;
 	height: 24px;
@@ -427,11 +427,11 @@ button,.todos-title,.like, .hide{
 	top: 0;
 	left: 0;
 	background: rgba(255, 255, 255, 0.95);
-	z-index: 3;
+	z-index: 8;
  }
  .popup, .confirm, .prompt{
 	position: fixed;
-	z-index: 4;
+	z-index: 9;
 	bottom: 10px;
 	left: 50%;
 	transform: translate(-50%);
@@ -512,7 +512,7 @@ button,.todos-title,.like, .hide{
 	pointer-events: none;
 	height: 100%;
 	width: 100%;
-	border-right: 10px solid #c2fff2;
+	border-right: 2px solid #000;
  }
  .search{
 	position: relative;

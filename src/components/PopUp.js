@@ -40,6 +40,7 @@ export default function PopUp(props) {
 	}
 	// ! deleteTodos
 	function deleteTodos() {
+		document.cookie = `lastTodo="0"`
 		localStorage.clear()
 		window.location.reload()
 	}

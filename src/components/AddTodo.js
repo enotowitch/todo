@@ -4,7 +4,6 @@ import MenuItem from "./MenuItem"
 import MyTasks from "./MyTasks"
 import Settings from "./Settings"
 import getCookie from "./../functions/getCookie"
-import Tutorial from "./Tutorial"
 
 export default function AddTodo(props) {
 
@@ -58,11 +57,6 @@ export default function AddTodo(props) {
 			return { ...elem, isShown: true, hasClose: false }
 		}))
 	}
-	// ! Tutorial
-	const [showTutorial, setShowTutorial] = React.useState(false)
-	function toggleTutorial() {
-		setShowTutorial(prevState => !prevState)
-	}
 
 	const menuHtmlElems = menu.map(elem => <MenuItem {...elem} toggleMenuContent={toggleMenuContent} showAllmenu={showAllmenu} />)
 
@@ -74,25 +68,18 @@ export default function AddTodo(props) {
 			<input
 				className="input__text"
 				type="text"
-				placeholder="ADD ONE: todo. or ADD MANY: todo1, todo2, ..."
+				placeholder="todo text"
 				autoFocus
 				value={text}
 				onChange={getText} />
-			<div className="add-todo__buttons">
+			<div className="buttons">
 				<button onClick={() =>
 					props.addTodo(text, "one",
 						clearText())
-				}>add one</button>
-
-				<button onClick={() =>
-					props.addTodo(text, "many",
-						clearText())
-				}>add many</button>
-				<span className="tutorial-on" onClick={toggleTutorial}>?</span>
+				}>add todo</button>
 			</div>
 
 			{menuHtmlElems}
-			{showTutorial && <Tutorial />}
 		</div>
 	)
 }

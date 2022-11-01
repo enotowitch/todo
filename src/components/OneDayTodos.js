@@ -22,8 +22,8 @@ export default function OneDayTodos(props) {
 	thisDayTodos.map(elem => elem.done && doneNum++)
 	let allTodosNum = thisDayTodos.length
 
-	function shortTodo(todo, ind) {
-		return <Todo key={ind} {...todo} action={props.action} moveTodo={props.moveTodo} moveTask={props.moveTask} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
+	function shortTodo(todo) {
+		return <Todo key={todo.id} {...todo} action={props.action} moveTodo={props.moveTodo} moveTask={props.moveTask} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
 	}
 
 	// ! OUTPUT LOGIC

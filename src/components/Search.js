@@ -49,11 +49,11 @@ export default function Search(props) {
 		// ! OUTPUT LOGIC
 		// if search status is chosen add all task ids to search
 		if (searchState.status) {
-			return todo.text.match(/\S+/) == searchState.task && todo.id
+			return todo.task === searchState.task && todo.id
 		}
 		// if search status is NOT chosen: -doing, -done, -canceled
 		if (!searchState.status) {
-			return (todo.text.match(/\S+/) == searchState.task && !todo.doing && !todo.done && !todo.canceled) && todo.id
+			return (todo.task === searchState.task && !todo.doing && !todo.done && !todo.canceled) && todo.id
 		}
 		// ? OUTPUT LOGIC
 	})
@@ -80,8 +80,8 @@ export default function Search(props) {
 	searchState.task && taskIds.length == 0 && (result = [])
 
 
-	function shortTodo(todo, ind) {
-		return <Todo showDate={true} key={ind} {...todo} action={props.action} moveTodo={props.moveTodo} moveTask={props.moveTask} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
+	function shortTodo(todo) {
+		return <Todo showDate={true} key={todo.id} {...todo} action={props.action} moveTodo={props.moveTodo} moveTask={props.moveTask} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
 	}
 
 	let searched = []

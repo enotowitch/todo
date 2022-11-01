@@ -15,13 +15,17 @@ import Scroll from "./components/Scroll"
 
 export default function App() {
 
-	// default cookies
+	// ! default cookies
 	if (!document.cookie.match(/colors/)) {
 		document.cookie = `colors={"work":"#7ec5fb","buy":"#ff8585","cook":"#aeffa3"};`
 	}
 	if (!document.cookie.match(/tasks/)) {
 		document.cookie = `tasks={"task1":"work","task2":"buy","task3":"cook"};`
 	}
+	if (!document.cookie.match(/lastTodo/)) {
+		document.cookie = `lastTodo="0"`
+	}
+	// ? default cookies
 
 	let curWeekNum
 	weeks.map((elem, ind) => elem.includes(getToday()) && (curWeekNum = ind))
@@ -47,14 +51,13 @@ export default function App() {
 	const daysHtmlElements = weeks[weekNum].map(elem => <OneDayTodos todos={todos} action={action} date={elem} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />)
 
 	function addTodo(inputText, quantity) {
+		let lastTodo
+		lastTodo = document.cookie.match(/lastTodo="\d+/) && document.cookie.match(/lastTodo="\d+/)[0].replace(/lastTodo="/, '') * 1
 		// ! date
 		const date = getCookie("dateForAddTodo")
 		// ? date
 		if (inputText === "" && quantity === "one") {
-			inputText = `Test Task ${localStorage.length + 1}`
-		}
-		if (inputText === "" && quantity === "many") {
-			inputText = `Test Task ${localStorage.length + 1}, Test Task ${localStorage.length + 2}, Test Task ${localStorage.length + 3}`
+			inputText = `Test Task ${lastTodo + 1}`
 		}
 		// ! define task
 		// todo HAS DUP
@@ -65,23 +68,18 @@ export default function App() {
 
 		const firstWord = inputText.match(/\S+/)[0]
 		let task
-		tasksArr.map(taskName => taskName === firstWord && (task = firstWord))
+		tasksArr.map(taskName => taskName === firstWord && (task = firstWord, inputText = inputText.replace(firstWord, '')))
 		// ? define task
-		// ! add MANY
-		if (inputText.match(",") && quantity === "many") {
-			const arr = inputText.split(",")
-			for (let i = 0; i < arr.length; i++) {
-				setTodos(prevState => {
-					return [...prevState, { task: task, id: prevState.length + 1, date: date, text: arr[i], doing: false, done: false, canceled: false, showAction: false }]
-				})
-			}
-		}
+
 		if (quantity === "one") {
 			// ! add ONE
+			lastTodo++
+			
 			setTodos(prevState => {
-				return [...prevState, { task: task, id: prevState.length + 1, date: date, text: inputText, doing: false, done: false, canceled: false, showAction: false }]
+				return [...prevState, { task: task, id: lastTodo, date: date, text: inputText, doing: false, done: false, canceled: false, showAction: false }]
 			})
 		}
+		document.cookie = `lastTodo="${lastTodo}"`
 		// ! PopUp
 		makePopUp({ imgName: "add", title: normalizeDate(date), text: inputText, setPopUpState, setShowPopUp })
 	}

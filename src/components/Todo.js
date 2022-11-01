@@ -32,7 +32,6 @@ export default function Todo(props) {
 	tasksArr.map(taskName => { // - taskName1,taskName2 ...
 		if (props.task === taskName.trim()) { // if task exists => color, remove taskName
 			color = colorsObj[taskName]
-			text = props.text.replace(taskName, '') // text without taskName
 		}
 	})
 
