@@ -64,7 +64,7 @@ export default function OneDayTodos(props) {
 			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
 			}><span className="all">Todo <ActionNum num={allNum - doingNum - doneNum - canceledNum} class={allNum} /></span>
-				{allNum - doingNum - doneNum - canceledNum > 0 && <img className="arrow action-arrow" src={arrow} />}
+				{allNum - doingNum - doneNum - canceledNum > 0 && <img className="arrow arrow_action" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{todoElems}</div>
 		</div>
@@ -74,7 +74,7 @@ export default function OneDayTodos(props) {
 			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
 			}><span className="doing">Doing <ActionNum num={doingNum} class={doingNum} /></span>
-				{doingNum > 0 && <img className="arrow action-arrow" src={arrow} />}
+				{doingNum > 0 && <img className="arrow arrow_action" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{doingTodos}</div>
 		</div>
@@ -84,7 +84,7 @@ export default function OneDayTodos(props) {
 			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
 			}><span className="done">Done <ActionNum num={doneNum} class={doneNum} /></span>
-				{doneNum > 0 && <img className="arrow action-arrow" src={arrow} />}
+				{doneNum > 0 && <img className="arrow arrow_action" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{doneTodos}</div>
 		</div>
@@ -94,14 +94,14 @@ export default function OneDayTodos(props) {
 			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
 			}><span className="canceled">Canceled <ActionNum num={canceledNum} class={canceledNum} /></span>
-				{canceledNum > 0 && <img className="arrow action-arrow" src={arrow} />}
+				{canceledNum > 0 && <img className="arrow arrow_action" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{canceledTodos}</div>
 		</div>
 	</div>
 	// ? allTodosWrapper
 
-	function toggleOneDayTodosView(event) {
+	function toggleDay(event) {
 		event.target.closest('.one-day-todos').classList.toggle('section-minimized')
 		document.querySelectorAll('.one-day-todos').forEach(elem => elem.classList.remove('chosen-day'))
 		event.target.closest('.one-day-todos').classList.add('chosen-day')
@@ -121,7 +121,7 @@ export default function OneDayTodos(props) {
 
 				<ActionNums allNum={(allNum - doingNum - doneNum - canceledNum)} doingNum={doingNum} doneNum={doneNum} canceledNum={canceledNum} />
 
-				{thisDayTodos.length > 0 && <img className="arrow view-arrow" src={arrow} onClick={toggleOneDayTodosView} />}
+				{thisDayTodos.length > 0 && <div className="toggle-day" onClick={toggleDay}><img className="arrow arrow_view arrow_day" src={arrow} /></div>}
 			</div>
 
 			{thisDayTodos.length > 0 && allTodosWrapper}

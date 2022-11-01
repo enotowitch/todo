@@ -220,6 +220,7 @@ button,.todos-title,.like, .hide{
 }
 /* ! .one-day-todos__top */
 .one-day-todos__top{
+	position: relative;
 	display: flex;
 	align-items: center;
 }
@@ -243,32 +244,42 @@ button,.todos-title,.like, .hide{
 	height: 40px;
 	overflow: hidden;
 }
-.view-arrow{
-	transform: rotate(180deg);
+/* ! arrow */
+.arrow_view{
+	transform: rotate(180deg) scale(.85);
 }
-.section-minimized .view-arrow{
-	transform: rotate(0deg);
+.section-minimized .arrow_view, .arrow_menu{
+	transform: rotate(0deg) scale(.85);
 }
-/* todo arrow classes */
 .arrow{
 	width: 30px;
 }
-.view-arrow, .action-arrow, .week-arrow{
+.arrow_view, .arrow_action{
 	margin-left: auto;
 	margin-right: 8px;
 }
-.action-arrow{
+.arrow_action{
 	position: absolute;
 	right: 8px;
 	pointer-events: none;
+	transform: scale(.7);
 }
-.week-arrow{
-	margin: 0;
+.turned-on .arrow_action{
+	transform: scale(.7) rotate(180deg);
 }
-.week-arrow_prev{
+.toggle-day{
+	position: absolute;
+	display: flex;
+	width: 100%;
+	height: 100%;
+}
+.arrow_day{
+	margin-left: auto;
+}
+.arrow_prev{
 	transform: rotate(90deg);
 }
-.week-arrow_next{
+.arrow_next{
 	transform: rotate(270deg);
 }
 .changeWeek{
@@ -281,11 +292,10 @@ button,.todos-title,.like, .hide{
 	width: 200px;
 	margin: 22px auto 15px;
 }
-.turned-on .action-arrow{
-	transform: rotate(180deg);
-}
 
 .get-todo-date{
+	position: relative;
+	z-index: 2;
 	margin-left: 8px;
 }
 /* ! pick-color */
@@ -528,7 +538,7 @@ button,.todos-title,.like, .hide{
  }
  .search__icon {
 	position: fixed;
-	z-index: 2;
+	z-index: 3;
 	top: 16px;
 	right: 10px;
 	width: 38px;
@@ -538,7 +548,7 @@ button,.todos-title,.like, .hide{
 }
 .search__title{
 	position: fixed;
-	z-index: 2;
+	z-index: 3;
 	top: 22px;
 	width: 100%;
 	font-size: 20px;
@@ -608,12 +618,13 @@ button,.todos-title,.like, .hide{
 /* ! scroll */
 .scroll{
 	position: fixed;
-	bottom: 12px;
+	bottom: 6px;
 	right: 12px;
-	transform: rotate(180deg);
+	transform: rotate(180deg) scale(.8);
 	background: #fff;
 	border-radius: 50%;
-	padding: 4px;
+	border: 1px solid;
+	padding: 8px;
 }
 .borderdone, .borderdoing, .bordercanceled, .borderall{
 	margin-right: 12px;
@@ -630,7 +641,7 @@ button,.todos-title,.like, .hide{
 }
 .top-icons-bg{
 	position: fixed;
-	z-index: 2;
+	z-index: 3;
 	top: 0px;
 	left: 0px;
 	height: 70px;

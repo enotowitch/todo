@@ -15,15 +15,15 @@ export default function MenuItem(props) {
 		}
 	}
 
-	
+
 	return (
 		<>
 			{props.isShown &&
 				<>
 					<div className="menu__title" onClick={toggle}>
 						<span>{props.title}</span>
-						{!props.hasClose && <img className="arrow" src={arrow} />}
-						{props.hasClose && <img className="arrow view-arrow" src={arrow} />}
+						{!props.hasClose && <img className="arrow arrow_menu" src={arrow} />}
+						{props.hasClose && <img className="arrow arrow_view" src={arrow} />}
 					</div>
 
 					{/* show content only if title is clicked => hasClose icon */}

@@ -155,7 +155,7 @@ export default function App() {
 			<Burger toggleAddTodo={toggleAddTodo} />
 
 			{showAddTodo && <AddTodo addTodo={addTodo} todos={todos} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}
-			{/* todo arrow classes */}
+
 			{showWeek &&
 				<>
 					<ChangeWeek changeWeek={changeWeek} weekNum={weekNum} />
