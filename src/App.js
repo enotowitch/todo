@@ -74,7 +74,7 @@ export default function App() {
 		if (quantity === "one") {
 			// ! add ONE
 			lastTodo++
-			
+
 			setTodos(prevState => {
 				return [...prevState, { task: task, id: lastTodo, date: date, text: inputText, doing: false, done: false, canceled: false, showAction: false }]
 			})
@@ -87,7 +87,7 @@ export default function App() {
 	function action(todoID, propName) {
 		setTodos(prevState => {
 			return prevState.map(elem => {
-				return elem.id === todoID ? { ...elem, [propName]: !elem[propName] } : elem
+				return elem.id === todoID ? { ...elem, doing: false, done: false, canceled: false, [propName]: !elem[propName] } : elem
 			})
 		})
 		// localStorage
@@ -117,9 +117,13 @@ export default function App() {
 	}
 	// ! moveTask
 	function moveTask(todoId, newTask) {
+		// state
 		setTodos(prevState => prevState.map(elem => {
 			return elem.id === todoId ? { ...elem, task: newTask } : elem
 		}))
+		// PopUp
+		newTask = newTask === "undefined" ? "No Task" : newTask
+		makePopUp({ imgName: "add", title: newTask, text: todos[todoId - 1].text, setPopUpState, setShowPopUp })
 	}
 	// todo
 	// React.useEffect(() => {

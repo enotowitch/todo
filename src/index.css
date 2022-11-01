@@ -52,11 +52,12 @@ code {
 .todos-title{
 	position: relative;
 	font-weight: 700;
-	padding: 10px 0;
+	padding: 5px 0;
 	justify-content: center;
 	user-select: none;
 	border: 2px solid #727272;
 	border-radius: 50px;
+	height: 35px;
 }
 .turned-on{
 	/* background: #d8ffc1 !important; */
@@ -98,7 +99,7 @@ code {
 .hidden-todos{
 	display: none;
 }
-.todos-num,.todos-num_canceled{
+.todos-num{
 	border: 2px solid;
 	border-radius: 50%;
 	width: 30px;
@@ -110,20 +111,24 @@ code {
 	margin-left: 10px;
 	padding-bottom: 2px;
 	pointer-events: none;
+	font-weight: 400;
 }
-.todos-num_canceled,.canceled{
+.canceledNum,.canceled{
 	color: var(--canceled);
 }
-.todos-num_doing,.doing{
+.doingNum,.doing{
 	color: var(--doing);
 }
-.todos-num_done,.done{
+.doneNum,.done{
 	color: var(--done);
 }
+.all,
 .canceled,
 .doing,
 .done{
 	pointer-events:none;
+	display: flex;
+	align-items: center;
 }
 button{
 	padding: 0 20px;
@@ -155,10 +160,8 @@ button{
 	height: 100%;
 	padding: 22px 0 0;
 	text-align: center;
-}
-.add-todo{
 	background: #fff;
-	left: 10px;
+	left: 5px;
 	border-left: 2px solid #000;
 }
 .chosen-day{
@@ -223,6 +226,10 @@ button,.todos-title,.like, .hide{
 .todos-nums{
 	display: flex;
 	padding-left: 10px;
+	display: none;
+}
+.section-minimized .todos-nums{
+	display: flex;
 }
 .add-todo .todos-nums{
 	padding: 0;
@@ -508,7 +515,7 @@ button,.todos-title,.like, .hide{
 	position: absolute;
 	z-index: 2;
 	top: 0px;
-	left: -10px;
+	left: -7px;
 	pointer-events: none;
 	height: 100%;
 	width: 100%;
@@ -516,7 +523,7 @@ button,.todos-title,.like, .hide{
  }
  .search{
 	position: relative;
-	padding: 95px 0 0 0;
+	padding: 95px 0 45px 0;
 	min-height: 100vh;
  }
  .search__icon {

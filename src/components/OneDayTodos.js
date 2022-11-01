@@ -3,8 +3,9 @@ import Todo from "./../components/Todo"
 import arrow from "./../img/arrow.svg"
 import getToday from "./../functions/getToday"
 import normalizeDate from "./../functions/normalizeDate"
-import AllActionNums from "./AllActionNums"
+import ActionNums from "./ActionNums"
 import add from "./../img/add.svg"
+import ActionNum from "./ActionNum"
 
 export default function OneDayTodos(props) {
 
@@ -20,7 +21,7 @@ export default function OneDayTodos(props) {
 	thisDayTodos.map(elem => elem.canceled && canceledNum++)
 	let doneNum = 0
 	thisDayTodos.map(elem => elem.done && doneNum++)
-	let allTodosNum = thisDayTodos.length
+	let allNum = thisDayTodos.length
 
 	function shortTodo(todo) {
 		return <Todo key={todo.id} {...todo} action={props.action} moveTodo={props.moveTodo} moveTask={props.moveTask} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
@@ -62,8 +63,8 @@ export default function OneDayTodos(props) {
 		<div className="todos-wrapper">
 			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
-			}><span className="all">Todo</span>
-				{allTodosNum - doingNum - doneNum - canceledNum > 0 && <img className="arrow action-arrow" src={arrow} />}
+			}><span className="all">Todo <ActionNum num={allNum - doingNum - doneNum - canceledNum} class={allNum} /></span>
+				{allNum - doingNum - doneNum - canceledNum > 0 && <img className="arrow action-arrow" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{todoElems}</div>
 		</div>
@@ -72,7 +73,7 @@ export default function OneDayTodos(props) {
 		<div className="todos-wrapper">
 			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
-			}><span className="doing">Doing&nbsp;&nbsp;</span>
+			}><span className="doing">Doing <ActionNum num={doingNum} class={doingNum} /></span>
 				{doingNum > 0 && <img className="arrow action-arrow" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{doingTodos}</div>
@@ -82,7 +83,7 @@ export default function OneDayTodos(props) {
 		<div className="todos-wrapper">
 			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
-			}><span className="done">Done&nbsp;&nbsp;</span>
+			}><span className="done">Done <ActionNum num={doneNum} class={doneNum} /></span>
 				{doneNum > 0 && <img className="arrow action-arrow" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{doneTodos}</div>
@@ -92,7 +93,7 @@ export default function OneDayTodos(props) {
 		<div className="todos-wrapper">
 			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
-			}><span className="canceled">Canceled&nbsp;&nbsp;</span>
+			}><span className="canceled">Canceled <ActionNum num={canceledNum} class={canceledNum} /></span>
 				{canceledNum > 0 && <img className="arrow action-arrow" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{canceledTodos}</div>
@@ -118,7 +119,7 @@ export default function OneDayTodos(props) {
 
 				<img className="get-todo-date" src={add} onClick={getTodoDate} />
 
-				<AllActionNums nums={{ allTodosNum, doneNum, doingNum, canceledNum }} />
+				<ActionNums allNum={(allNum - doingNum - doneNum - canceledNum)} doingNum={doingNum} doneNum={doneNum} canceledNum={canceledNum} />
 
 				{thisDayTodos.length > 0 && <img className="arrow view-arrow" src={arrow} onClick={toggleOneDayTodosView} />}
 			</div>
