@@ -5,6 +5,10 @@ import add from "./../img/add.svg"
 import Todo from "./Todo"
 import SearchTag from "./SearchTag"
 import getToday from "../functions/getToday"
+import translate from '../functions/translate'
+import arrow from "./../img/arrow.svg"
+
+const t = translate()
 
 export default function Search(props) {
 
@@ -13,8 +17,14 @@ export default function Search(props) {
 
 	const [searchState, setSearchState] = React.useState({})
 	function changeSearchState(event) {
+
 		const { name, value } = event.target
-		setSearchState(prevState => ({ ...prevState, [name]: value }))
+
+		if (name === "status") {
+			const optionText = event.target.options[event.target.selectedIndex].text;
+			setSearchState(prevState => ({ ...prevState, [name]: value, optionText: optionText }))
+		}
+		name !== "status" && setSearchState(prevState => ({ ...prevState, [name]: value }))
 	}
 
 	// ! define textIds
@@ -103,11 +113,56 @@ export default function Search(props) {
 			document.querySelector('.input__text').value = searchState.task + " "
 		}, 100);
 	}
-
+	// ! reverse
 	const [reverseState, setReverseState] = React.useState(false)
 
 	function toggleReverse() {
 		setReverseState(prevState => !prevState)
+	}
+
+	searched = !reverseState ? searched.reverse() : searched
+	// ? reverse
+
+	// ! page, quantity, pages
+	const [page, setPage] = React.useState(0)
+	const [quantityState, setQuantityState] = React.useState({ quantity: 5 })
+	function changeQuantity(event) {
+
+		setPage(0)
+
+		const { name, value } = event.target
+		setQuantityState(prevState => ({ ...prevState, [name]: Number(value) }))
+	}
+	const pages = Math.ceil(searched.length / quantityState.quantity)
+
+	function nextPage() {
+		// ! prevent going to page that does not exist
+		page !== pages - 1 && setPage(prevState => prevState + 1)
+	}
+	function prevPage() {
+		page !== 0 && setPage(prevState => prevState - 1)
+	}
+
+	const searchedMini = [[]]
+	for (let i = 0, pages = 0, limit = 0; i < searched.length; i++) {
+		searchedMini[pages].push(searched[i])
+		limit++
+		if (limit == quantityState.quantity) {
+			searchedMini.push([])
+			limit = 0
+			pages++
+		}
+	}
+
+	let num1, num2
+
+	num1 = quantityState.quantity * page + 1
+	num2 = quantityState.quantity * page + quantityState.quantity
+
+	if (!reverseState) {
+		num1 = searched.length - (quantityState.quantity * page)
+		num2 = searched.length - (quantityState.quantity * page + quantityState.quantity - 1)
+		num2 < 0 && (num2 = 1)
 	}
 
 	let searchedNum
@@ -119,7 +174,7 @@ export default function Search(props) {
 
 			{!props.showWeek &&
 				<div className="search">
-					<div className="search__title">Search</div>
+					<div className="search__title">{t[14]}</div>
 					<img className="search__icon search__icon_del" src={del} onClick={props.toggleWeek} />
 
 					<>
@@ -127,18 +182,18 @@ export default function Search(props) {
 							name="text"
 							value={searchState.text}
 							onChange={changeSearchState}
-							placeholder="text"
+							placeholder={t[15]}
 						/>
 						<select
 							name="status"
 							value={searchState.status}
 							onChange={changeSearchState}
 						>
-							<option value="" selected>status</option>
-							<option>todo</option>
-							<option>doing</option>
-							<option>done</option>
-							<option>canceled</option>
+							<option value="" selected>{t[16]}</option>
+							<option value="todo">{t[0]}</option>
+							<option value="doing">{t[1]}</option>
+							<option value="done">{t[2]}</option>
+							<option value="canceled">{t[3]}</option>
 						</select>
 						<div className="task-wrap">
 							<select
@@ -146,21 +201,43 @@ export default function Search(props) {
 								value={searchState.task}
 								onChange={changeSearchState}
 							>
-								<option value="" selected>task</option>
+								<option value="" selected>{t[17]}</option>
 								{taskOptions}
 							</select>
 							{searchState.task && <img className="add-todo-task" src={add} onClick={addTodoTask} />}
 						</div>
 
 						<div className="search-tags">
-							{searched.length > 1 && <SearchTag text={searchedNum} title="order" showDel={false} toggleReverse={toggleReverse} />}
-							{searchState.text && <SearchTag text={searchState.text} title="text" showDel={true} delTag={delTag} />}
-							{searchState.status && <SearchTag text={searchState.status} title="status" showDel={true} delTag={delTag} />}
-							{searchState.task && <SearchTag text={searchState.task} title="task" showDel={true} delTag={delTag} />}
+							{searched.length > 1 && <SearchTag text={searchedNum} titleTranslated={t[18]} showDel={false} toggleReverse={toggleReverse} />}
+							{searchState.text && <SearchTag text={searchState.text} title="text" titleTranslated={t[15]} showDel={true} delTag={delTag} />}
+							{searchState.status && <SearchTag text={searchState.optionText} title="status" titleTranslated={t[16]} showDel={true} delTag={delTag} />}
+							{searchState.task && <SearchTag text={searchState.task} title="task" titleTranslated={t[17]} showDel={true} delTag={delTag} />}
 						</div>
 
-						{reverseState && searched}
-						{!reverseState && searched.reverse()}
+						{searched.length > quantityState.quantity &&
+							<div className="search__pagination-wrap">
+								<div>
+									<i>Show:&nbsp;</i>
+									<select
+										name="quantity"
+										value={quantityState.quantity}
+										onChange={changeQuantity}
+									>
+										<option value="5">5</option>
+										<option value="10">10</option>
+										<option value="20">20</option>
+										<option value="30">30</option>
+									</select>
+								</div>
+								<div className="search__pagination">
+									<img className="arrow arrow_prev" src={arrow} onClick={prevPage} />
+									{num1}-{num2}
+									<img className="arrow arrow_next" src={arrow} onClick={nextPage} />
+								</div>
+							</div>
+						}
+
+						{searchedMini[page]}
 					</>
 					<div className="search__bg"></div>
 				</div>

@@ -1,6 +1,9 @@
 import React from "react"
 import Task from "./Task"
 import Tutorial from "./Tutorial"
+import translate from '../functions/translate'
+
+const t = translate()
 
 export default function MyTasks(props) {
 
@@ -84,7 +87,7 @@ export default function MyTasks(props) {
 	return (
 		<>
 			<div className="buttons">
-				<button className="add-task" onClick={addTask}>add task</button>
+				<button className="add-task" onClick={addTask}>{t[11]}</button>
 
 				<span className="tutorial-on" onClick={toggleTutorial}>?</span>
 				{showTutorial && <Tutorial />}

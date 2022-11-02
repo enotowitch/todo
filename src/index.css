@@ -536,6 +536,19 @@ button,.todos-title,.like, .hide{
 	padding: 95px 0 45px 0;
 	min-height: 100vh;
  }
+ .search__pagination{
+	width: 140px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+ }
+ .search__pagination-wrap{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: var(--input-width);
+	margin: 0 auto 15px;
+ }
  .search__icon {
 	position: fixed;
 	z-index: 3;
@@ -572,11 +585,12 @@ button,.todos-title,.like, .hide{
 	text-indent: 4px;
 }
 /* ! moveDate, moveTask */
-[name="moveDate"],[name="moveTask"]{
+[name="moveDate"],[name="moveTask"], [name="lang"], [name="quantity"]{
 	border: 2px solid;
 	border-radius: 8px;
 	height: 26px;
 	margin: 2px;
+	max-width: 70px;
 }
 /* ! search-tag */
 .search-tag{

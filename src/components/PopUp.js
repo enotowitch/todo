@@ -1,4 +1,8 @@
 import React from "react"
+import translate from '../functions/translate'
+
+const t = translate()
+
 
 export default function PopUp(props) {
 	const path = props.imgName ? `img/${props.imgName}.svg` : ""
@@ -51,7 +55,7 @@ export default function PopUp(props) {
 		props.doFunction === "deleteTodos" && deleteTodos()
 	}
 
-	const firstButtonText = props.modalWindowType === "confirm" ? "Delete" : "Edit"
+	const firstButtonText = props.modalWindowType === "confirm" ? t[21] : t[22]
 
 	return (
 		<>
@@ -71,7 +75,7 @@ export default function PopUp(props) {
 				{(props.modalWindowType === "confirm" || props.modalWindowType === "prompt") &&
 					<div className="confirm__buttons">
 						<button onClick={modalWindowFunction}>{firstButtonText}</button>
-						<button onClick={props.popUpHide}>Cancel</button>
+						<button onClick={props.popUpHide}>{t[23]}</button>
 					</div>
 				}
 			</div>

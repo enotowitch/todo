@@ -6,6 +6,10 @@ import normalizeDate from "./../functions/normalizeDate"
 import ActionNums from "./ActionNums"
 import add from "./../img/add.svg"
 import ActionNum from "./ActionNum"
+import translate from '../functions/translate'
+
+const t = translate()
+
 
 export default function OneDayTodos(props) {
 
@@ -63,7 +67,7 @@ export default function OneDayTodos(props) {
 		<div className="todos-wrapper">
 			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
-			}><span className="all">Todo <ActionNum num={allNum - doingNum - doneNum - canceledNum} class={allNum} /></span>
+			}><span className="all">{t[0]} <ActionNum num={allNum - doingNum - doneNum - canceledNum} class={allNum} /></span>
 				{allNum - doingNum - doneNum - canceledNum > 0 && <img className="arrow arrow_action" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{todoElems}</div>
@@ -73,7 +77,7 @@ export default function OneDayTodos(props) {
 		<div className="todos-wrapper">
 			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
-			}><span className="doing">Doing <ActionNum num={doingNum} class={doingNum} /></span>
+			}><span className="doing">{t[1]} <ActionNum num={doingNum} class={doingNum} /></span>
 				{doingNum > 0 && <img className="arrow arrow_action" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{doingTodos}</div>
@@ -83,7 +87,7 @@ export default function OneDayTodos(props) {
 		<div className="todos-wrapper">
 			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
-			}><span className="done">Done <ActionNum num={doneNum} class={doneNum} /></span>
+			}><span className="done">{t[2]} <ActionNum num={doneNum} class={doneNum} /></span>
 				{doneNum > 0 && <img className="arrow arrow_action" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{doneTodos}</div>
@@ -93,7 +97,7 @@ export default function OneDayTodos(props) {
 		<div className="todos-wrapper">
 			<p className="todos-title" onClick={(e) =>
 				styleHiddenSection(e)
-			}><span className="canceled">Canceled <ActionNum num={canceledNum} class={canceledNum} /></span>
+			}><span className="canceled">{t[3]} <ActionNum num={canceledNum} class={canceledNum} /></span>
 				{canceledNum > 0 && <img className="arrow arrow_action" src={arrow} />}
 			</p>
 			<div className="hidden-todos">{canceledTodos}</div>
@@ -113,7 +117,7 @@ export default function OneDayTodos(props) {
 
 			<div className="one-day-todos__top">
 				<div>
-					{props.date === getToday() && <div className="date_today">Today</div>}
+					{props.date === getToday() && <div className="date_today">{t[4]}</div>}
 					<div className="date">{normalizeDate(props.date)}</div>
 				</div>
 

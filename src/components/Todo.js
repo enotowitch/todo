@@ -9,13 +9,16 @@ import edit from "./../img/edit.svg"
 import del from "./../img/del.svg"
 import makePopUp from "../functions/makePopUp"
 import year from "./../year"
+import translate from '../functions/translate'
+
+const t = translate()
 
 export default function Todo(props) {
 
 	const likedOrNot = props.doing ? liked : like
 	const canceledOrNot = props.canceled ? canceled : cancel
-	const checkbox = props.done ? <input type="checkbox" checked onChange={() => props.action(props.id, "done")} /> :
-		<input type="checkbox" onChange={() => props.action(props.id, "done")} />
+	const checkbox = props.done ? <input type="checkbox" checked onChange={() => props.action(props.id, "done", t[2])} /> :
+		<input type="checkbox" onChange={() => props.action(props.id, "done", t[2])} />
 
 	// ! color
 	let color
@@ -42,11 +45,11 @@ export default function Todo(props) {
 	// ! editPopUp
 	function editPopUp() {
 		props.setShowPopUp(prevState => !prevState)
-		makePopUp({ title: "Editing...", text: props.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "prompt", doFunction: "editTodo", todoId: props.id })
+		makePopUp({ title: t[20] + "...", text: props.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "prompt", doFunction: "editTodo", todoId: props.id })
 	}
 	// ! delete todo
 	function deleteTodo() {
-		makePopUp({ title: "Delete?", text: props.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTodo", todoId: props.id })
+		makePopUp({ title: t[21] + "?", text: props.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTodo", todoId: props.id })
 	}
 	// ! moveDate
 	const [moveDateSelectState, setMoveDateSelectState] = React.useState({ moveDate: props.date })
@@ -95,11 +98,11 @@ export default function Todo(props) {
 					</select>
 
 					<img className="like" src={likedOrNot} onClick={() =>
-						props.action(props.id, "doing")
+						props.action(props.id, "doing", t[1])
 					} />
 
 					<img className="hide" src={canceledOrNot} onClick={() =>
-						props.action(props.id, "canceled")
+						props.action(props.id, "canceled", t[3])
 					} />
 
 					<img className="edit" src={edit} onClick={editPopUp} />
@@ -111,7 +114,7 @@ export default function Todo(props) {
 						value={moveTaskSelectState.moveTask}
 						onChange={changeTask}
 					>
-						<option value="undefined">No Task</option>
+						<option value="undefined">{t[19]}</option>
 						{moveTaskOptions}
 					</select>
 

@@ -3,7 +3,11 @@ import makePopUp from "../functions/makePopUp"
 import MenuItem from "./MenuItem"
 import MyTasks from "./MyTasks"
 import Settings from "./Settings"
+import Language from "./Language"
 import getCookie from "./../functions/getCookie"
+import translate from '../functions/translate'
+
+const t = translate()
 
 export default function AddTodo(props) {
 
@@ -19,27 +23,34 @@ export default function AddTodo(props) {
 	// ! deleteTasksPopUp
 	function deleteTasksPopUp() {
 		props.setShowPopUp(prevState => !prevState)
-		makePopUp({ title: "Delete my tasks?", setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTasks" })
+		makePopUp({ title: t[13].charAt(0).toUpperCase() + t[13].slice(1) + "?", setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTasks" })
 	}
 	// ! deleteTodosPopUp
 	function deleteTodosPopUp() {
 		props.setShowPopUp(prevState => !prevState)
-		makePopUp({ title: "Delete all todos?", setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTodos" })
+		makePopUp({ title: t[12].charAt(0).toUpperCase() + t[12].slice(1) + "?", setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTodos" })
 	}
 
 	// todo HAS DUP
 	const [menu, setMenu] = React.useState([
 		{
-			title: "My Tasks",
+			title: t[8],
 			content: <MyTasks />,
 			id: 0,
 			isShown: true,
 			hasClose: false
 		},
 		{
-			title: "Settings",
+			title: t[9],
 			content: <Settings deleteTasksPopUp={deleteTasksPopUp} deleteTodosPopUp={deleteTodosPopUp} />,
 			id: 1,
+			isShown: true,
+			hasClose: false
+		},
+		{
+			title: t[10],
+			content: <Language />,
+			id: 2,
 			isShown: true,
 			hasClose: false
 		}
@@ -64,11 +75,11 @@ export default function AddTodo(props) {
 
 	return (
 		<div className="add-todo">
-			<div className="add-todo__date">Add Todo: {date}</div>
+			<div className="add-todo__date">{t[5]}: {date}</div>
 			<input
 				className="input__text"
 				type="text"
-				placeholder="todo text"
+				placeholder={t[6]}
 				autoFocus
 				value={text}
 				onChange={getText} />
@@ -76,7 +87,7 @@ export default function AddTodo(props) {
 				<button onClick={() =>
 					props.addTodo(text, "one",
 						clearText())
-				}>add todo</button>
+				}>{t[7]}</button>
 			</div>
 
 			{menuHtmlElems}

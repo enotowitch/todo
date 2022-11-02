@@ -12,6 +12,9 @@ import normalizeDate from "./functions/normalizeDate"
 import makePopUp from "./functions/makePopUp"
 import Search from "./components/Search"
 import Scroll from "./components/Scroll"
+import translate from './functions/translate'
+
+const t = translate()
 
 export default function App() {
 
@@ -24,6 +27,9 @@ export default function App() {
 	}
 	if (!document.cookie.match(/lastTodo/)) {
 		document.cookie = `lastTodo="0"`
+	}
+	if (!document.cookie.match(/translate/)) {
+		document.cookie = `translate="UA"`
 	}
 	// ? default cookies
 
@@ -84,7 +90,7 @@ export default function App() {
 		makePopUp({ imgName: "add", title: normalizeDate(date), text: inputText, setPopUpState, setShowPopUp })
 	}
 	// ! action: propName: done/doing/canceled,etc... works only with BOOLS!
-	function action(todoID, propName) {
+	function action(todoID, propName, propNameTranslated) {
 		setTodos(prevState => {
 			return prevState.map(elem => {
 				return elem.id === todoID ? { ...elem, doing: false, done: false, canceled: false, [propName]: !elem[propName] } : elem
@@ -97,7 +103,7 @@ export default function App() {
 		// todo remove localStorage.setItem
 		// localStorage.setItem(todoID, JSON.stringify(curTodoObj))
 		// ! PopUp
-		makePopUp({ imgName: propName, title: propName, text: curTodoObj.text, setPopUpState, setShowPopUp })
+		makePopUp({ imgName: propName, title: propNameTranslated, text: curTodoObj.text, setPopUpState, setShowPopUp })
 	}
 	function toggleAction(todoId) {
 		setTodos(prevState => {
@@ -122,7 +128,7 @@ export default function App() {
 			return elem.id === todoId ? { ...elem, task: newTask } : elem
 		}))
 		// PopUp
-		newTask = newTask === "undefined" ? "No Task" : newTask
+		newTask = newTask === "undefined" ? t[19] : newTask
 		makePopUp({ imgName: "add", title: newTask, text: todos[todoId - 1].text, setPopUpState, setShowPopUp })
 	}
 	// todo
