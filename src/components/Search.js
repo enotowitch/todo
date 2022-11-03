@@ -15,7 +15,7 @@ export default function Search(props) {
 	const taskObj = JSON.parse(document.cookie.match(/tasks={.*?}/)[0].replace('tasks=', ''))
 	const taskOptions = Object.values(taskObj).reverse().map(elem => <option>{elem}</option>)
 
-	const [searchState, setSearchState] = React.useState({})
+	const [searchState, setSearchState] = React.useState({ task: '', status: '' })
 	function changeSearchState(event) {
 
 		setPage(0)
@@ -77,10 +77,17 @@ export default function Search(props) {
 	statusIds.length > 0 && intersect.push(statusIds)
 	taskIds.length > 0 && intersect.push(taskIds)
 
+	let temp = [[]] // temp[0]
 
 	let result = []
 	for (let i = 0; i < intersect.length - 1; i++) {
-		result = intersect[i].filter(val => intersect[i + 1].includes(val))
+		temp[i] = intersect[i].filter(val => intersect[i + 1].includes(val))
+		if (intersect.length > 2) {
+			temp.push([]) // temp[1]
+			result = temp[0].filter(val => temp[1].includes(val))
+		} else {
+			result = temp[0]
+		}
 	}
 
 	// if only one search
@@ -216,7 +223,7 @@ export default function Search(props) {
 							value={searchState.status}
 							onChange={changeSearchState}
 						>
-							<option value="" selected>{t[16]}</option>
+							<option value="" selected>{t[26]}</option>
 							<option value="todo">{t[0]}</option>
 							<option value="doing">{t[1]}</option>
 							<option value="done">{t[2]}</option>
@@ -228,7 +235,7 @@ export default function Search(props) {
 								value={searchState.task}
 								onChange={changeSearchState}
 							>
-								<option value="" selected>{t[17]}</option>
+								<option value="" selected>{t[27]}</option>
 								{taskOptions}
 							</select>
 							{searchState.task && <img className="add-todo-task" src={add} onClick={addTodoTask} />}
