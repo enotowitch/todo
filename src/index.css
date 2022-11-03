@@ -10,6 +10,7 @@
 	--done-light:#daffa7;
 	--doing-light:rgb(255, 228, 179);
 	--canceled-light:rgb(255, 202, 193);
+	--todo-max-width:400px;
 }
 
 body {
@@ -31,7 +32,7 @@ code {
 
 .todo,.todos-title{
 	position: relative;
-	width: 400px;
+	width: var(--todo-max-width);
 	margin: 0 auto;
 	background: #ffffff;
 	box-shadow:  2px 2px 6px #d9d9d9, -2px -2px 6px #ffffff;
@@ -542,13 +543,14 @@ button,.todos-title,.like, .hide{
 	align-items: center;
 	justify-content: space-between;
  }
- .search__pagination-wrap{
+ .search__pagination-wrap {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	width: var(--input-width);
+	max-width: var(--todo-max-width);
 	margin: 0 auto 15px;
- }
+	padding: 0 15px;
+}
  .search__icon {
 	position: fixed;
 	z-index: 3;
@@ -585,12 +587,18 @@ button,.todos-title,.like, .hide{
 	text-indent: 4px;
 }
 /* ! moveDate, moveTask */
-[name="moveDate"],[name="moveTask"], [name="lang"], [name="quantity"]{
+[name="moveDate"],[name="moveTask"], [name="lang"], [name="quantity"],[name="page"]{
 	border: 2px solid;
 	border-radius: 8px;
 	height: 26px;
 	margin: 2px;
 	max-width: 70px;
+}
+[name="lang"]{
+	max-width: 100px;
+}
+[name="quantity"],[name="page"]{
+	max-width: 80px;
 }
 /* ! search-tag */
 .search-tag{

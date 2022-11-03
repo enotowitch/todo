@@ -6,7 +6,7 @@ export default function SearchTag(props) {
 		<div className="search-tag" onClick={props.toggleReverse}>
 			<span className="search-tag__title">{props.titleTranslated}:</span>
 			<span className="search-tag__text">{props.text}</span>
-			{props.showDel && <img className="search-tag_del" src={del} onClick={() => props.delTag(props.title)} />}
+			{props.showDel && <img className="search-tag_del" src={del} onClick={() => (props.delTag(props.title), props.setPage(0))} />}
 		</div>
 	)
 }

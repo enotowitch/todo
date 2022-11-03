@@ -18,6 +18,8 @@ export default function Search(props) {
 	const [searchState, setSearchState] = React.useState({})
 	function changeSearchState(event) {
 
+		setPage(0)
+
 		const { name, value } = event.target
 
 		if (name === "status") {
@@ -123,7 +125,7 @@ export default function Search(props) {
 	searched = !reverseState ? searched.reverse() : searched
 	// ? reverse
 
-	// ! page, quantity, pages
+	// ! page, quantity
 	const [page, setPage] = React.useState(0)
 	const [quantityState, setQuantityState] = React.useState({ quantity: 5 })
 	function changeQuantity(event) {
@@ -133,16 +135,37 @@ export default function Search(props) {
 		const { name, value } = event.target
 		setQuantityState(prevState => ({ ...prevState, [name]: Number(value) }))
 	}
+	// ! pages
 	const pages = Math.ceil(searched.length / quantityState.quantity)
 
+	const pageOptions = []
+	for (let i = 0; i < pages; i++) {
+		pageOptions.push(<option value={i}>{t[25]}: {i + 1}</option>)
+	}
+
+	function changePage(event) {
+		setPage(Number(event.target.value))
+	}
+
 	function nextPage() {
-		// ! prevent going to page that does not exist
+		// prevent going to page that does not exist
 		page !== pages - 1 && setPage(prevState => prevState + 1)
 	}
 	function prevPage() {
 		page !== 0 && setPage(prevState => prevState - 1)
 	}
-
+	// ! hide arrows
+	if (page === pages - 1) {
+		document.querySelector('.arrow_next') && (document.querySelector('.arrow_next').style = "opacity:0.3")
+	} else {
+		document.querySelector('.arrow_next') && (document.querySelector('.arrow_next').style = "opacity:1")
+	}
+	if (page === 0) {
+		document.querySelector('.arrow_prev') && (document.querySelector('.arrow_prev').style = "opacity:0.3")
+	} else {
+		document.querySelector('.arrow_prev') && (document.querySelector('.arrow_prev').style = "opacity:1")
+	}
+	// ! searchedMini
 	const searchedMini = [[]]
 	for (let i = 0, pages = 0, limit = 0; i < searched.length; i++) {
 		searchedMini[pages].push(searched[i])
@@ -153,7 +176,7 @@ export default function Search(props) {
 			pages++
 		}
 	}
-
+	// ! search NUMS
 	let num1, num2
 
 	num1 = quantityState.quantity * page + 1
@@ -168,6 +191,10 @@ export default function Search(props) {
 	let searchedNum
 	reverseState ? (searchedNum = `1-${searched.length}`) : (searchedNum = `${searched.length}-1`)
 
+	// watch if after action (done, doing, cancel, moveTask, etc) => nothing to display => go to prev page
+	searchedMini[page].length === 0 && prevPage()
+
+	// ! return
 	return (
 		<>
 			{props.showWeek && <img className="search__icon" src={search} onClick={props.toggleWeek} />}
@@ -209,31 +236,35 @@ export default function Search(props) {
 
 						<div className="search-tags">
 							{searched.length > 1 && <SearchTag text={searchedNum} titleTranslated={t[18]} showDel={false} toggleReverse={toggleReverse} />}
-							{searchState.text && <SearchTag text={searchState.text} title="text" titleTranslated={t[15]} showDel={true} delTag={delTag} />}
-							{searchState.status && <SearchTag text={searchState.optionText} title="status" titleTranslated={t[16]} showDel={true} delTag={delTag} />}
-							{searchState.task && <SearchTag text={searchState.task} title="task" titleTranslated={t[17]} showDel={true} delTag={delTag} />}
+							{searchState.text && <SearchTag text={searchState.text} title="text" titleTranslated={t[15]} showDel={true} delTag={delTag} setPage={setPage} />}
+							{searchState.status && <SearchTag text={searchState.optionText} title="status" titleTranslated={t[16]} showDel={true} delTag={delTag} setPage={setPage} />}
+							{searchState.task && <SearchTag text={searchState.task} title="task" titleTranslated={t[17]} showDel={true} delTag={delTag} setPage={setPage} />}
 						</div>
 
 						{searched.length > quantityState.quantity &&
 							<div className="search__pagination-wrap">
-								<div>
-									<i>Show:&nbsp;</i>
-									<select
-										name="quantity"
-										value={quantityState.quantity}
-										onChange={changeQuantity}
-									>
-										<option value="5">5</option>
-										<option value="10">10</option>
-										<option value="20">20</option>
-										<option value="30">30</option>
-									</select>
-								</div>
+								<select
+									name="quantity"
+									value={quantityState.quantity}
+									onChange={changeQuantity}
+								>
+									<option value="5">{t[24]}:&nbsp;5</option>
+									<option value="10">{t[24]}:&nbsp;10</option>
+									<option value="20">{t[24]}:&nbsp;20</option>
+									<option value="30">{t[24]}:&nbsp;30</option>
+								</select>
 								<div className="search__pagination">
 									<img className="arrow arrow_prev" src={arrow} onClick={prevPage} />
 									{num1}-{num2}
 									<img className="arrow arrow_next" src={arrow} onClick={nextPage} />
 								</div>
+								<select
+									name="page"
+									value={page}
+									onChange={changePage}
+								>
+									{pageOptions}
+								</select>
 							</div>
 						}
 

@@ -1,9 +1,10 @@
 import React from "react"
+import defineLang from "../functions/defineLang"
 
 export default function Language() {
 
 	let curLang
-	curLang = document.cookie.match(/translate="\w+/) && document.cookie.match(/translate="\w+/)[0].replace(/translate="/, '')
+	curLang = defineLang()
 
 	const [langState, langStateSet] = React.useState({ lang: curLang })
 	function langChange(event) {
@@ -20,8 +21,8 @@ export default function Language() {
 				onChange={langChange}
 				value={langState.lang}
 			>
-				<option>UA</option>
-				<option>EN</option>
+				<option value="UA">Українська</option>
+				<option value="EN">English</option>
 			</select>
 		</div>
 	)
