@@ -162,15 +162,17 @@ export default function Search(props) {
 		page !== 0 && setPage(prevState => prevState - 1)
 	}
 	// ! hide arrows
+	let arrowNext = document.querySelector('.arrow_search.arrow_next')
 	if (page === pages - 1) {
-		document.querySelector('.arrow_next') && (document.querySelector('.arrow_next').style = "opacity:0.3")
+		arrowNext && (arrowNext.style = "opacity:0.3")
 	} else {
-		document.querySelector('.arrow_next') && (document.querySelector('.arrow_next').style = "opacity:1")
+		arrowNext && (arrowNext.style = "opacity:1")
 	}
+	let arrowPrev = document.querySelector('.arrow_search.arrow_prev')
 	if (page === 0) {
-		document.querySelector('.arrow_prev') && (document.querySelector('.arrow_prev').style = "opacity:0.3")
+		arrowPrev && (arrowPrev.style = "opacity:0.3")
 	} else {
-		document.querySelector('.arrow_prev') && (document.querySelector('.arrow_prev').style = "opacity:1")
+		arrowPrev && (arrowPrev.style = "opacity:1")
 	}
 	// ! searchedMini
 	const searchedMini = [[]]
@@ -261,9 +263,9 @@ export default function Search(props) {
 									<option value="30">{t[24]}:&nbsp;30</option>
 								</select>
 								<div className="search__pagination">
-									<img className="arrow arrow_prev" src={arrow} onClick={prevPage} />
+									<img className="arrow arrow_search arrow_prev" src={arrow} onClick={prevPage} />
 									{num1}-{num2}
-									<img className="arrow arrow_next" src={arrow} onClick={nextPage} />
+									<img className="arrow arrow_search arrow_next" src={arrow} onClick={nextPage} />
 								</div>
 								<select
 									name="page"

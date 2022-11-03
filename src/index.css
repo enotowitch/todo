@@ -60,10 +60,6 @@ code {
 	border-radius: 50px;
 	height: 35px;
 }
-.turned-on{
-	/* background: #d8ffc1 !important; */
-	border: 1px solid #727272 !important;
-}
 .todos-wrapper{
 	display: inline-flex;
 	flex-direction: column;
@@ -97,9 +93,6 @@ code {
 .dots{
 	padding-right: 8px;
 }
-.hidden-todos{
-	display: none;
-}
 .todos-num{
 	border: 2px solid;
 	border-radius: 50%;
@@ -123,10 +116,7 @@ code {
 .doneNum,.done{
 	color: var(--done);
 }
-.all,
-.canceled,
-.doing,
-.done{
+.todos-title span{
 	pointer-events:none;
 	display: flex;
 	align-items: center;
@@ -166,6 +156,8 @@ button{
 	border-left: 2px solid #000;
 }
 .chosen-day{
+	border-top: 2px solid #bc79ff !important;
+    border-bottom: 2px solid #bc79ff !important;
 	/* background: #f3fcff; */
 }
 .buttons{
@@ -264,9 +256,6 @@ button,.todos-title,.like, .hide{
 	right: 8px;
 	pointer-events: none;
 	transform: scale(.7);
-}
-.turned-on .arrow_action{
-	transform: scale(.7) rotate(180deg);
 }
 .toggle-day{
 	position: absolute;

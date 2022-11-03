@@ -5,8 +5,8 @@ import getToday from "./../functions/getToday"
 import normalizeDate from "./../functions/normalizeDate"
 import ActionNums from "./ActionNums"
 import add from "./../img/add.svg"
-import ActionNum from "./ActionNum"
 import translate from '../functions/translate'
+import TodoBlock from "./TodoBlock"
 
 const t = translate()
 
@@ -42,13 +42,6 @@ export default function OneDayTodos(props) {
 	const canceledTodos = thisDayTodos.map((todo, ind) => todo.canceled && shortTodo(todo, ind))
 	// ? OUTPUT LOGIC
 
-	function styleHiddenSection(e) {
-		e.target.nextSibling.classList.toggle('hidden-todos')
-		e.target.classList.toggle('turned-on')
-		// let borderClassName = e.target.closest('.todos-wrapper').querySelector('.todos-title span').className
-		// borderClassName = "border" + borderClassName
-		// e.target.closest('.todos-wrapper').classList.toggle(borderClassName)
-	}
 	function getTodoDate(event) {
 		// write to cookie => on which day AddTodo() is used
 		const dateForAddTodo = event.target.closest('.one-day-todos').querySelector('.date').innerText.replace(/\s/, '')
@@ -60,55 +53,18 @@ export default function OneDayTodos(props) {
 		event.target.closest('.one-day-todos').classList.add('chosen-day')
 	}
 
-	// ! allTodosWrapper
-	const allTodosWrapper = <div className="all-todos-wrapper">
 
-		{/* ! All Todos */}
-		<div className="todos-wrapper">
-			<p className="todos-title" onClick={(e) =>
-				styleHiddenSection(e)
-			}><span className="all">{t[0]} <ActionNum num={allNum - doingNum - doneNum - canceledNum} class={allNum} /></span>
-				{allNum - doingNum - doneNum - canceledNum > 0 && <img className="arrow arrow_action" src={arrow} />}
-			</p>
-			<div className="hidden-todos">{todoElems}</div>
-		</div>
 
-		{/* ! Doing Todos */}
-		<div className="todos-wrapper">
-			<p className="todos-title" onClick={(e) =>
-				styleHiddenSection(e)
-			}><span className="doing">{t[1]} <ActionNum num={doingNum} class={doingNum} /></span>
-				{doingNum > 0 && <img className="arrow arrow_action" src={arrow} />}
-			</p>
-			<div className="hidden-todos">{doingTodos}</div>
-		</div>
-
-		{/* ! Done Todos */}
-		<div className="todos-wrapper">
-			<p className="todos-title" onClick={(e) =>
-				styleHiddenSection(e)
-			}><span className="done">{t[2]} <ActionNum num={doneNum} class={doneNum} /></span>
-				{doneNum > 0 && <img className="arrow arrow_action" src={arrow} />}
-			</p>
-			<div className="hidden-todos">{doneTodos}</div>
-		</div>
-
-		{/* ! Canceled Todos */}
-		<div className="todos-wrapper">
-			<p className="todos-title" onClick={(e) =>
-				styleHiddenSection(e)
-			}><span className="canceled">{t[3]} <ActionNum num={canceledNum} class={canceledNum} /></span>
-				{canceledNum > 0 && <img className="arrow arrow_action" src={arrow} />}
-			</p>
-			<div className="hidden-todos">{canceledTodos}</div>
-		</div>
-	</div>
-	// ? allTodosWrapper
 
 	function toggleDay(event) {
 		event.target.closest('.one-day-todos').classList.toggle('section-minimized')
 		document.querySelectorAll('.one-day-todos').forEach(elem => elem.classList.remove('chosen-day'))
 		event.target.closest('.one-day-todos').classList.add('chosen-day')
+	}
+
+	const [showBlock, setShowBlock] = React.useState({ allNum: false, doingNum: false, doneNum: false, canceledNum: false })
+	function toggleBlock(blockName) {
+		setShowBlock(prevState => ({ ...prevState, [blockName]: !showBlock[blockName] }))
 	}
 
 	return (
@@ -128,7 +84,14 @@ export default function OneDayTodos(props) {
 				{thisDayTodos.length > 0 && <div className="toggle-day" onClick={toggleDay}><img className="arrow arrow_view arrow_day" src={arrow} /></div>}
 			</div>
 
-			{thisDayTodos.length > 0 && allTodosWrapper}
+			{thisDayTodos.length > 0 &&
+				<div className="all-todos-wrapper">
+					<TodoBlock title={t[0]} num={allNum - doingNum - doneNum - canceledNum} cssClass="allNum" blockTodos={todoElems} showBlock={showBlock.allNum} toggleBlock={toggleBlock} />
+					<TodoBlock title={t[1]} num={doingNum} cssClass="doingNum" blockTodos={doingTodos} showBlock={showBlock.doingNum} toggleBlock={toggleBlock} />
+					<TodoBlock title={t[2]} num={doneNum} cssClass="doneNum" blockTodos={doneTodos} showBlock={showBlock.doneNum} toggleBlock={toggleBlock} />
+					<TodoBlock title={t[3]} num={canceledNum} cssClass="canceledNum" blockTodos={canceledTodos} showBlock={showBlock.canceledNum} toggleBlock={toggleBlock} />
+				</div>
+			}
 
 		</div>
 	)
