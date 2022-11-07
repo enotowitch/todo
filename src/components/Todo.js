@@ -7,13 +7,20 @@ import dots from "./../img/dots.svg"
 import dots2 from "./../img/dots2.svg"
 import edit from "./../img/edit.svg"
 import del from "./../img/del.svg"
+import dnd from "./../img/dnd.svg"
 import makePopUp from "../functions/makePopUp"
 import year from "./../year"
 import translate from '../functions/translate'
+import { Context } from "./../context"
 
 const t = translate()
 
 export default function Todo(props) {
+
+	const { todos } = React.useContext(Context)
+	const { setTodos } = React.useContext(Context)
+	const { draggable } = React.useContext(Context)
+	const { setDraggable } = React.useContext(Context)
 
 	const likedOrNot = props.doing ? liked : like
 	const canceledOrNot = props.canceled ? canceled : cancel
@@ -80,8 +87,54 @@ export default function Todo(props) {
 	props.canceled && (bg = "canceled-bg")
 	!props.doing && !props.done && !props.canceled && (bg = "no-bg")
 
+	// ! DRAG & DROP 
+	// ! dragStart
+	let StartId
+	function dragStart(event) {
+		StartId = props.id // 1
+		document.cookie = `StartId=${StartId}`
+	}
+	// ! dragOver
+	let OverId
+	function dragOver(event) {
+		event.preventDefault()
+		OverId = props.id // 2
+		document.cookie = `OverId=${OverId}`
+	}
+
+	// ! dragEnd
+	function dragEnd(event) {
+		OverId = Number(document.cookie.match(/OverId=\d+/)[0].replace(/OverId=/, ''))
+		StartId = Number(document.cookie.match(/StartId=\d+/)[0].replace(/StartId=/, ''))
+
+		let startObj
+		todos.map(todo => {
+			return todo.id == StartId ? (startObj = todo) : todo
+		})
+		let overObj
+		todos.map(todo => {
+			return todo.id == OverId ? (overObj = todo) : todo
+		})
+
+		// ! setTodos
+		setTodos(prevState => prevState.map(todo => {
+			return todo.id === StartId ? { ...todo, id: -1 } : todo // id 1 (StartId) = id -1 (temp id)
+		}))
+
+		setTodos(prevState => prevState.map(todo => {
+			return todo.id === OverId ? { ...startObj, id: OverId } : todo // id 2 = id 1 (OverId = StartId)
+		}))
+
+		setTodos(prevState => prevState.map(todo => {
+			return todo.id === -1 ? { ...overObj, id: StartId } : todo // id 1 = id 2 (StartId = OverId)
+		}))
+	}
+	// ? DRAG & DROP 
+
+
+	// ! return
 	return (
-		<div className="todo" style={style}>
+		<div className="todo" style={style} draggable={draggable} onDragStart={dragStart} onDragOver={dragOver} onDragEnd={dragEnd}>
 			{checkbox}
 			{props.showDate && <p className="todo__date">{props.date}</p>}
 			<p className="todo__text">{text || props.text}</p>
@@ -120,6 +173,8 @@ export default function Todo(props) {
 
 				</div>
 			}
+
+			<img className="dnd" src={dnd} onTouchStart={() => setDraggable(true)} onTouchEnd={() => setDraggable(false)} />
 
 			<img className="dots" src={props.showAction ? dots2 : dots} onClick={() => props.toggleAction(props.id)} />
 

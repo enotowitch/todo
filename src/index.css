@@ -680,3 +680,8 @@ button,.todos-title,.like, .hide{
 .no-bg{
 	background: #b6b6b6;
 }
+.dnd{
+	margin-right: 15px;
+	padding: 5px;
+	cursor: grab;
+}

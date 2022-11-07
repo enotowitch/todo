@@ -13,6 +13,7 @@ import makePopUp from "./functions/makePopUp"
 import Search from "./components/Search"
 import Scroll from "./components/Scroll"
 import translate from './functions/translate'
+import { Context } from "./context"
 
 const t = translate()
 
@@ -53,6 +54,9 @@ export default function App() {
 
 	const [popUpState, setPopUpState] = React.useState({})
 	const [showPopUp, setShowPopUp] = React.useState(false)
+
+	// ! draggable
+	const [draggable, setDraggable] = React.useState(false)
 
 	const daysHtmlElements = weeks[weekNum].map(elem => <OneDayTodos todos={todos} action={action} date={elem} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />)
 
@@ -156,8 +160,9 @@ export default function App() {
 		setShowWeek(prevState => !prevState)
 	}
 
+	// ! return
 	return (
-		<>
+		<Context.Provider value={{ todos, setTodos, draggable, setDraggable }}>
 			<Burger toggleAddTodo={toggleAddTodo} />
 
 			{showAddTodo && <AddTodo addTodo={addTodo} todos={todos} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}
@@ -173,6 +178,6 @@ export default function App() {
 
 			<Search showWeek={showWeek} toggleWeek={toggleWeek} todos={todos} action={action} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />
 			<Scroll />
-		</>
+		</Context.Provider>
 	)
 }
