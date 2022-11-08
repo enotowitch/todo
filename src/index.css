@@ -116,10 +116,15 @@ code {
 .doneNum,.done{
 	color: var(--done);
 }
-.todos-title span{
+.allNum,.doingNum,.doneNum,.canceledNum{
+	position: absolute;
 	pointer-events:none;
 	display: flex;
 	align-items: center;
+}
+.fake-todo{
+	opacity: 0;
+	height: 50px;
 }
 button{
 	padding: 0 20px;
@@ -218,20 +223,14 @@ button,.todos-title,.like, .hide{
 	align-items: center;
 }
 .todos-nums{
-	display: flex;
 	padding-left: 10px;
 	display: none;
 }
 .section-minimized .todos-nums{
 	display: flex;
 }
-.add-todo .todos-nums{
-	padding: 0;
-}
-.add-todo-nums{
-	display: flex;
-	justify-content: center;
-	margin-top: 15px;
+.section-minimized .allNum, .section-minimized .doingNum, .section-minimized .doneNum, .section-minimized .canceledNum{
+	position: relative;
 }
 .section-minimized{
 	height: 40px;

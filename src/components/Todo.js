@@ -116,25 +116,44 @@ export default function Todo(props) {
 			return todo.id == OverId ? (overObj = todo) : todo
 		})
 
-		// ! setTodos
-		setTodos(prevState => prevState.map(todo => {
-			return todo.id === StartId ? { ...todo, id: -1 } : todo // id 1 (StartId) = id -1 (temp id)
-		}))
+		let newStatus
+		overObj.doing && (newStatus = 'doing')
+		overObj.done && (newStatus = 'done')
+		overObj.canceled && (newStatus = 'canceled')
 
-		setTodos(prevState => prevState.map(todo => {
-			return todo.id === OverId ? { ...startObj, id: OverId } : todo // id 2 = id 1 (OverId = StartId)
-		}))
+		startObj.doing = false
+		startObj.done = false
+		startObj.canceled = false
+		startObj[newStatus] = true
 
-		setTodos(prevState => prevState.map(todo => {
-			return todo.id === -1 ? { ...overObj, id: StartId } : todo // id 1 = id 2 (StartId = OverId)
-		}))
+		// DONT steal info(id,status, etc...) from fake-todos, correct STATUS is overwritten above
+		// fake-todos have id 0-3
+		if (OverId <= 3) {
+			setTodos(prevState => prevState.map(todo => {
+				return todo.id === StartId ? { ...startObj, id: StartId } : todo
+			}))
+		} else {
+			// steal id from todo, startObj (dragStart) steals id from overObj (dragEnd)
+			// ! setTodos
+			setTodos(prevState => prevState.map(todo => {
+				return todo.id === StartId ? { ...todo, id: -1 } : todo // id 1 (StartId) = id -1 (temp id)
+			}))
+
+			setTodos(prevState => prevState.map(todo => {
+				return todo.id === OverId ? { ...startObj, id: OverId } : todo // id 2 = id 1 (OverId = StartId)
+			}))
+
+			setTodos(prevState => prevState.map(todo => {
+				return todo.id === -1 ? { ...overObj, id: StartId } : todo // id 1 = id 2 (StartId = OverId)
+			}))
+		}
 	}
 	// ? DRAG & DROP 
 
 
 	// ! return
 	return (
-		<div className="todo" style={style} draggable={draggable} onDragStart={dragStart} onDragOver={dragOver} onDragEnd={dragEnd}>
+		<div className={`todo ${props.cssClass}`} style={style} draggable={draggable} onDragStart={dragStart} onDragOver={dragOver} onDragEnd={dragEnd}>
 			{checkbox}
 			{props.showDate && <p className="todo__date">{props.date}</p>}
 			<p className="todo__text">{text || props.text}</p>
@@ -174,7 +193,7 @@ export default function Todo(props) {
 				</div>
 			}
 
-			<img className="dnd" src={dnd} onTouchStart={() => setDraggable(true)} onTouchEnd={() => setDraggable(false)} />
+			{props.cssClass != "fake-todo" && <img className="dnd" src={dnd} onTouchStart={() => setDraggable(true)} onTouchEnd={() => setDraggable(false)} />}
 
 			<img className="dots" src={props.showAction ? dots2 : dots} onClick={() => props.toggleAction(props.id)} />
 

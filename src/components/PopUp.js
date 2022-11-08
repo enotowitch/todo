@@ -44,7 +44,7 @@ export default function PopUp(props) {
 	}
 	// ! deleteTodos
 	function deleteTodos() {
-		document.cookie = `lastTodo="0"`
+		document.cookie = `lastTodo="3"`
 		localStorage.clear()
 		window.location.reload()
 	}

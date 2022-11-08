@@ -31,7 +31,8 @@ export default function Search(props) {
 
 	// ! define textIds
 	let textIds = props.todos.map((todo) => {
-		return todo.text.includes(searchState.text) && todo.id
+		if (todo.text)
+			return todo.text.includes(searchState.text) && todo.id
 	})
 	textIds = textIds.filter(isTrue => isTrue)
 	// ! define statusIds

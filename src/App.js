@@ -27,10 +27,19 @@ export default function App() {
 		document.cookie = `tasks={"task1":"work","task2":"buy","task3":"cook"};`
 	}
 	if (!document.cookie.match(/lastTodo/)) {
-		document.cookie = `lastTodo="0"`
+		document.cookie = `lastTodo="3"`
 	}
 	if (!document.cookie.match(/translate/)) {
 		document.cookie = `translate="UA"`
+	}
+	if (localStorage.length === 0) {
+		// create FAKE todos on start for DRAG & DROP to status title
+		localStorage.setItem(0, JSON.stringify({ id: 0, doing: false, done: false, canceled: false }))
+		localStorage.setItem(1, JSON.stringify({ id: 1, doing: true, done: false, canceled: false }))
+		localStorage.setItem(2, JSON.stringify({ id: 2, doing: false, done: true, canceled: false }))
+		localStorage.setItem(3, JSON.stringify({ id: 3, doing: false, done: false, canceled: true }))
+		// mandatory
+		window.location.reload()
 	}
 	// ? default cookies
 
