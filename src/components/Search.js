@@ -15,13 +15,18 @@ export default function Search(props) {
 	const taskObj = JSON.parse(document.cookie.match(/tasks={.*?}/)[0].replace('tasks=', ''))
 	const taskOptions = Object.values(taskObj).reverse().map(elem => <option>{elem}</option>)
 
-	const [searchState, setSearchState] = React.useState({ task: '', status: '' })
+	const [searchState, setSearchState] = React.useState({ task: '', status: '', text: undefined })
 	function changeSearchState(event) {
 
 		setPage(0)
 
-		const { name, value } = event.target
+		let { name, value } = event.target
 
+		// when text = "" drop it to undefined, so search does not show all todos (having empty text)
+		if (name === "text") {
+			value == "" && (value = undefined)
+		}
+		// add optionText for translated status
 		if (name === "status") {
 			const optionText = event.target.options[event.target.selectedIndex].text;
 			setSearchState(prevState => ({ ...prevState, [name]: value, optionText: optionText }))
@@ -37,6 +42,11 @@ export default function Search(props) {
 	textIds = textIds.filter(isTrue => isTrue)
 	// ! define statusIds
 	let statusIds = props.todos.map((todo) => {
+		// don't show fake-todos (have id 0-3) => used for drag & drop to (block) title
+		if (todo.id <= 3) {
+			return
+		}
+
 		// ! OUTPUT LOGIC
 		// ALL aka TODO: -doing, -done, -canceled
 		if (searchState.status === "todo") {
@@ -44,11 +54,11 @@ export default function Search(props) {
 		}
 		// DOING: +doing, -done, -canceled
 		if (searchState.status === "doing") {
-			return (todo.doing && !todo.done && !todo.canceled) && todo.id
+			return todo.doing && todo.id
 		}
 		// DONE: +done, -canceled
 		if (searchState.status === "done") {
-			return (todo.done && !todo.canceled) && todo.id
+			return todo.done && todo.id
 		}
 		// CANCELED: +canceled
 		if (searchState.status === "canceled") {

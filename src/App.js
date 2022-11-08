@@ -76,7 +76,7 @@ export default function App() {
 		const date = getCookie("dateForAddTodo")
 		// ? date
 		if (inputText === "" && quantity === "one") {
-			inputText = `Test Task ${lastTodo + 1}`
+			inputText = `Test Task ${lastTodo - 3 + 1}`
 		}
 		// ! define task
 		// todo HAS DUP

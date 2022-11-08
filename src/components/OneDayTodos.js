@@ -35,9 +35,9 @@ export default function OneDayTodos(props) {
 	// ALL aka TODO: -doing, -done, -canceled
 	const todoElems = thisDayTodos.map((todo, ind) => (!todo.doing && !todo.done && !todo.canceled) && shortTodo(todo, ind))
 	// DOING: +doing, -done, -canceled
-	const doingTodos = thisDayTodos.map((todo, ind) => (todo.doing && !todo.done && !todo.canceled) && shortTodo(todo, ind))
+	const doingTodos = thisDayTodos.map((todo, ind) => todo.doing && shortTodo(todo, ind))
 	// DONE: +done, -canceled
-	const doneTodos = thisDayTodos.map((todo, ind) => (todo.done && !todo.canceled) && shortTodo(todo, ind))
+	const doneTodos = thisDayTodos.map((todo, ind) => todo.done && shortTodo(todo, ind))
 	// CANCELED: +canceled
 	const canceledTodos = thisDayTodos.map((todo, ind) => todo.canceled && shortTodo(todo, ind))
 	// ? OUTPUT LOGIC
