@@ -33,14 +33,19 @@ export default function OneDayTodos(props) {
 
 	// ! OUTPUT LOGIC
 	// ALL aka TODO: -doing, -done, -canceled
-	const todoElems = thisDayTodos.map((todo, ind) => (!todo.doing && !todo.done && !todo.canceled) && shortTodo(todo, ind))
+	let allTodos = thisDayTodos.map((todo, ind) => (!todo.doing && !todo.done && !todo.canceled) && shortTodo(todo, ind))
 	// DOING: +doing, -done, -canceled
-	const doingTodos = thisDayTodos.map((todo, ind) => todo.doing && shortTodo(todo, ind))
+	let doingTodos = thisDayTodos.map((todo, ind) => todo.doing && shortTodo(todo, ind))
 	// DONE: +done, -canceled
-	const doneTodos = thisDayTodos.map((todo, ind) => todo.done && shortTodo(todo, ind))
+	let doneTodos = thisDayTodos.map((todo, ind) => todo.done && shortTodo(todo, ind))
 	// CANCELED: +canceled
-	const canceledTodos = thisDayTodos.map((todo, ind) => todo.canceled && shortTodo(todo, ind))
+	let canceledTodos = thisDayTodos.map((todo, ind) => todo.canceled && shortTodo(todo, ind))
 	// ? OUTPUT LOGIC
+	// filter todos from false values
+	allTodos = allTodos.filter(isTrue => isTrue)
+	doingTodos = doingTodos.filter(isTrue => isTrue)
+	doneTodos = doneTodos.filter(isTrue => isTrue)
+	canceledTodos = canceledTodos.filter(isTrue => isTrue)
 
 	function getTodoDate(event) {
 		// write to cookie => on which day AddTodo() is used
@@ -86,10 +91,10 @@ export default function OneDayTodos(props) {
 
 			{thisDayTodos.length > 0 &&
 				<div className="all-todos-wrapper">
-					<TodoBlock title={t[0]} num={allNum - doingNum - doneNum - canceledNum} cssClass="allNum" blockTodos={todoElems} showBlock={showBlock.allNum} toggleBlock={toggleBlock} />
-					<TodoBlock title={t[1]} num={doingNum} cssClass="doingNum" blockTodos={doingTodos} showBlock={showBlock.doingNum} toggleBlock={toggleBlock} />
-					<TodoBlock title={t[2]} num={doneNum} cssClass="doneNum" blockTodos={doneTodos} showBlock={showBlock.doneNum} toggleBlock={toggleBlock} />
-					<TodoBlock title={t[3]} num={canceledNum} cssClass="canceledNum" blockTodos={canceledTodos} showBlock={showBlock.canceledNum} toggleBlock={toggleBlock} />
+					<TodoBlock title={t[0]} date={props.date} num={allNum - doingNum - doneNum - canceledNum} cssClass="allNum" blockTodos={allTodos} showBlock={showBlock.allNum} toggleBlock={toggleBlock} />
+					<TodoBlock title={t[1]} date={props.date} num={doingNum} cssClass="doingNum" blockTodos={doingTodos} showBlock={showBlock.doingNum} toggleBlock={toggleBlock} />
+					<TodoBlock title={t[2]} date={props.date} num={doneNum} cssClass="doneNum" blockTodos={doneTodos} showBlock={showBlock.doneNum} toggleBlock={toggleBlock} />
+					<TodoBlock title={t[3]} date={props.date} num={canceledNum} cssClass="canceledNum" blockTodos={canceledTodos} showBlock={showBlock.canceledNum} toggleBlock={toggleBlock} />
 				</div>
 			}
 

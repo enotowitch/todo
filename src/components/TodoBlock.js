@@ -18,10 +18,10 @@ export default function TodoBlock(props) {
 			<div className="todos-wrapper">
 				<div className="todos-title" onClick={() => props.toggleBlock(props.cssClass)}>
 					{/* fake-todo for DRAG & DROP to (block) title */}
-					{status === "all" && <Todo id={0} cssClass="fake-todo" />}
-					{status === "doing" && <Todo id={1} {...{ [status]: true }} cssClass="fake-todo" />}
-					{status === "done" && <Todo id={2} {...{ [status]: true }} cssClass="fake-todo" />}
-					{status === "canceled" && <Todo id={3} {...{ [status]: true }} cssClass="fake-todo" />}
+					{status === "all" && <Todo id={0} date={props.date} cssClass="fake-todo" />}
+					{status === "doing" && <Todo id={1} date={props.date} {...{ [status]: true }} cssClass="fake-todo" />}
+					{status === "done" && <Todo id={2} date={props.date} {...{ [status]: true }} cssClass="fake-todo" />}
+					{status === "canceled" && <Todo id={3} date={props.date} {...{ [status]: true }} cssClass="fake-todo" />}
 					<span className={props.cssClass}>{props.title} <ActionNum num={props.num} /></span>
 					{props.num > 0 && <img className="arrow arrow_action" src={arrow} style={arrowStyle} />}
 				</div>

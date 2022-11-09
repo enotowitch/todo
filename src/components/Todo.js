@@ -96,16 +96,20 @@ export default function Todo(props) {
 	}
 	// ! dragOver
 	let OverId
+	let OverDate
 	function dragOver(event) {
 		event.preventDefault()
 		OverId = props.id // 2
 		document.cookie = `OverId=${OverId}`
+		document.cookie = `OverDate=${props.date}`
 	}
 
 	// ! dragEnd
 	function dragEnd(event) {
 		OverId = Number(document.cookie.match(/OverId=\d+/)[0].replace(/OverId=/, ''))
 		StartId = Number(document.cookie.match(/StartId=\d+/)[0].replace(/StartId=/, ''))
+
+		OverDate = document.cookie.match(/OverDate=\w+/)[0].replace(/OverDate=/, '')
 
 		let startObj
 		todos.map(todo => {
@@ -115,6 +119,7 @@ export default function Todo(props) {
 		todos.map(todo => {
 			return todo.id == OverId ? (overObj = todo) : todo
 		})
+		OverDate != "undefined" && (startObj.date = OverDate)
 
 		let newStatus
 		overObj.doing && (newStatus = 'doing')
