@@ -128,18 +128,28 @@ export default function Todo(props) {
 		todos.map(todo => {
 			return todo.id == OverId ? (overObj = todo) : todo
 		})
-		OverDate != "undefined" && (startObj.date = OverDate)
 
-		let newStatus
-		overObj.doing && (newStatus = 'doing')
-		overObj.done && (newStatus = 'done')
-		overObj.canceled && (newStatus = 'canceled')
+		let newStatus, newStatusTranslated
+		if (overObj.doing) { newStatus = 'doing'; newStatusTranslated = t[1] }
+		if (overObj.done) { newStatus = 'done'; newStatusTranslated = t[2] }
+		if (overObj.canceled) { newStatus = 'canceled'; newStatusTranslated = t[3] }
 
 		startObj.doing = false
 		startObj.done = false
 		startObj.canceled = false
 		startObj[newStatus] = true
 
+		// ! WARNING now newStatus = add (for using img "add"), NOT (doing,done,canceled)
+		if (newStatus === undefined) { newStatus = 'add'; newStatusTranslated = t[0] }
+
+		// if date NOT changing => show popup with new status; else show popup with new date+status => (true = this day, false = other day)
+		if (startObj.date === OverDate) {
+			makePopUp({ imgName: newStatus, title: newStatusTranslated, text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
+		} else {
+			makePopUp({ imgName: newStatus, title: OverDate, text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
+		}
+		// ! date is overwriten here
+		OverDate != "undefined" && (startObj.date = OverDate)
 		// DONT steal info(id,status, etc...) from fake-todos, correct STATUS is overwritten above
 		// fake-todos have id 0-3
 		if (OverId <= 3) {
