@@ -19,8 +19,6 @@ export default function Todo(props) {
 
 	const { todos } = React.useContext(Context)
 	const { setTodos } = React.useContext(Context)
-	const { draggable } = React.useContext(Context)
-	const { setDraggable } = React.useContext(Context)
 
 	const likedOrNot = props.doing ? liked : like
 	const canceledOrNot = props.canceled ? canceled : cancel
@@ -88,6 +86,17 @@ export default function Todo(props) {
 	!props.doing && !props.done && !props.canceled && (bg = "no-bg")
 
 	// ! DRAG & DROP 
+	const { draggable } = React.useContext(Context)
+	const { setDraggable } = React.useContext(Context)
+	const { mobile } = React.useContext(Context)
+	// make all todo draggable on desktop; on mobile only .dnd icon is draggable
+	!mobile && setDraggable(true)
+	// prevent fake-todo from dragging
+	React.useEffect(() => {
+		document.querySelectorAll('.fake-todo').forEach((elem) => {
+			elem.draggable = false
+		})
+	}, [])
 	// ! dragStart
 	let StartId
 	function dragStart(event) {
@@ -198,7 +207,7 @@ export default function Todo(props) {
 				</div>
 			}
 
-			{props.cssClass != "fake-todo" && <img className="dnd" src={dnd} onTouchStart={() => setDraggable(true)} onTouchEnd={() => setDraggable(false)} />}
+			{(props.cssClass != "fake-todo" && mobile) && <img className="dnd" src={dnd} onTouchStart={() => setDraggable(true)} onTouchEnd={() => setDraggable(false)} />}
 
 			<img className="dots" src={props.showAction ? dots2 : dots} onClick={() => props.toggleAction(props.id)} />
 

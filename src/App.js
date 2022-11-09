@@ -64,8 +64,6 @@ export default function App() {
 	const [popUpState, setPopUpState] = React.useState({})
 	const [showPopUp, setShowPopUp] = React.useState(false)
 
-	// ! draggable
-	const [draggable, setDraggable] = React.useState(false)
 
 	const daysHtmlElements = weeks[weekNum].map(elem => <OneDayTodos todos={todos} action={action} date={elem} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />)
 
@@ -168,10 +166,30 @@ export default function App() {
 	function toggleWeek() {
 		setShowWeek(prevState => !prevState)
 	}
+	// ! draggable
+	const [draggable, setDraggable] = React.useState(false)
+	// ! mobile (touch int) => detect to show drag & drop (.dnd) icon; on desktop all todo is draggable, on mobile icon is draggable 
+	const [mobile, setMobile] = React.useState(false)
+
+	React.useEffect(() => {
+		function fn() {
+			setMobile(true)
+		}
+		document.body.addEventListener('touchstart', fn)
+	}, [])
+
+	const [oneTime, setOneTime] = React.useState(0)
+
+	// prevent todo to be draggable on mobile on load
+	if (mobile === true && oneTime === 0) {
+		setDraggable(false)
+		setOneTime(prevState => prevState + 1)
+	}
+	// ? mobile
 
 	// ! return
 	return (
-		<Context.Provider value={{ todos, setTodos, draggable, setDraggable }}>
+		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile }}>
 			<Burger toggleAddTodo={toggleAddTodo} />
 
 			{showAddTodo && <AddTodo addTodo={addTodo} todos={todos} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}
