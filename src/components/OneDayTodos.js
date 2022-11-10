@@ -49,8 +49,7 @@ export default function OneDayTodos(props) {
 
 	function getTodoDate(event) {
 		// write to cookie => on which day AddTodo() is used
-		const dateForAddTodo = event.target.closest('.one-day-todos').querySelector('.date').innerText.replace(/\s/, '')
-		document.cookie = `dateForAddTodo=${dateForAddTodo}`
+		document.cookie = `dateForAddTodo=${props.date}`
 		// turn on addTodo
 		document.querySelector('.burger__btn').click()
 		// style
@@ -79,7 +78,7 @@ export default function OneDayTodos(props) {
 			<div className="one-day-todos__top">
 				<div>
 					{props.date === getToday() && <div className="date_today">{t[4]}</div>}
-					<div className="date">{normalizeDate(props.date)}</div>
+					<div className="date">{normalizeDate(props.dateTranslated)}</div>
 				</div>
 
 				<img className="get-todo-date" src={add} onClick={getTodoDate} />

@@ -14,6 +14,7 @@ import Search from "./components/Search"
 import Scroll from "./components/Scroll"
 import translate from './functions/translate'
 import { Context } from "./context"
+import defineLang from "./functions/defineLang"
 
 const t = translate()
 
@@ -44,7 +45,7 @@ export default function App() {
 	// ? default cookies
 
 	let curWeekNum
-	weeks.map((elem, ind) => elem.includes(getToday()) && (curWeekNum = ind))
+	weeks.EN.map((elem, ind) => elem.includes(getToday()) && (curWeekNum = ind))
 
 	React.useEffect(() => {
 		// on reload AddTodo adds to today
@@ -64,8 +65,9 @@ export default function App() {
 	const [popUpState, setPopUpState] = React.useState({})
 	const [showPopUp, setShowPopUp] = React.useState(false)
 
+	const lang = defineLang()
 
-	const daysHtmlElements = weeks[weekNum].map(elem => <OneDayTodos todos={todos} action={action} date={elem} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />)
+	const daysHtmlElements = weeks.EN[weekNum].map((day, ind) => <OneDayTodos todos={todos} action={action} date={day} dateTranslated={weeks[lang][weekNum][ind]} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />)
 
 	function addTodo(inputText, quantity) {
 		let lastTodo
@@ -130,7 +132,7 @@ export default function App() {
 			return elem.id === todoId ? { ...elem, date: newDate } : elem
 		}))
 		// PopUp
-		makePopUp({ imgName: "add", title: normalizeDate(newDate), text: todos[todoId - 1].text, setPopUpState, setShowPopUp })
+		makePopUp({ imgName: "add", title: normalizeDate(newDate), text: todos[todoId].text, setPopUpState, setShowPopUp })
 	}
 	// ! moveTask
 	function moveTask(todoId, newTask) {
@@ -140,7 +142,7 @@ export default function App() {
 		}))
 		// PopUp
 		newTask = newTask === "undefined" ? t[19] : newTask
-		makePopUp({ imgName: "add", title: newTask, text: todos[todoId - 1].text, setPopUpState, setShowPopUp })
+		makePopUp({ imgName: "add", title: newTask, text: todos[todoId].text, setPopUpState, setShowPopUp })
 	}
 	// todo
 	// React.useEffect(() => {

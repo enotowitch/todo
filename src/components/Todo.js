@@ -9,11 +9,14 @@ import edit from "./../img/edit.svg"
 import del from "./../img/del.svg"
 import dnd from "./../img/dnd.svg"
 import makePopUp from "../functions/makePopUp"
-import year from "./../year"
 import translate from '../functions/translate'
 import { Context } from "./../context"
+import MoveDateOptions from "./MoveDateOptions"
+import year from "./../year"
+import defineLang from "../functions/defineLang"
 
 const t = translate()
+const lang = defineLang()
 
 export default function Todo(props) {
 
@@ -65,7 +68,6 @@ export default function Todo(props) {
 		props.moveTodo(props.id, value)
 	}
 
-	const moveDateOptions = year.map(elem => <option>{elem}</option>)
 	// ? moveDate
 	// ! moveTask
 	const [moveTaskSelectState, setMoveTaskSelectState] = React.useState({ moveTask: props.task })
@@ -146,7 +148,8 @@ export default function Todo(props) {
 		if (startObj.date === OverDate) {
 			makePopUp({ imgName: newStatus, title: newStatusTranslated, text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
 		} else {
-			makePopUp({ imgName: newStatus, title: OverDate, text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
+			const dateTranslated = year.EN.indexOf(OverDate)
+			makePopUp({ imgName: newStatus, title: year[lang][dateTranslated], text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
 		}
 		// ! date is overwriten here
 		OverDate != "undefined" && (startObj.date = OverDate)
@@ -190,7 +193,7 @@ export default function Todo(props) {
 						value={moveDateSelectState.moveDate}
 						onChange={changeDate}
 					>
-						{moveDateOptions}
+						<MoveDateOptions />
 					</select>
 
 					<img className="like" src={likedOrNot} onClick={() =>
