@@ -183,13 +183,13 @@ export default function Search(props) {
 	// ! hide arrows
 	let arrowNext = document.querySelector('.arrow_search.arrow_next')
 	if (page === pages - 1) {
-		arrowNext && (arrowNext.style = "opacity:0.3")
+		arrowNext && (arrowNext.style = "opacity:0.1")
 	} else {
 		arrowNext && (arrowNext.style = "opacity:1")
 	}
 	let arrowPrev = document.querySelector('.arrow_search.arrow_prev')
 	if (page === 0) {
-		arrowPrev && (arrowPrev.style = "opacity:0.3")
+		arrowPrev && (arrowPrev.style = "opacity:0.1")
 	} else {
 		arrowPrev && (arrowPrev.style = "opacity:1")
 	}
