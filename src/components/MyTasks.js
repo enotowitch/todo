@@ -1,7 +1,8 @@
 import React from "react"
 import Task from "./Task"
 import Tutorial from "./Tutorial"
-import translate from '../functions/translate'
+import translate from "../functions/translate"
+import tasksObj from "../functions/tasksObj"
 
 const t = translate()
 
@@ -22,9 +23,6 @@ export default function MyTasks(props) {
 	}, [colorState])
 	// ? colors
 	// ! tasks
-	// todo HAS DUP
-	const tasksObj = JSON.parse(document.cookie.match(/tasks={.*?}/)[0].replace(/tasks=/, '')) // {task1: 'taskName1', task2: 'taskName2' ... }
-
 	const [taskState, setTaskState] = React.useState(tasksObj)
 	function changeTaskState(event) {
 		const { name, value } = event.target
@@ -61,13 +59,20 @@ export default function MyTasks(props) {
 			changeColorState={changeColorState}
 			showAdd={showAdd[taskNum]}
 			toggleAdd={toggleAdd}
+			setTaskState={setTaskState}
 		/>
 	})
 	// ! addTask
 	function addTask() {
 		const colors = ['#ff94c6', '#08b4ff', '#39a33d', '#4387c7', '#ffc1a9', '#c25b7a', '#ffd06a', '#89b10e', '#ffbbd2', '#ff9be5', '#cbfff5', '#dc8d96', '#f6a6b8', '#c9c5e8', '#9c9dd2', '#ffc19d', '#a0ffe6', '#a8b69a', '#b4a0bf', '#ff9407', '#c9bbd8', '#f6a3c1', '#e098c1', '#817ecd', '#f1c570']
 		const randColor = Math.floor(Math.random() * colors.length)
-		const taskNum = "task" + (Object.keys(taskState).length + 1)
+		const tasks = Object.keys(taskState)
+		let taskNum
+		if (tasks[tasks.length - 1]) {
+			taskNum = "task" + (Number(tasks[tasks.length - 1].match(/\d+/)[0]) + 1)
+		} else {
+			taskNum = "task1"
+		}
 
 		setTaskState(prevState => {
 			return { ...prevState, [taskNum]: `${taskNum}` }

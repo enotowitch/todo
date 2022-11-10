@@ -9,11 +9,12 @@ import edit from "./../img/edit.svg"
 import del from "./../img/del.svg"
 import dnd from "./../img/dnd.svg"
 import makePopUp from "../functions/makePopUp"
-import translate from '../functions/translate'
+import translate from "../functions/translate"
 import { Context } from "./../context"
 import MoveDateOptions from "./MoveDateOptions"
 import year from "./../year"
 import defineLang from "../functions/defineLang"
+import tasksObj from "../functions/tasksObj"
 
 const t = translate()
 const lang = defineLang()
@@ -28,15 +29,13 @@ export default function Todo(props) {
 	const checkbox = props.done ? <input type="checkbox" checked onChange={() => props.action(props.id, "done", t[2])} /> :
 		<input type="checkbox" onChange={() => props.action(props.id, "done", t[2])} />
 
-	// ! color
+	// ! color todo (color is from tasksObj)
 	let color
 	let text
 	const colorsObj = JSON.parse(document.cookie.match(/colors={.*?}/)[0].replace(/colors=/, ''))
-	// todo HAS DUP
-	const tasksObj = JSON.parse(document.cookie.match(/tasks={.*?}/)[0].replace(/tasks=/, ''))
 
 	const tasksArr = []
-	Object.values(tasksObj).map(elem => tasksArr.push(elem)) // ['taskName1', 'taskName2', 'taskName3']
+	Object.values(tasksObj()).map(elem => tasksArr.push(elem)) // ['taskName1', 'taskName2', 'taskName3']
 
 
 
@@ -49,7 +48,7 @@ export default function Todo(props) {
 	const style = {
 		background: color
 	}
-	// ? color
+	// ? color todo in task color
 	// ! editPopUp
 	function editPopUp() {
 		props.setShowPopUp(prevState => !prevState)

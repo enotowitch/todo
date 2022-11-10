@@ -5,19 +5,19 @@ import add from "./../img/add.svg"
 import Todo from "./Todo"
 import SearchTag from "./SearchTag"
 import getToday from "../functions/getToday"
-import translate from '../functions/translate'
+import translate from "../functions/translate"
 import arrow from "./../img/arrow.svg"
 import defineLang from "../functions/defineLang"
 import year from "./../year"
 import SearchHint from "./SearchHint"
+import tasksObj from "../functions/tasksObj"
 
 const t = translate()
 const lang = defineLang()
 
 export default function Search(props) {
 
-	const taskObj = JSON.parse(document.cookie.match(/tasks={.*?}/)[0].replace('tasks=', ''))
-	const taskOptions = Object.values(taskObj).reverse().map(elem => <option>{elem}</option>)
+	const taskOptions = Object.values(tasksObj()).reverse().map(elem => <option>{elem}</option>)
 
 	const [searchCount, setSearchCount] = React.useState(0)
 

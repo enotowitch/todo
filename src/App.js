@@ -15,6 +15,7 @@ import Scroll from "./components/Scroll"
 import translate from './functions/translate'
 import { Context } from "./context"
 import defineLang from "./functions/defineLang"
+import tasksObj from "./functions/tasksObj"
 
 const t = translate()
 
@@ -79,11 +80,8 @@ export default function App() {
 			inputText = `Test Task ${lastTodo - 3 + 1}`
 		}
 		// ! define task
-		// todo HAS DUP
-		const tasksObj = JSON.parse(document.cookie.match(/tasks={.*?}/)[0].replace(/tasks=/, ''))
-
 		const tasksArr = []
-		Object.values(tasksObj).map(elem => tasksArr.push(elem)) // ['taskName1', 'taskName2', 'taskName3']
+		Object.values(tasksObj()).map(elem => tasksArr.push(elem)) // ['taskName1', 'taskName2', 'taskName3']
 
 		const firstWord = inputText.match(/\S+/)[0]
 		let task

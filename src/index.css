@@ -312,7 +312,7 @@ button,.todos-title,.like, .hide{
 	background: none;
 	height: 40px;
 	width: 80px;
-	flex-shrink: 0;
+	flex-shrink: 1;
 }
 /* ! tutorial */
 .tutorial-on{
