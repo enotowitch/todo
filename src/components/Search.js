@@ -9,6 +9,7 @@ import translate from '../functions/translate'
 import arrow from "./../img/arrow.svg"
 import defineLang from "../functions/defineLang"
 import year from "./../year"
+import SearchHint from "./SearchHint"
 
 const t = translate()
 const lang = defineLang()
@@ -18,9 +19,12 @@ export default function Search(props) {
 	const taskObj = JSON.parse(document.cookie.match(/tasks={.*?}/)[0].replace('tasks=', ''))
 	const taskOptions = Object.values(taskObj).reverse().map(elem => <option>{elem}</option>)
 
+	const [searchCount, setSearchCount] = React.useState(0)
+
 	const [searchState, setSearchState] = React.useState({ task: '', status: '', text: undefined })
 	function changeSearchState(event) {
 
+		setSearchCount(1)
 		setPage(0)
 
 		let { name, value } = event.target
@@ -264,6 +268,8 @@ export default function Search(props) {
 							{searchState.status && <SearchTag text={searchState.optionText} title="status" titleTranslated={t[16]} showDel={true} delTag={delTag} setPage={setPage} />}
 							{searchState.task && <SearchTag text={searchState.task} title="task" titleTranslated={t[17]} showDel={true} delTag={delTag} setPage={setPage} />}
 						</div>
+
+						{searched.length === 0 && searchCount > 0 && <SearchHint setSearchState={setSearchState} />}
 
 						{searched.length > quantityState.quantity &&
 							<div className="search__pagination-wrap">

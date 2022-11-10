@@ -525,6 +525,17 @@ button,.todos-title,.like, .hide{
 	padding: 95px 0 45px 0;
 	min-height: 100vh;
  }
+ .search__hint{
+	font-family: Montserrat;
+	margin-top: 15px;
+	display: inline-block;
+	position: relative;
+	left:50%;
+	transform: translate(-50%);
+ }
+ .search__hint span{
+	text-decoration: underline;
+ }
  .search__pagination{
 	width: 140px;
 	display: flex;
