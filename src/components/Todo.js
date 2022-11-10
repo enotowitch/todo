@@ -65,7 +65,8 @@ export default function Todo(props) {
 	function changeDate(event) {
 		const { name, value } = event.target
 		setMoveDateSelectState(prevState => ({ ...prevState, [name]: value }))
-		props.moveTodo(props.id, value)
+		const dateTranslated = year.EN.indexOf(value) // index 0-364, "use" year[UA][114]
+		props.moveTodo(props.id, value, year[lang][dateTranslated])
 	}
 
 	// ? moveDate
@@ -148,11 +149,11 @@ export default function Todo(props) {
 		if (startObj.date === OverDate) {
 			makePopUp({ imgName: newStatus, title: newStatusTranslated, text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
 		} else {
-			const dateTranslated = year.EN.indexOf(OverDate)
+			const dateTranslated = year.EN.indexOf(OverDate) // index 0-364, "use" year[UA][114]
 			makePopUp({ imgName: newStatus, title: year[lang][dateTranslated], text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
 		}
-		// ! date is overwriten here
-		OverDate != "undefined" && (startObj.date = OverDate)
+		// ! date is overwriten here; don't overwrite DATE if in SEARCH
+		OverDate != "undefined" && props.section !== "search" && (startObj.date = OverDate)
 		// DONT steal info(id,status, etc...) from fake-todos, correct STATUS is overwritten above
 		// fake-todos have id 0-3
 		if (OverId <= 3) {
@@ -182,7 +183,7 @@ export default function Todo(props) {
 	return (
 		<div className={`todo ${props.cssClass}`} style={style} draggable={draggable} onDragStart={dragStart} onDragOver={dragOver} onDragEnd={dragEnd}>
 			{checkbox}
-			{props.showDate && <p className="todo__date">{props.date}</p>}
+			{props.showDate && <p className="todo__date">{props.dateTranslated}</p>}
 			<p className="todo__text">{text || props.text}</p>
 
 			{props.showAction &&

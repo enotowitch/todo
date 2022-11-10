@@ -126,13 +126,13 @@ export default function App() {
 		})
 	}
 	// ! moveTodo
-	function moveTodo(todoId, newDate) {
+	function moveTodo(todoId, newDate, newDateTranslated) {
 		// state
 		setTodos(prevState => prevState.map(elem => {
 			return elem.id === todoId ? { ...elem, date: newDate } : elem
 		}))
 		// PopUp
-		makePopUp({ imgName: "add", title: normalizeDate(newDate), text: todos[todoId].text, setPopUpState, setShowPopUp })
+		makePopUp({ imgName: "add", title: normalizeDate(newDateTranslated), text: todos[todoId].text, setPopUpState, setShowPopUp })
 	}
 	// ! moveTask
 	function moveTask(todoId, newTask) {

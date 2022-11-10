@@ -7,8 +7,11 @@ import SearchTag from "./SearchTag"
 import getToday from "../functions/getToday"
 import translate from '../functions/translate'
 import arrow from "./../img/arrow.svg"
+import defineLang from "../functions/defineLang"
+import year from "./../year"
 
 const t = translate()
+const lang = defineLang()
 
 export default function Search(props) {
 
@@ -111,7 +114,8 @@ export default function Search(props) {
 
 
 	function shortTodo(todo) {
-		return <Todo showDate={true} key={todo.id} {...todo} action={props.action} moveTodo={props.moveTodo} moveTask={props.moveTask} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
+		let dateTranslated = year.EN.indexOf(todo.date) // index 0-364, "use" year[UA][114]
+		return <Todo section={"search"} showDate={true} key={todo.id} {...todo} dateTranslated={year[lang][dateTranslated]} action={props.action} moveTodo={props.moveTodo} moveTask={props.moveTask} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
 	}
 
 	let searched = []
