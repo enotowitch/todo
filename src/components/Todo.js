@@ -14,7 +14,6 @@ import { Context } from "./../context"
 import MoveDateOptions from "./MoveDateOptions"
 import year from "./../year"
 import defineLang from "../functions/defineLang"
-import tasksObj from "../functions/tasksObj"
 
 const t = translate()
 const lang = defineLang()
@@ -29,21 +28,11 @@ export default function Todo(props) {
 	const checkbox = props.done ? <input type="checkbox" checked onChange={() => props.action(props.id, "done", t[2])} /> :
 		<input type="checkbox" onChange={() => props.action(props.id, "done", t[2])} />
 
-	// ! color todo (color is from tasksObj)
+	// ! color todo
 	let color
 	let text
-	const colorsObj = JSON.parse(document.cookie.match(/colors={.*?}/)[0].replace(/colors=/, ''))
-
-	const tasksArr = []
-	Object.values(tasksObj()).map(elem => tasksArr.push(elem)) // ['taskName1', 'taskName2', 'taskName3']
-
-
-
-	tasksArr.map(taskName => { // - taskName1,taskName2 ...
-		if (props.task === taskName.trim()) { // if task exists => color, remove taskName
-			color = colorsObj[taskName]
-		}
-	})
+	const { tasks } = React.useContext(Context)
+	tasks.map(task => Object.keys(task) == props.task && (color = Object.values(task)))
 
 	const style = {
 		background: color
@@ -78,7 +67,7 @@ export default function Todo(props) {
 		props.moveTask(props.id, value)
 	}
 
-	const moveTaskOptions = tasksArr.reverse().map(taskName => <option>{taskName}</option>)
+	const moveTaskOptions = tasks.map(task => <option>{Object.keys(task)}</option>)
 
 	// ! todo bg
 	let bg
@@ -214,7 +203,7 @@ export default function Todo(props) {
 						onChange={changeTask}
 					>
 						<option value="undefined">{t[19]}</option>
-						{moveTaskOptions}
+						{moveTaskOptions.reverse()}
 					</select>
 
 				</div>

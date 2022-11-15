@@ -10,14 +10,15 @@ import arrow from "./../img/arrow.svg"
 import defineLang from "../functions/defineLang"
 import year from "./../year"
 import SearchHint from "./SearchHint"
-import tasksObj from "../functions/tasksObj"
+import { Context } from "./../context"
 
 const t = translate()
 const lang = defineLang()
 
 export default function Search(props) {
 
-	const taskOptions = Object.values(tasksObj()).reverse().map(elem => <option>{elem}</option>)
+	const { tasks } = React.useContext(Context)
+	const taskOptions = tasks.reverse().map(task => <option>{Object.keys(task)}</option>)
 
 	const [searchCount, setSearchCount] = React.useState(0)
 

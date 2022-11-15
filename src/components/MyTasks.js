@@ -2,85 +2,106 @@ import React from "react"
 import Task from "./Task"
 import Tutorial from "./Tutorial"
 import translate from "../functions/translate"
-import tasksObj from "../functions/tasksObj"
+import { Context } from "./../context"
 
 const t = translate()
 
 export default function MyTasks(props) {
 
-	// ! colors
-	const colorsObj = JSON.parse(document.cookie.match(/colors={.*?}/)[0].replace(/colors=/, '')) // {taskName1: '#0aff95', taskName2: '#ff8585', ... }
-
-	const [colorState, setColorState] = React.useState(colorsObj)
-	function changeColorState(event) {
-		const { name, value } = event.target
-		setColorState(prevState => {
-			return { ...prevState, [name]: value }
-		})
-	}
-	React.useEffect(() => {
-		document.cookie = `colors=${JSON.stringify(colorState)}` // colors={"taskName1":"#8088ff","taskName2":"#ff8585" ... }
-	}, [colorState])
-	// ? colors
 	// ! tasks
-	const [taskState, setTaskState] = React.useState(tasksObj)
+	const { tasks } = React.useContext(Context)
+	const { setTasks } = React.useContext(Context)
+
 	function changeTaskState(event) {
-		const { name, value } = event.target
-		setTaskState(prevState => {
-			return { ...prevState, [name]: value }
-		})
+		const { name, value, type } = event.target
+		// ! type text
+		if (type === "text") {
+			const oldName = name
+			let newName = value
+
+			let oldColor
+			tasks.map(task => {
+				task[oldName] && (oldColor = task[oldName])
+			})
+
+			setTasks(prevState => {
+				return prevState.map(task => {
+					// prevent dups; Object.keys(task) = taskName
+					Object.keys(task) == newName && (newName = newName + "COPY")
+					return Object.keys(task) == oldName ? { [newName]: oldColor } : task
+				})
+			})
+
+		}
+		// ! type color
+		if (type === "color") {
+			const sameName = name
+			const newColor = value
+
+			setTasks(prevState => {
+				return prevState.map(task => (Object.keys(task) == sameName ? { [sameName]: newColor } : task))
+			})
+		}
 	}
 	React.useEffect(() => {
-		document.cookie = `tasks=${JSON.stringify(taskState)}` // tasks={"task1":"taskName1","task2":"taskName2" ... }
-	}, [taskState])
-	// ? tasks
-	// ! taskHtmlElems
-	const reversedTaskStateKeys = []
-	// todo make arr
-	Object.keys(taskState).reverse().map(elem => reversedTaskStateKeys.push(elem))
+		document.cookie = `tasks=${JSON.stringify(tasks)}`
+	}, [tasks])
+	// ! showIcon
+	const iconState = {}
+	tasks.map(task => iconState[Object.keys(task)] = false)
 
-	const addState = {}
-	// todo make arr
-	Object.keys(taskState).reverse().map(task => addState[task] = false)
-
-	const [showAdd, setShowAdd] = React.useState(addState) // {"task2": false,"task1": false} ...
-	function toggleAdd(taskNum) {
-		setShowAdd(addState)
-		setShowAdd(prevState => ({ ...prevState, [taskNum]: true }))
+	const [showIcon, setShowIcon] = React.useState(iconState) // {"taskName1": false,"taskName2": false} ...
+	function toggleIcon(taskName) {
+		setShowIcon(iconState) // all FALSE
+		setShowIcon(prevState => ({ ...prevState, [taskName]: true })) // focused TRUE
 	}
-	// todo make arr
-	const taskHtmlElems = Object.values(taskState).reverse().map((taskName, ind) => {
-		const taskNum = reversedTaskStateKeys[ind]
-		return <Task
-			taskNum={taskNum}
-			taskName={taskName}
-			color={colorState[taskName]}
-			changeTaskState={changeTaskState}
-			changeColorState={changeColorState}
-			showAdd={showAdd[taskNum]}
-			toggleAdd={toggleAdd}
-			setTaskState={setTaskState}
-		/>
+	// ? showIcon
+
+	const taskHtmlElems = tasks.map(task => {
+		return <Task taskName={Object.keys(task)} taskColor={Object.values(task)} changeTaskState={changeTaskState} showIcon={showIcon[Object.keys(task)]} toggleIcon={toggleIcon} />
 	})
 	// ! addTask
 	function addTask() {
-		const colors = ['#ff94c6', '#08b4ff', '#39a33d', '#4387c7', '#ffc1a9', '#c25b7a', '#ffd06a', '#89b10e', '#ffbbd2', '#ff9be5', '#cbfff5', '#dc8d96', '#f6a6b8', '#c9c5e8', '#9c9dd2', '#ffc19d', '#a0ffe6', '#a8b69a', '#b4a0bf', '#ff9407', '#c9bbd8', '#f6a3c1', '#e098c1', '#817ecd', '#f1c570']
-		const randColor = Math.floor(Math.random() * colors.length)
-		const tasks = Object.keys(taskState)
-		let taskNum
-		if (tasks[tasks.length - 1]) {
-			taskNum = "task" + (Number(tasks[tasks.length - 1].match(/\d+/)[0]) + 1)
-		} else {
-			taskNum = "task1"
-		}
+		const newColors = ['#ff94c6', '#08b4ff', '#39a33d', '#4387c7', '#ffc1a9', '#c25b7a', '#ffd06a', '#89b10e', '#ffbbd2', '#ff9be5', '#cbfff5', '#dc8d96', '#f6a6b8', '#c9c5e8', '#9c9dd2', '#ffc19d', '#a0ffe6', '#a8b69a', '#b4a0bf', '#ff9407', '#c9bbd8', '#f6a3c1', '#e098c1', '#817ecd', '#f1c570', '#f7d5ca', '#f7f7ca', '#caf7ca', '#caf7f7', '#cad5f7', '#e0caf7', '#d293d2']
+		const newTasks = ['important', 'always', 'learn', 'remember', 'holiday', 'weekend', 'hobby', 'cook', 'buy', 'prepare', 'read', 'complete', 'sport', 'brainstorm', 'write', 'compose', 'meeting', 'upcoming', 'home', 'family', 'call', 'order', 'sell', 'visit', 'help', 'try', 'remind', 'check', 'repeat', 'report', 'fix', 'keep']
 
-		setTaskState(prevState => {
-			return { ...prevState, [taskNum]: `${taskNum}` }
+		let newTaskObj
+
+		let found
+		let color
+		const lastNewTask = newTasks[newTasks.length - 1]
+
+		tasks.map(task => {
+			const eachTask = (String(Object.keys(task))) // november, ideas, work, important ...
+			for (let i = 0; i < newTasks.length; i++) {
+				if (eachTask == newTasks[i]) {
+					found = newTasks[i + 1]
+					color = newColors[newTasks.indexOf(newTasks[i + 1])]
+					break
+				}
+				if (eachTask == lastNewTask) {
+					found = `task1`
+					color = "#ffffff"
+					break
+				}
+				if (eachTask.includes("task")) {
+					const num = Number(eachTask.match(/\d+/)[0])
+					found = `task${num + 1}`
+					color = "#ffffff"
+					break
+				}
+			}
 		})
-		setColorState(prevState => {
-			return { ...prevState, [taskNum]: colors[randColor] }
-		})
+		if (found === undefined) {
+			found = newTasks[0]
+			color = newColors[0]
+		}
+		newTaskObj = { [found]: color }
+
+		setTasks(prevState => [...prevState, newTaskObj])
 	}
+	// ? addTask
+	// ? tasks
 	// ! Tutorial
 	const [showTutorial, setShowTutorial] = React.useState(false)
 	function toggleTutorial() {
@@ -99,7 +120,7 @@ export default function MyTasks(props) {
 			</div>
 
 			<div className="tasks">
-				{taskHtmlElems}
+				{taskHtmlElems.reverse()}
 			</div>
 		</>
 	)

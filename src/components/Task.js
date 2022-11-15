@@ -1,7 +1,7 @@
 import React from "react"
+import { Context } from "../context"
 import add from "./../img/add.svg"
 import del from "./../img/del.svg"
-import tasksObj from "./../functions/tasksObj"
 
 export default function Task(props) {
 
@@ -10,30 +10,31 @@ export default function Task(props) {
 		document.querySelector('.input__text').focus()
 	}
 
-	function deleteTask(taskNum) {
-		const tasks = tasksObj()
-		delete tasks[taskNum]
-		props.setTaskState(tasks)
+	const { tasks, setTasks } = React.useContext(Context)
+
+	function deleteTask(taskName) {
+		const deleted = tasks.filter(task => String(Object.keys(task)) != taskName)
+		setTasks(deleted)
 	}
 
 	return (
 		<div className="pick-color">
-			{props.showAdd && <img src={add} onClick={addTaskName} />}
+			{props.showIcon && <img src={add} onClick={addTaskName} />}
 			<input
 				className="task"
 				type="text"
-				name={props.taskNum}
+				name={props.taskName}
 				value={props.taskName}
 				onChange={props.changeTaskState}
-				onFocus={() => props.toggleAdd(props.taskNum)}
+				onFocus={() => props.toggleIcon(props.taskName)}
 			/>
 			<input
 				type="color"
 				name={props.taskName}
-				value={props.color}
-				onChange={props.changeColorState}
+				value={props.taskColor}
+				onChange={props.changeTaskState}
 			/>
-			{props.showAdd && <img src={del} onClick={() => deleteTask(props.taskNum)} />}
+			{props.showIcon && <img src={del} onClick={() => deleteTask(props.taskName)} />}
 		</div>
 	)
 }

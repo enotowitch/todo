@@ -15,7 +15,6 @@ import Scroll from "./components/Scroll"
 import translate from './functions/translate'
 import { Context } from "./context"
 import defineLang from "./functions/defineLang"
-import tasksObj from "./functions/tasksObj"
 
 const t = translate()
 
@@ -25,8 +24,11 @@ export default function App() {
 	if (!document.cookie.match(/colors/)) {
 		document.cookie = `colors={"work":"#7ec5fb","buy":"#ff8585","cook":"#aeffa3"};`
 	}
-	if (!document.cookie.match(/tasks/)) {
-		document.cookie = `tasks={"task1":"work","task2":"buy","task3":"cook"};`
+	if (!document.cookie.match(/tasks=\[.+?]/)) {
+		const date = new Date()
+		// todo - en,uk - instead of EN,UA
+		const month = date.toLocaleString('uk', { month: 'long' }).toLowerCase()
+		document.cookie = `tasks=[{work: "#aeffa3"},{ideas: "#7ec5fb"}, {${month}: "#ff8585"}]`
 	}
 	if (!document.cookie.match(/lastTodo/)) {
 		document.cookie = `lastTodo="3"`
@@ -80,12 +82,9 @@ export default function App() {
 			inputText = `Test Task ${lastTodo - 3 + 1}`
 		}
 		// ! define task
-		const tasksArr = []
-		Object.values(tasksObj()).map(elem => tasksArr.push(elem)) // ['taskName1', 'taskName2', 'taskName3']
-
 		const firstWord = inputText.match(/\S+/)[0]
 		let task
-		tasksArr.map(taskName => taskName === firstWord && (task = firstWord, inputText = inputText.replace(firstWord, '')))
+		tasks.map(tsk => Object.keys(tsk) == firstWord && (task = firstWord, inputText = inputText.replace(firstWord, '')))
 		// ? define task
 
 		if (quantity === "one") {
@@ -186,10 +185,13 @@ export default function App() {
 		setOneTime(prevState => prevState + 1)
 	}
 	// ? mobile
+	// ! tasks
+	const cookieTasks = document.cookie.match(/tasks=\[.+?]/)[0].replace(/tasks=/, '')
+	const [tasks, setTasks] = React.useState(eval(cookieTasks))
 
 	// ! return
 	return (
-		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile }}>
+		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks }}>
 			<Burger toggleAddTodo={toggleAddTodo} />
 
 			{showAddTodo && <AddTodo addTodo={addTodo} todos={todos} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}
