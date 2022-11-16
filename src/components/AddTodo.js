@@ -5,11 +5,12 @@ import MyTasks from "./MyTasks"
 import Settings from "./Settings"
 import Language from "./Language"
 import getCookie from "./../functions/getCookie"
-import translate from '../functions/translate'
+import translate from '../functions/Translate'
 
-const t = translate()
 
 export default function AddTodo(props) {
+
+	const t = translate()
 
 	const [text, setText] = React.useState("")
 
@@ -31,8 +32,7 @@ export default function AddTodo(props) {
 		makePopUp({ title: t[12].charAt(0).toUpperCase() + t[12].slice(1) + "?", setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTodos" })
 	}
 
-	// todo HAS DUP
-	const [menu, setMenu] = React.useState([
+	const menuArr = [
 		{
 			title: t[8],
 			content: <MyTasks />,
@@ -54,7 +54,10 @@ export default function AddTodo(props) {
 			isShown: true,
 			hasClose: false
 		}
-	])
+	]
+	const [menu, setMenu] = React.useState(menuArr)
+	// translate menu when lang changes // todo needs double click on "Language" after lang changes
+	React.useEffect(() => { setMenu(menuArr) }, [t])
 
 	// ! toggleMenuContent
 	function toggleMenuContent(toggleId) {

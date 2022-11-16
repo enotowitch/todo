@@ -12,29 +12,39 @@ import normalizeDate from "./functions/normalizeDate"
 import makePopUp from "./functions/makePopUp"
 import Search from "./components/Search"
 import Scroll from "./components/Scroll"
-import translate from './functions/translate'
+import translate from './functions/Translate'
 import { Context } from "./context"
 import defineLang from "./functions/defineLang"
+import defineLocation from "./functions/defineLocation"
 
-const t = translate()
 
 export default function App() {
 
-	// ! default cookies
+	const t = translate()
+
+	// ! lang
+	const [lang, setLang] = React.useState(defineLang()) // UK, EN ...
+	React.useEffect(() => {
+		document.cookie = `lang="${lang}"`
+	}, [lang])
+	// ? lang
+
+	// ! default cookies => on first load
+	if (!document.cookie.match(/lang=/)) {
+		document.cookie = `lang="${defineLocation()}"`
+		// todo, mandatory
+		// window.location.reload()
+	}
 	if (!document.cookie.match(/colors/)) {
 		document.cookie = `colors={"work":"#7ec5fb","buy":"#ff8585","cook":"#aeffa3"};`
 	}
 	if (!document.cookie.match(/tasks=\[.+?]/)) {
 		const date = new Date()
-		// todo - en,uk - instead of EN,UA
-		const month = date.toLocaleString('uk', { month: 'long' }).toLowerCase()
+		const month = date.toLocaleString(lang, { month: 'long' }).toLowerCase()
 		document.cookie = `tasks=[{work: "#aeffa3"},{ideas: "#7ec5fb"}, {${month}: "#ff8585"}]`
 	}
 	if (!document.cookie.match(/lastTodo/)) {
 		document.cookie = `lastTodo="3"`
-	}
-	if (!document.cookie.match(/translate/)) {
-		document.cookie = `translate="UA"`
 	}
 	if (localStorage.length === 0) {
 		// create FAKE todos on start for DRAG & DROP to status title
@@ -42,8 +52,8 @@ export default function App() {
 		localStorage.setItem(1, JSON.stringify({ id: 1, doing: true, done: false, canceled: false }))
 		localStorage.setItem(2, JSON.stringify({ id: 2, doing: false, done: true, canceled: false }))
 		localStorage.setItem(3, JSON.stringify({ id: 3, doing: false, done: false, canceled: true }))
-		// mandatory
-		window.location.reload()
+		// todo, mandatory
+		// window.location.reload()
 	}
 	// ? default cookies
 
@@ -68,7 +78,12 @@ export default function App() {
 	const [popUpState, setPopUpState] = React.useState({})
 	const [showPopUp, setShowPopUp] = React.useState(false)
 
-	const lang = defineLang()
+	// show change lang popup ONLY at very first load
+	const [x, xSet] = React.useState(0)
+	if (!document.cookie.match(/langPopUp/) && x === 0) {
+		makePopUp({ title: t[30], setPopUpState, setShowPopUp, modalWindowType: "select" })
+		xSet(1)
+	}
 
 	const daysHtmlElements = weeks.EN[weekNum].map((day, ind) => <OneDayTodos todos={todos} action={action} date={day} dateTranslated={weeks[lang][weekNum][ind]} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />)
 
@@ -191,7 +206,7 @@ export default function App() {
 
 	// ! return
 	return (
-		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks }}>
+		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp }}>
 			<Burger toggleAddTodo={toggleAddTodo} />
 
 			{showAddTodo && <AddTodo addTodo={addTodo} todos={todos} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}

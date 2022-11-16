@@ -1,9 +1,10 @@
 import React from "react"
-import translate from '../functions/translate'
+import translate from '../functions/Translate'
 
-const t = translate()
 
 export default function Settings(props) {
+
+	const t = translate()
 
 	return (
 		<div className="buttons">

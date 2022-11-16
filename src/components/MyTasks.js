@@ -1,16 +1,16 @@
 import React from "react"
 import Task from "./Task"
 import Tutorial from "./Tutorial"
-import translate from "../functions/translate"
+import translate from "../functions/Translate"
 import { Context } from "./../context"
 
-const t = translate()
 
 export default function MyTasks(props) {
 
+	const t = translate()
+
 	// ! tasks
-	const { tasks } = React.useContext(Context)
-	const { setTasks } = React.useContext(Context)
+	const { tasks, setTasks } = React.useContext(Context)
 
 	function changeTaskState(event) {
 		const { name, value, type } = event.target

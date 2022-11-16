@@ -9,19 +9,17 @@ import edit from "./../img/edit.svg"
 import del from "./../img/del.svg"
 import dnd from "./../img/dnd.svg"
 import makePopUp from "../functions/makePopUp"
-import translate from "../functions/translate"
+import translate from "../functions/Translate"
 import { Context } from "./../context"
 import MoveDateOptions from "./MoveDateOptions"
 import year from "./../year"
-import defineLang from "../functions/defineLang"
 
-const t = translate()
-const lang = defineLang()
 
 export default function Todo(props) {
 
-	const { todos } = React.useContext(Context)
-	const { setTodos } = React.useContext(Context)
+	const t = translate()
+
+	const { todos, setTodos, lang } = React.useContext(Context)
 
 	const likedOrNot = props.doing ? liked : like
 	const canceledOrNot = props.canceled ? canceled : cancel
@@ -53,7 +51,7 @@ export default function Todo(props) {
 	function changeDate(event) {
 		const { name, value } = event.target
 		setMoveDateSelectState(prevState => ({ ...prevState, [name]: value }))
-		const dateTranslated = year.EN.indexOf(value) // index 0-364, "use" year[UA][114]
+		const dateTranslated = year.EN.indexOf(value) // index 0-364, "use" year[UK][114]
 		props.moveTodo(props.id, value, year[lang][dateTranslated])
 	}
 
@@ -137,7 +135,7 @@ export default function Todo(props) {
 		if (startObj.date === OverDate) {
 			makePopUp({ imgName: newStatus, title: newStatusTranslated, text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
 		} else {
-			const dateTranslated = year.EN.indexOf(OverDate) // index 0-364, "use" year[UA][114]
+			const dateTranslated = year.EN.indexOf(OverDate) // index 0-364, "use" year[UK][114]
 			makePopUp({ imgName: newStatus, title: year[lang][dateTranslated], text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
 		}
 		// ! date is overwriten here; don't overwrite DATE if in SEARCH

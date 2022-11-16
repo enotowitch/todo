@@ -1,5 +1,5 @@
 import React from "react"
-import translate from './../functions/translate'
+import translate from './../functions/Translate'
 
 export default function SearchHint(props) {
 

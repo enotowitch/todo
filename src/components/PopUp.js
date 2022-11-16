@@ -1,29 +1,43 @@
 import React from "react"
-import translate from '../functions/translate'
-
-const t = translate()
+import { Context } from "../context";
+import makePopUp from "../functions/makePopUp";
+import translate from '../functions/Translate'
+import SelectLang from "./SelectLang";
 
 
 export default function PopUp(props) {
+
+	const { setTasks, setPopUpState, setShowPopUp } = React.useContext(Context)
+
+	const t = translate()
+
 	const path = props.imgName ? `img/${props.imgName}.svg` : ""
+
+	// ! find current todo text to display in editTodo, deleteTodo ...
+	let curTodoText
+	props.todos.map(todo => todo.id === props.todoId && (curTodoText = todo.text))
 
 	// ! deleteTasks
 	function deleteTasks() {
-		document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-		window.location.reload()
+		setTasks([])
+		props.popUpHide()
+		// todo makePopUp without passing setPopUpState, setShowPopUp each time => so it's already there...
+		makePopUp({ imgName: "del", title: t[31], setPopUpState, setShowPopUp })
 	}
 	// ! editTodo
 	function editTodo() {
 		const editText = document.querySelector('[name="edit"]').value
 		// state
 		props.setTodos(prevState => {
-			return prevState.map(elem => {
-				return elem.id === props.todoId ? { ...elem, text: editText } : elem
+			return prevState.map(todo => {
+				return todo.id === props.todoId ? { ...todo, text: editText } : todo
 			})
 		})
 		// popUpHide
 		props.popUpHide()
+		makePopUp({ imgName: "edit", text: curTodoText, title: t[32], setPopUpState, setShowPopUp })
 	}
+	// fix slow state for editTodo (state is one step behind)
 	React.useEffect(() => {
 		let text
 		props.todos.map(elem => {
@@ -41,6 +55,7 @@ export default function PopUp(props) {
 		}))
 		props.popUpHide()
 		localStorage.removeItem(props.todoId)
+		makePopUp({ imgName: "del", text: curTodoText, title: t[33], setPopUpState, setShowPopUp })
 	}
 	// ! deleteTodos
 	function deleteTodos() {
@@ -48,14 +63,29 @@ export default function PopUp(props) {
 		localStorage.clear()
 		window.location.reload()
 	}
+	// ! selectFn
+	function selectFn() {
+		document.cookie = `langPopUp="shownOnce"`
+		props.popUpHide()
+	}
+	// ! modalWindowFunction
 	function modalWindowFunction() {
 		props.doFunction === "deleteTasks" && deleteTasks()
 		props.doFunction === "editTodo" && editTodo()
 		props.doFunction === "deleteTodo" && deleteTodo()
 		props.doFunction === "deleteTodos" && deleteTodos()
+		props.modalWindowType === "select" && selectFn()
 	}
 
-	const firstButtonText = props.modalWindowType === "confirm" ? t[21] : t[22]
+	let firstButtonText
+	switch (props.modalWindowType) {
+		case "confirm": firstButtonText = t[21]
+			break;
+		case "prompt": firstButtonText = t[22]
+			break;
+		case "select": firstButtonText = t[29]
+			break;
+	}
 
 	return (
 		<>
@@ -72,14 +102,18 @@ export default function PopUp(props) {
 					/>
 				}
 
-				{(props.modalWindowType === "confirm" || props.modalWindowType === "prompt") &&
+				{props.modalWindowType === "select" &&
+					<SelectLang />
+				}
+
+				{(props.modalWindowType) &&
 					<div className="confirm__buttons">
 						<button onClick={modalWindowFunction}>{firstButtonText}</button>
 						<button onClick={props.popUpHide}>{t[23]}</button>
 					</div>
 				}
 			</div>
-			{(props.modalWindowType === "confirm" || props.modalWindowType === "prompt") && <div className="popup__bg"></div>}
+			{(props.modalWindowType) && <div className="popup__bg"></div>}
 		</>
 	)
 }

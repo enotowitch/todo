@@ -5,13 +5,13 @@ import getToday from "./../functions/getToday"
 import normalizeDate from "./../functions/normalizeDate"
 import ActionNums from "./ActionNums"
 import add from "./../img/add.svg"
-import translate from '../functions/translate'
+import translate from '../functions/Translate'
 import TodoBlock from "./TodoBlock"
-
-const t = translate()
 
 
 export default function OneDayTodos(props) {
+	
+	const t = translate()
 
 	const thisDayTodos = []
 	props.todos.map(elem => {

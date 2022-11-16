@@ -435,7 +435,7 @@ button,.todos-title,.like, .hide{
 	background: rgba(255, 255, 255, 0.95);
 	z-index: 8;
  }
- .popup, .confirm, .prompt{
+ .popup, .confirm, .prompt,.select{
 	position: fixed;
 	z-index: 9;
 	bottom: 10px;
@@ -472,7 +472,7 @@ button,.todos-title,.like, .hide{
 	right: 4px;
  }
  /* ! confirm */
- .confirm, .prompt{
+ .confirm, .prompt,.select{
 	width: 50vw;
 	left: 50%;
 	top: 50%;

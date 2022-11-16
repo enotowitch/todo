@@ -5,19 +5,18 @@ import add from "./../img/add.svg"
 import Todo from "./Todo"
 import SearchTag from "./SearchTag"
 import getToday from "../functions/getToday"
-import translate from "../functions/translate"
+import translate from "../functions/Translate"
 import arrow from "./../img/arrow.svg"
-import defineLang from "../functions/defineLang"
 import year from "./../year"
 import SearchHint from "./SearchHint"
 import { Context } from "./../context"
 
-const t = translate()
-const lang = defineLang()
 
 export default function Search(props) {
 
-	const { tasks } = React.useContext(Context)
+	const t = translate()
+
+	const { tasks, lang } = React.useContext(Context)
 	const taskOptions = tasks.reverse().map(task => <option>{Object.keys(task)}</option>)
 
 	const [searchCount, setSearchCount] = React.useState(0)
@@ -119,7 +118,7 @@ export default function Search(props) {
 
 
 	function shortTodo(todo) {
-		let dateTranslated = year.EN.indexOf(todo.date) // index 0-364, "use" year[UA][114]
+		let dateTranslated = year.EN.indexOf(todo.date) // index 0-364, "use" year[UK][114]
 		return <Todo section={"search"} showDate={true} key={todo.id} {...todo} dateTranslated={year[lang][dateTranslated]} action={props.action} moveTodo={props.moveTodo} moveTask={props.moveTask} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
 	}
 

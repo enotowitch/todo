@@ -1,13 +1,14 @@
 import React from "react"
-import translate from "../functions/translate"
+import translate from "../functions/Translate"
 import ActionNum from "./ActionNum"
 import arrow from "./../img/arrow.svg"
 import Todo from "./Todo"
 
 
-const t = translate()
 
 export default function TodoBlock(props) {
+
+	const t = translate()
 
 	const arrowStyle = props.showBlock ? { "transform": "rotate(180deg) scale(.7)" } : { "transform": "rotate(0deg) scale(.7)" }
 
