@@ -5,6 +5,7 @@ import MyTasks from "./MyTasks"
 import Settings from "./Settings"
 import Language from "./Language"
 import getCookie from "./../functions/getCookie"
+import normalizeDate from "./../functions/normalizeDate"
 import translate from '../functions/Translate'
 
 
@@ -74,11 +75,11 @@ export default function AddTodo(props) {
 
 	const menuHtmlElems = menu.map(elem => <MenuItem {...elem} toggleMenuContent={toggleMenuContent} showAllmenu={showAllmenu} />)
 
-	const date = getCookie("dateForAddTodo")
+	const dateTranslated = getCookie("dateTranslated")
 
 	return (
 		<div className="add-todo">
-			<div className="add-todo__date">{t[5]}: {date}</div>
+			<div className="add-todo__date">{t[5]}: {normalizeDate(dateTranslated)}</div>
 			<input
 				className="input__text"
 				type="text"
@@ -87,7 +88,7 @@ export default function AddTodo(props) {
 				value={text}
 				onChange={getText} />
 			<div className="buttons">
-				<button onClick={() =>
+				<button className="button_main" onClick={() =>
 					props.addTodo(text, "one",
 						clearText())
 				}>{t[7]}</button>

@@ -77,11 +77,13 @@ export default function PopUp(props) {
 		props.modalWindowType === "select" && selectFn()
 	}
 
-	let firstButtonText
+	let firstButtonText, buttonClass
 	switch (props.modalWindowType) {
 		case "confirm": firstButtonText = t[21]
+			buttonClass = "button_danger"
 			break;
 		case "prompt": firstButtonText = t[22]
+			buttonClass = "button_main"
 			break;
 		case "select": firstButtonText = t[29]
 			break;
@@ -108,7 +110,7 @@ export default function PopUp(props) {
 
 				{(props.modalWindowType) &&
 					<div className="confirm__buttons">
-						<button onClick={modalWindowFunction}>{firstButtonText}</button>
+						<button className={buttonClass} onClick={modalWindowFunction}>{firstButtonText}</button>
 						<button onClick={props.popUpHide}>{t[23]}</button>
 					</div>
 				}

@@ -10,7 +10,7 @@ import TodoBlock from "./TodoBlock"
 
 
 export default function OneDayTodos(props) {
-	
+
 	const t = translate()
 
 	const thisDayTodos = []
@@ -50,6 +50,7 @@ export default function OneDayTodos(props) {
 	function getTodoDate(event) {
 		// write to cookie => on which day AddTodo() is used
 		document.cookie = `dateForAddTodo=${props.date}`
+		document.cookie = `dateTranslated=${props.dateTranslated}`
 		// turn on addTodo
 		document.querySelector('.burger__btn').click()
 		// style

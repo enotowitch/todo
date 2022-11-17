@@ -8,8 +8,8 @@ export default function Settings(props) {
 
 	return (
 		<div className="buttons">
-			<button className="danger-button" onClick={props.deleteTodosPopUp}>{t[12]}</button>
-			<button className="danger-button" onClick={props.deleteTasksPopUp}>{t[13]}</button>
+			<button className="button_danger" onClick={props.deleteTodosPopUp}>{t[12]}</button>
+			<button className="button_danger" onClick={props.deleteTasksPopUp}>{t[13]}</button>
 		</div>
 	)
 }

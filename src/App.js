@@ -16,6 +16,7 @@ import translate from './functions/Translate'
 import { Context } from "./context"
 import defineLang from "./functions/defineLang"
 import defineLocation from "./functions/defineLocation"
+import year from "./year"
 
 
 export default function App() {
@@ -26,6 +27,11 @@ export default function App() {
 	const [lang, setLang] = React.useState(defineLang()) // UK, EN ...
 	React.useEffect(() => {
 		document.cookie = `lang="${lang}"`
+		// rewrite dateTranslated on lang change
+		const date = getCookie("dateForAddTodo") // Nov17
+		const dateInd = year.EN.indexOf(date) // 320
+		const dateTranslated = year[lang][dateInd] // Лист17
+		document.cookie = `dateTranslated=${dateTranslated}`
 	}, [lang])
 	// ? lang
 
@@ -87,6 +93,7 @@ export default function App() {
 
 	const daysHtmlElements = weeks.EN[weekNum].map((day, ind) => <OneDayTodos todos={todos} action={action} date={day} dateTranslated={weeks[lang][weekNum][ind]} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />)
 
+	// ! addTodo
 	function addTodo(inputText, quantity) {
 		let lastTodo
 		lastTodo = document.cookie.match(/lastTodo="\d+/) && document.cookie.match(/lastTodo="\d+/)[0].replace(/lastTodo="/, '') * 1
@@ -112,7 +119,8 @@ export default function App() {
 		}
 		document.cookie = `lastTodo="${lastTodo}"`
 		// ! PopUp
-		makePopUp({ imgName: "add", title: normalizeDate(date), text: inputText, setPopUpState, setShowPopUp })
+		const dateTranslated = getCookie("dateTranslated")
+		makePopUp({ imgName: "add", title: normalizeDate(dateTranslated), text: inputText, setPopUpState, setShowPopUp })
 	}
 	// ! action: propName: done/doing/canceled,etc... works only with BOOLS!
 	function action(todoID, propName, propNameTranslated) {

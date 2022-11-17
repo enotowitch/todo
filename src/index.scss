@@ -1,17 +1,14 @@
 @import url("./media.css");
 
-/* todo more vars */
-:root{
-	--input-width: 290px;
-	--done: #97f50a;
-	--doing: orange;
-	--canceled: tomato;
-	/* todo lighten or connect sass */
-	--done-light:#daffa7;
-	--doing-light:rgb(255, 228, 179);
-	--canceled-light:rgb(255, 202, 193);
-	--todo-max-width:400px;
-}
+// ! colors
+$main-color:#000;
+$main-color-inverse:#fff;
+$doing: orange;
+$done: #97f50a;
+$canceled: tomato;
+// ! width
+$input-width: 290px;
+$todo-max-width:400px;
 
 body {
   margin: 0;
@@ -32,10 +29,10 @@ code {
 
 .todo,.todos-title{
 	position: relative;
-	width: var(--todo-max-width);
+	width: $todo-max-width;
 	margin: 0 auto;
-	background: #ffffff;
-	box-shadow:  2px 2px 6px #d9d9d9, -2px -2px 6px #ffffff;
+	background: $main-color-inverse;
+	box-shadow:  2px 2px 6px #d9d9d9, -2px -2px 6px $main-color-inverse;
 	border-radius: 8px;
 	display: flex;
 	align-items: center;
@@ -84,11 +81,11 @@ code {
 	justify-content: space-evenly;
 	align-items: center;
 	right: 30px;
-	background: #fff;
+	background: $main-color-inverse;
 	padding: 4px 2px;
 	border-radius: 8px;
 	width: 80px;
-	box-shadow: 2px 2px 6px #d9d9d9, -2px -2px 6px #ffffff;
+	box-shadow: 2px 2px 6px #d9d9d9, -2px -2px 6px $main-color-inverse;
 }
 .dots{
 	padding-right: 8px;
@@ -108,13 +105,13 @@ code {
 	font-weight: 400;
 }
 .canceledNum,.canceled{
-	color: var(--canceled);
+	color: $canceled;
 }
 .doingNum,.doing{
-	color: var(--doing);
+	color: $doing;
 }
 .doneNum,.done{
-	color: var(--done);
+	color: $done;
 }
 .allNum,.doingNum,.doneNum,.canceledNum{
 	position: absolute;
@@ -126,23 +123,48 @@ code {
 	opacity: 0;
 	height: 50px;
 }
+// ! all buttons
 button{
 	padding: 0 20px;
 	height: 36px;
-	background: none;
+	background: $main-color-inverse;
 	border-radius: 8px;
 	outline: none;
-	border: 2px solid #000;
+	border: 2px solid $main-color;
 	font-weight: 700;
 	border-radius: 50px;
 }
-.danger-button{
-	border: 2px solid var(--canceled);
-	color: var(--canceled);
+button:hover{
+	background: lighten($main-color, 30%);
+	color: $main-color-inverse;
 }
+button:active{
+	background: $main-color;
+	color: $main-color-inverse;
+}
+// ? all buttons
+// ! button_main
+.button_main{
+	background: $main-color;
+	color: $main-color-inverse;
+}
+.button_main:active{
+	background: $main-color-inverse;
+	color: $main-color;
+}
+// ? button_main
+// ! button_danger
+.button_danger{
+	border: 2px solid $canceled;
+	color: $canceled;
+}
+.button_danger:active,.button_danger:hover{
+	background: $canceled;
+}
+// ?? button_danger
 .input__text{
 	height: 30px;
-	width: var(--input-width);
+	width: $input-width;
 	display: block;
 	margin: 15px auto 0;
 	text-indent: 2px;
@@ -156,9 +178,9 @@ button{
 	height: 100%;
 	padding: 22px 0 0;
 	text-align: center;
-	background: #fff;
+	background: $main-color-inverse;
 	left: 5px;
-	border-left: 2px solid #000;
+	border-left: 2px solid $main-color;
 }
 .chosen-day{
 	border-top: 2px solid #bc79ff !important;
@@ -170,11 +192,11 @@ button{
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-evenly;
-	width: var(--input-width);
+	width: $input-width;
 	margin: 15px auto;
 }
 .add-todo__date{
-	width: var(--input-width);
+	width: $input-width;
 	height: 30px;
 	margin: 0 auto;
 	font-family: Montserrat;
@@ -275,10 +297,9 @@ button,.todos-title,.like, .hide{
 	position: relative;
 	z-index: 3;
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: center;
 	font-weight: 700;
-	width: 200px;
 	margin: 22px auto 15px;
 }
 
@@ -292,7 +313,7 @@ button,.todos-title,.like, .hide{
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: var(--input-width);
+	width: $input-width;
 	margin: 0 auto;
 }
 .task{
@@ -328,7 +349,7 @@ button,.todos-title,.like, .hide{
 .tutorial-wrap{
 	height: 100vh;
 	width: 100vw;
-	background: #fff;
+	background: $main-color-inverse;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -359,7 +380,7 @@ button,.todos-title,.like, .hide{
 .tasks{
 	max-height: 45vh;
 	overflow-y: auto;
-	max-width: calc(var(--input-width) + 30px);
+	max-width: calc($input-width + 30px);
 	margin: 0 auto;
 }
 /* ! scrollbar */
@@ -371,7 +392,7 @@ button,.todos-title,.like, .hide{
 	border-radius: 20px;
 }
 ::-webkit-scrollbar-track {
-	background: #fff;
+	background: $main-color-inverse;
 	border-radius: 20px;
 }
 /* Burger */
@@ -441,14 +462,29 @@ button,.todos-title,.like, .hide{
 	bottom: 10px;
 	left: 50%;
 	transform: translate(-50%);
-	min-width: var(--input-width);
+	min-width: $input-width;
 	display: flex;
 	align-items: center;
 	height: 60px;
 	border-radius: 8px;
-	background: #fff;
+	background: $main-color-inverse;
 	border: 2px solid #29a6ff;
  }
+ .popup{
+	animation: popUpAnimation .5s;
+ }
+
+ @keyframes popUpAnimation {
+	0%{
+		opacity: 0;
+		transform: translate(-50%, 100px);
+	}
+	100%{
+		opacity: 1;
+		transform: translate(-50%, 0px);
+	}
+ }
+
  .popup__img{
 	margin-left: 4px;
  }
@@ -482,7 +518,7 @@ button,.todos-title,.like, .hide{
 	justify-content: space-evenly;
  }
  .confirm__buttons{
-	width: var(--input-width);
+	width: $input-width;
 	display: flex;
 	justify-content: space-evenly;
  }
@@ -495,7 +531,7 @@ button,.todos-title,.like, .hide{
  }
  .prompt [name="edit"]{
 	height: 190px;
-	min-width: calc(var(--input-width) - 30px);
+	min-width: calc($input-width - 30px);
 	width: calc(50vw - 30px);
 	resize: none;
  }
@@ -518,7 +554,7 @@ button,.todos-title,.like, .hide{
 	pointer-events: none;
 	height: 100%;
 	width: 100%;
-	border-right: 2px solid #000;
+	border-right: 2px solid $main-color;
  }
  .search{
 	position: relative;
@@ -546,7 +582,7 @@ button,.todos-title,.like, .hide{
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	max-width: var(--todo-max-width);
+	max-width: $todo-max-width;
 	margin: 0 auto 15px;
 	padding: 0 15px;
 }
@@ -621,7 +657,7 @@ button,.todos-title,.like, .hide{
 }
 .search-tags {
     margin: 0 auto 30px auto;
-    width: var(--input-width);
+    width: $input-width;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -633,7 +669,7 @@ button,.todos-title,.like, .hide{
 }
 .task-wrap{
 	position: relative;
-	width: calc(var(--input-width) + 30px);
+	width: calc($input-width + 30px);
 	margin: 0 auto;
 }
 /* ! scroll */
@@ -642,23 +678,10 @@ button,.todos-title,.like, .hide{
 	bottom: 6px;
 	right: 12px;
 	transform: rotate(180deg) scale(.8);
-	background: #fff;
+	background: $main-color-inverse;
 	border-radius: 50%;
 	border: 1px solid;
 	padding: 8px;
-}
-.borderdone, .borderdoing, .bordercanceled, .borderall{
-	margin-right: 12px;
-	border-left: 5px solid var(--done-light);
-}
-.borderdoing{
-	border-left: 5px solid var(--doing-light);
-}
-.bordercanceled{
-	border-left: 5px solid var(--canceled-light);
-}
-.borderall{
-	border-left: 5px solid #f1f1f1;
 }
 .top-icons-bg{
 	position: fixed;
@@ -667,7 +690,7 @@ button,.todos-title,.like, .hide{
 	left: 0px;
 	height: 70px;
 	width: 100%;
-	background: #fff;
+	background: $main-color-inverse;
 	border-bottom-left-radius: 8px;
 	border-bottom-right-radius: 8px;
 }
@@ -679,13 +702,13 @@ button,.todos-title,.like, .hide{
 	width: 5px;
 }
 .doing-bg{
-	background: var(--doing) ;
+	background: $doing;
 }
 .done-bg{
-	background: var(--done) ;
+	background: $done;
 }
 .canceled-bg{
-	background: var(--canceled) ;	
+	background: $canceled;	
 }
 .no-bg{
 	background: #b6b6b6;
