@@ -27,9 +27,9 @@ export default function App() {
 	React.useEffect(() => {
 		document.cookie = `lang="${lang}"`
 		// rewrite dateTranslated on lang change
-		const date = getCookie("dateForAddTodo") // Nov17
+		const date = getCookie("dateForAddTodo") // Nov 17
 		const dateInd = year.EN.indexOf(date) // 320
-		const dateTranslated = year[lang][dateInd] // Лист17
+		const dateTranslated = year[lang][dateInd] // Лист 17
 		document.cookie = `dateTranslated=${dateTranslated}`
 	}, [lang])
 	// ? lang
@@ -50,6 +50,9 @@ export default function App() {
 	}
 	if (!document.cookie.match(/lastTodo/)) {
 		document.cookie = `lastTodo="3"`
+	}
+	if (!document.cookie.match(/dateForAddTodo/)) {
+		document.cookie = `dateForAddTodo=${getToday()}`
 	}
 	if (localStorage.length === 0) {
 		// create FAKE todos on start for DRAG & DROP to status title
@@ -93,33 +96,25 @@ export default function App() {
 	const daysHtmlElements = weeks.EN[weekNum].map((day, ind) => <OneDayTodos todos={todos} action={action} date={day} dateTranslated={weeks[lang][weekNum][ind]} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />)
 
 	// ! addTodo
-	function addTodo(inputText, quantity) {
+	function addTodo() {
 		let lastTodo
 		lastTodo = document.cookie.match(/lastTodo="\d+/) && document.cookie.match(/lastTodo="\d+/)[0].replace(/lastTodo="/, '') * 1
 		// ! date
 		const date = getCookie("dateForAddTodo")
 		// ? date
-		if (inputText === "" && quantity === "one") {
-			inputText = `Test Task ${lastTodo - 3 + 1}`
-		}
-		// ! define task
-		const firstWord = inputText.match(/\S+/)[0]
-		let task
-		tasks.map(tsk => Object.keys(tsk) == firstWord && (task = firstWord, inputText = inputText.replace(firstWord, '')))
-		// ? define task
+		let textWithoutTask = inputOfAddTodo
+		taskForAddTodo && (textWithoutTask = textWithoutTask.replace(taskForAddTodo, ''))
+		const text = textWithoutTask || `Test Task ${lastTodo - 3 + 1}`
+		lastTodo++
 
-		if (quantity === "one") {
-			// ! add ONE
-			lastTodo++
+		setTodos(prevState => {
+			return [...prevState, { task: taskForAddTodo, id: lastTodo, date: date, text: text, doing: false, done: false, canceled: false, showAction: false }]
+		})
 
-			setTodos(prevState => {
-				return [...prevState, { task: task, id: lastTodo, date: date, text: inputText, doing: false, done: false, canceled: false, showAction: false }]
-			})
-		}
 		document.cookie = `lastTodo="${lastTodo}"`
 		// ! PopUp
 		const dateTranslated = getCookie("dateTranslated")
-		makePopUp({ imgName: "add", title: dateTranslated, text: inputText, setPopUpState, setShowPopUp })
+		makePopUp({ imgName: "add", title: dateTranslated, text: text, setPopUpState, setShowPopUp })
 	}
 	// ! action: propName: done/doing/canceled,etc... works only with BOOLS!
 	function action(todoID, propName, propNameTranslated) {
@@ -211,9 +206,12 @@ export default function App() {
 	const cookieTasks = document.cookie.match(/tasks=\[.+?]/)[0].replace(/tasks=/, '')
 	const [tasks, setTasks] = React.useState(eval(cookieTasks))
 
+	const [taskForAddTodo, setTaskForAddTodo] = React.useState()
+	const [inputOfAddTodo, setInputOfAddTodo] = React.useState()
+
 	// ! return
 	return (
-		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp }}>
+		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo }}>
 			<Burger toggleAddTodo={toggleAddTodo} />
 
 			{showAddTodo && <AddTodo addTodo={addTodo} todos={todos} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}

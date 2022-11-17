@@ -6,21 +6,14 @@ import Settings from "./Settings"
 import Language from "./Language"
 import getCookie from "./../functions/getCookie"
 import translate from '../functions/Translate'
+import { Context } from "../context"
 
 
 export default function AddTodo(props) {
 
 	const t = translate()
 
-	const [text, setText] = React.useState("")
-
-	function getText(event) {
-		setText(event.target.value)
-	}
-	function clearText() {
-		setText("")
-	}
-
+	const { inputOfAddTodo, setInputOfAddTodo, setTaskForAddTodo } = React.useContext(Context)
 	// ! deleteTasksPopUp
 	function deleteTasksPopUp() {
 		props.setShowPopUp(prevState => !prevState)
@@ -84,12 +77,11 @@ export default function AddTodo(props) {
 				type="text"
 				placeholder={t[6]}
 				autoFocus
-				value={text}
-				onChange={getText} />
+				value={inputOfAddTodo}
+				onChange={(e) => setInputOfAddTodo(e.target.value)} />
 			<div className="buttons">
 				<button className="button_main" onClick={() =>
-					props.addTodo(text, "one",
-						clearText())
+					(props.addTodo(), setInputOfAddTodo(""), setTaskForAddTodo())
 				}>{t[7]}</button>
 			</div>
 

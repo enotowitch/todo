@@ -16,7 +16,7 @@ export default function Search(props) {
 
 	const t = translate()
 
-	const { tasks, lang } = React.useContext(Context)
+	const { tasks, lang, setTaskForAddTodo, setInputOfAddTodo } = React.useContext(Context)
 	const taskOptions = tasks.reverse().map(task => <option>{Object.keys(task)}</option>)
 
 	const [searchCount, setSearchCount] = React.useState(0)
@@ -137,9 +137,8 @@ export default function Search(props) {
 	function addTodoTask() {
 		document.cookie = `dateForAddTodo=${getToday()}`
 		document.querySelector('.burger__btn').click()
-		setTimeout(() => {
-			document.querySelector('.input__text').value = searchState.task + " "
-		}, 100);
+		setTaskForAddTodo(searchState.task)
+		setInputOfAddTodo(searchState.task + " ")
 	}
 	// ! reverse
 	const [reverseState, setReverseState] = React.useState(false)

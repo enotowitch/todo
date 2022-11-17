@@ -58,7 +58,7 @@ export default function MyTasks(props) {
 	// ? showIcon
 
 	const taskHtmlElems = tasks.map(task => {
-		return <Task taskName={Object.keys(task)} taskColor={Object.values(task)} changeTaskState={changeTaskState} showIcon={showIcon[Object.keys(task)]} toggleIcon={toggleIcon} />
+		return <Task taskName={String(Object.keys(task))} taskColor={Object.values(task)} changeTaskState={changeTaskState} showIcon={showIcon[Object.keys(task)]} toggleIcon={toggleIcon} />
 	})
 	// ! addTask
 	function addTask() {

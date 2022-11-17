@@ -5,16 +5,16 @@ import del from "./../img/del.svg"
 
 export default function Task(props) {
 
-	function addTaskName() {
-		document.querySelector('.input__text').value = props.taskName + " "
-		document.querySelector('.input__text').focus()
-	}
-
-	const { tasks, setTasks } = React.useContext(Context)
+	const { tasks, setTasks, setTaskForAddTodo, setInputOfAddTodo } = React.useContext(Context)
 
 	function deleteTask(taskName) {
 		const deleted = tasks.filter(task => String(Object.keys(task)) != taskName)
 		setTasks(deleted)
+	}
+	function addTaskName() {
+		setTaskForAddTodo(props.taskName)
+		setInputOfAddTodo(props.taskName + " ")
+		document.querySelector('.input__text').focus()
 	}
 
 	return (

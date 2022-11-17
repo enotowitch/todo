@@ -28,7 +28,6 @@ export default function Todo(props) {
 
 	// ! color todo
 	let color
-	let text
 	const { tasks } = React.useContext(Context)
 	tasks.map(task => Object.keys(task) == props.task && (color = Object.values(task)))
 
@@ -170,7 +169,7 @@ export default function Todo(props) {
 		<div className={`todo ${props.cssClass}`} style={style} draggable={draggable} onDragStart={dragStart} onDragOver={dragOver} onDragEnd={dragEnd}>
 			{checkbox}
 			{props.showDate && <p className="todo__date">{props.dateTranslated}</p>}
-			<p className="todo__text">{text || props.text}</p>
+			<p className="todo__text">{props.text}</p>
 
 			{props.showAction &&
 				<div className="actions">
