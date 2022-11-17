@@ -5,7 +5,6 @@ import MyTasks from "./MyTasks"
 import Settings from "./Settings"
 import Language from "./Language"
 import getCookie from "./../functions/getCookie"
-import normalizeDate from "./../functions/normalizeDate"
 import translate from '../functions/Translate'
 
 
@@ -79,7 +78,7 @@ export default function AddTodo(props) {
 
 	return (
 		<div className="add-todo">
-			<div className="add-todo__date">{t[5]}: {normalizeDate(dateTranslated)}</div>
+			<div className="add-todo__date">{t[5]}: {dateTranslated}</div>
 			<input
 				className="input__text"
 				type="text"

@@ -107,7 +107,7 @@ export default function Todo(props) {
 		OverId = Number(document.cookie.match(/OverId=\d+/)[0].replace(/OverId=/, ''))
 		StartId = Number(document.cookie.match(/StartId=\d+/)[0].replace(/StartId=/, ''))
 
-		OverDate = document.cookie.match(/OverDate=\w+/)[0].replace(/OverDate=/, '')
+		OverDate = document.cookie.match(/OverDate=\S+\s\d+/)[0].replace(/OverDate=/, '')
 
 		let startObj
 		todos.map(todo => {

@@ -2,7 +2,6 @@ import React from "react"
 import Todo from "./../components/Todo"
 import arrow from "./../img/arrow.svg"
 import getToday from "./../functions/getToday"
-import normalizeDate from "./../functions/normalizeDate"
 import ActionNums from "./ActionNums"
 import add from "./../img/add.svg"
 import translate from '../functions/Translate'
@@ -79,7 +78,7 @@ export default function OneDayTodos(props) {
 			<div className="one-day-todos__top">
 				<div>
 					{props.date === getToday() && <div className="date_today">{t[4]}</div>}
-					<div className="date">{normalizeDate(props.dateTranslated)}</div>
+					<div className="date">{props.dateTranslated}</div>
 				</div>
 
 				<img className="get-todo-date" src={add} onClick={getTodoDate} />

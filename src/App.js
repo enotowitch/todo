@@ -8,7 +8,6 @@ import getToday from "./functions/getToday"
 import ChangeWeek from "./components/ChangeWeek"
 import Burger from "./components/Burger"
 import PopUp from "./components/PopUp"
-import normalizeDate from "./functions/normalizeDate"
 import makePopUp from "./functions/makePopUp"
 import Search from "./components/Search"
 import Scroll from "./components/Scroll"
@@ -120,7 +119,7 @@ export default function App() {
 		document.cookie = `lastTodo="${lastTodo}"`
 		// ! PopUp
 		const dateTranslated = getCookie("dateTranslated")
-		makePopUp({ imgName: "add", title: normalizeDate(dateTranslated), text: inputText, setPopUpState, setShowPopUp })
+		makePopUp({ imgName: "add", title: dateTranslated, text: inputText, setPopUpState, setShowPopUp })
 	}
 	// ! action: propName: done/doing/canceled,etc... works only with BOOLS!
 	function action(todoID, propName, propNameTranslated) {
@@ -152,7 +151,7 @@ export default function App() {
 			return elem.id === todoId ? { ...elem, date: newDate } : elem
 		}))
 		// PopUp
-		makePopUp({ imgName: "add", title: normalizeDate(newDateTranslated), text: todos[todoId].text, setPopUpState, setShowPopUp })
+		makePopUp({ imgName: "add", title: newDateTranslated, text: todos[todoId].text, setPopUpState, setShowPopUp })
 	}
 	// ! moveTask
 	function moveTask(todoId, newTask) {
