@@ -19,7 +19,13 @@ export default function Search(props) {
 
 	const [searchCount, setSearchCount] = React.useState(0)
 
-	const [searchState, setSearchState] = React.useState({ task: '', status: '', text: undefined })
+	// ! searchMemo
+	if (!document.cookie.match(/searchState=/)) {
+		document.cookie = `searchState=${JSON.stringify({ task: '', status: '', text: undefined })}`
+	}
+	const searchMemo = JSON.parse(document.cookie.match(/searchState={.*?}/)[0].replace(/searchState=/, ''))
+
+	const [searchState, setSearchState] = React.useState(searchMemo)
 	function changeSearchState(event) {
 
 		setSearchCount(1)
@@ -38,6 +44,10 @@ export default function Search(props) {
 		}
 		name !== "status" && setSearchState(prevState => ({ ...prevState, [name]: value }))
 	}
+	// ! searchMemo
+	React.useEffect(() => {
+		document.cookie = `searchState=${JSON.stringify(searchState)}`
+	}, [searchState])
 
 	// ! define textIds
 	let textIds = props.todos.map((todo) => {
@@ -222,80 +232,78 @@ export default function Search(props) {
 	// ! return
 	return (
 		<>
-
-
-				<div className="search">
-					<div className="search__title">{t[14]}</div>
-					<>
-						<input type="text"
-							name="text"
-							value={searchState.text}
-							onChange={changeSearchState}
-							placeholder={t[15]}
-						/>
+			<div className="search">
+				<div className="search__title">{t[14]}</div>
+				<>
+					<input type="text"
+						name="text"
+						value={searchState.text}
+						onChange={changeSearchState}
+						placeholder={t[15]}
+					/>
+					<select
+						name="status"
+						value={searchState.status}
+						onChange={changeSearchState}
+					>
+						<option value="" selected>{t[26]}</option>
+						<option value="todo">{t[0]}</option>
+						<option value="doing">{t[1]}</option>
+						<option value="done">{t[2]}</option>
+						<option value="canceled">{t[3]}</option>
+					</select>
+					<div className="task-wrap">
 						<select
-							name="status"
-							value={searchState.status}
+							name="task"
+							value={searchState.task}
 							onChange={changeSearchState}
 						>
-							<option value="" selected>{t[26]}</option>
-							<option value="todo">{t[0]}</option>
-							<option value="doing">{t[1]}</option>
-							<option value="done">{t[2]}</option>
-							<option value="canceled">{t[3]}</option>
+							<option value="" selected>{t[27]}</option>
+							{taskOptions}
 						</select>
-						<div className="task-wrap">
+						{searchState.task && <img className="add-todo-task" src={add} onClick={addTodoTask} />}
+					</div>
+
+					<div className="search-tags">
+						{searched.length > 1 && <SearchTag text={searchedNum} titleTranslated={t[18]} showDel={false} toggleReverse={toggleReverse} />}
+						{searchState.text && <SearchTag text={searchState.text} title="text" titleTranslated={t[15]} showDel={true} delTag={delTag} setPage={setPage} />}
+						{searchState.status && <SearchTag text={searchState.optionText} title="status" titleTranslated={t[16]} showDel={true} delTag={delTag} setPage={setPage} />}
+						{searchState.task && <SearchTag text={searchState.task} title="task" titleTranslated={t[17]} showDel={true} delTag={delTag} setPage={setPage} />}
+					</div>
+
+					{searched.length === 0 && searchCount > 0 && <SearchHint setSearchState={setSearchState} />}
+
+					{searched.length > quantityState.quantity &&
+						<div className="search__pagination-wrap">
 							<select
-								name="task"
-								value={searchState.task}
-								onChange={changeSearchState}
+								name="quantity"
+								value={quantityState.quantity}
+								onChange={changeQuantity}
 							>
-								<option value="" selected>{t[27]}</option>
-								{taskOptions}
+								<option value="5">{t[24]}:&nbsp;5</option>
+								<option value="10">{t[24]}:&nbsp;10</option>
+								<option value="20">{t[24]}:&nbsp;20</option>
+								<option value="30">{t[24]}:&nbsp;30</option>
 							</select>
-							{searchState.task && <img className="add-todo-task" src={add} onClick={addTodoTask} />}
-						</div>
-
-						<div className="search-tags">
-							{searched.length > 1 && <SearchTag text={searchedNum} titleTranslated={t[18]} showDel={false} toggleReverse={toggleReverse} />}
-							{searchState.text && <SearchTag text={searchState.text} title="text" titleTranslated={t[15]} showDel={true} delTag={delTag} setPage={setPage} />}
-							{searchState.status && <SearchTag text={searchState.optionText} title="status" titleTranslated={t[16]} showDel={true} delTag={delTag} setPage={setPage} />}
-							{searchState.task && <SearchTag text={searchState.task} title="task" titleTranslated={t[17]} showDel={true} delTag={delTag} setPage={setPage} />}
-						</div>
-
-						{searched.length === 0 && searchCount > 0 && <SearchHint setSearchState={setSearchState} />}
-
-						{searched.length > quantityState.quantity &&
-							<div className="search__pagination-wrap">
-								<select
-									name="quantity"
-									value={quantityState.quantity}
-									onChange={changeQuantity}
-								>
-									<option value="5">{t[24]}:&nbsp;5</option>
-									<option value="10">{t[24]}:&nbsp;10</option>
-									<option value="20">{t[24]}:&nbsp;20</option>
-									<option value="30">{t[24]}:&nbsp;30</option>
-								</select>
-								<div className="search__pagination">
-									<img className="arrow arrow_search arrow_prev" src={arrow} onClick={prevPage} />
-									{num1}-{num2}
-									<img className="arrow arrow_search arrow_next" src={arrow} onClick={nextPage} />
-								</div>
-								<select
-									name="page"
-									value={page}
-									onChange={changePage}
-								>
-									{pageOptions}
-								</select>
+							<div className="search__pagination">
+								<img className="arrow arrow_search arrow_prev" src={arrow} onClick={prevPage} />
+								{num1}-{num2}
+								<img className="arrow arrow_search arrow_next" src={arrow} onClick={nextPage} />
 							</div>
-						}
+							<select
+								name="page"
+								value={page}
+								onChange={changePage}
+							>
+								{pageOptions}
+							</select>
+						</div>
+					}
 
-						{searchedMini[page]}
-					</>
-					<div className="search__bg"></div>
-				</div>
+					{searchedMini[page]}
+				</>
+				<div className="search__bg"></div>
+			</div>
 		</>
 	)
 }
