@@ -88,10 +88,10 @@ export default function App() {
 	const [showPopUp, setShowPopUp] = React.useState(false)
 
 	// show change lang popup ONLY at very first load
-	const [x, xSet] = React.useState(0)
-	if (!document.cookie.match(/langPopUp/) && x === 0) {
+	const [x1, x1Set] = React.useState(1)
+	if (!document.cookie.match(/langPopUp/) && x1 === 1) {
 		makePopUp({ title: t[30], setPopUpState, setShowPopUp, modalWindowType: "select" })
-		xSet(1)
+		x1Set(2)
 	}
 
 	const daysHtmlElements = weeks.EN[weekNum].map((day, ind) => <OneDayTodos todos={todos} action={action} date={day} dateTranslated={weeks[lang][weekNum][ind]} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />)
@@ -109,7 +109,7 @@ export default function App() {
 		lastTodo++
 
 		setTodos(prevState => {
-			return [...prevState, { task: taskForAddTodo, id: lastTodo, date: date, text: text, doing: false, done: false, canceled: false, showAction: false }]
+			return [...prevState, { task: taskForAddTodo, id: lastTodo, date: date, year: yearForAddTodo, text: text, doing: false, done: false, canceled: false, showAction: false }]
 		})
 
 		document.cookie = `lastTodo="${lastTodo}"`
@@ -142,9 +142,11 @@ export default function App() {
 	}
 	// ! moveTodo
 	function moveTodo(todoId, newDate, newDateTranslated) {
+		const date = newDate.match(/\w+\s\d+/)[0]
+		const year = newDate.match(/\d{4}/)[0]
 		// state
-		setTodos(prevState => prevState.map(elem => {
-			return elem.id === todoId ? { ...elem, date: newDate } : elem
+		setTodos(prevState => prevState.map(todo => {
+			return todo.id === todoId ? { ...todo, date: date, year: year } : todo
 		}))
 		// PopUp
 		makePopUp({ imgName: "add", title: newDateTranslated, text: todos[todoId].text, setPopUpState, setShowPopUp })
@@ -166,9 +168,29 @@ export default function App() {
 	// 	document.querySelector(`.${dateChosen}`).classList.add('chosen-day')
 	// }, [])
 
+	// ! year & changeWeek
+	// null the year to current once at reload
+	x1 === 1 && (document.cookie = `yearForAddTodo=${new Date().getFullYear()}`)
+
+	const cookieYear = Number(document.cookie.match(/yearForAddTodo=\d+/)[0].replace(/yearForAddTodo=/, ''))
+	// todo name it year and yearArr (for cur year)
+	const [yearForAddTodo, setYearForAddTodo] = React.useState(cookieYear)
+
 	function changeWeek(nextOrPrev) {
 		nextOrPrev === "next" ? setWeekNum(prevState => prevState + 1) : setWeekNum(prevState => prevState - 1)
+		if (weekNum === 52 && nextOrPrev === "next") {
+			setWeekNum(0)
+			setYearForAddTodo(prevState => prevState + 1)
+		}
+		if (weekNum === 0 && nextOrPrev === "prev") {
+			setWeekNum(52)
+			setYearForAddTodo(prevState => prevState - 1)
+		}
 	}
+	React.useEffect(() => {
+		document.cookie = `yearForAddTodo=${yearForAddTodo}`
+	}, [yearForAddTodo])
+	// ? year & changeWeek
 
 	function popUpHide() {
 		setShowPopUp(false)
@@ -204,7 +226,7 @@ export default function App() {
 
 	// ! return
 	return (
-		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo }}>
+		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo, yearForAddTodo }}>
 
 			<Burger showSection={showSection} setShowSection={setShowSection} />
 			{showSection.addTodo && <AddTodo addTodo={addTodo} todos={todos} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}

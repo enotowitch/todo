@@ -6,15 +6,18 @@ import ActionNums from "./ActionNums"
 import add from "./../img/add.svg"
 import translate from '../functions/Translate'
 import TodoBlock from "./TodoBlock"
+import { Context } from "../context"
 
 
 export default function OneDayTodos(props) {
 
+	const { yearForAddTodo } = React.useContext(Context)
+
 	const t = translate()
 
 	const thisDayTodos = []
-	props.todos.map(elem => {
-		return elem.date === props.date ? thisDayTodos.push(elem) : elem
+	props.todos.map(todo => {
+		return todo.date === props.date && todo.year == yearForAddTodo ? thisDayTodos.push(todo) : todo
 	})
 
 	// todo HAS DUP

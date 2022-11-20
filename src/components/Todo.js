@@ -19,7 +19,7 @@ export default function Todo(props) {
 
 	const t = translate()
 
-	const { todos, setTodos, lang } = React.useContext(Context)
+	const { todos, setTodos, lang, yearForAddTodo } = React.useContext(Context)
 
 	const likedOrNot = props.doing ? liked : like
 	const canceledOrNot = props.canceled ? canceled : cancel
@@ -45,22 +45,24 @@ export default function Todo(props) {
 		makePopUp({ title: t[21] + "?", text: props.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTodo", todoId: props.id })
 	}
 	// ! moveDate
-	const [moveDateSelectState, setMoveDateSelectState] = React.useState({ moveDate: props.date })
+	const [moveDateSelectState, setMoveDateSelectState] = React.useState(props.date + ", " + yearForAddTodo)
 
 	function changeDate(event) {
-		const { name, value } = event.target
-		setMoveDateSelectState(prevState => ({ ...prevState, [name]: value }))
-		const dateTranslated = year.EN.indexOf(value) // index 0-364, "use" year[UK][114]
-		props.moveTodo(props.id, value, year[lang][dateTranslated])
+		const { value } = event.target // Nov 20, 2022
+		const date = value.match(/\w+\s\d+/)[0] // Nov 20
+		const moveYear = ", " + value.match(/\d{4}/)[0] // 2023
+		setMoveDateSelectState(value)
+		const dateTranslated = year.EN.indexOf(date) // index 0-364, "use" year[UK][114]
+		props.moveTodo(props.id, value, year[lang][dateTranslated] + moveYear)
 	}
 
 	// ? moveDate
 	// ! moveTask
-	const [moveTaskSelectState, setMoveTaskSelectState] = React.useState({ moveTask: props.task })
+	const [moveTaskSelectState, setMoveTaskSelectState] = React.useState(props.task)
 
 	function changeTask(event) {
-		const { name, value } = event.target
-		setMoveTaskSelectState(prevState => ({ ...prevState, [name]: value }))
+		const { value } = event.target
+		setMoveTaskSelectState(value)
 		props.moveTask(props.id, value)
 	}
 
@@ -176,7 +178,7 @@ export default function Todo(props) {
 
 					<select
 						name="moveDate"
-						value={moveDateSelectState.moveDate}
+						value={moveDateSelectState}
 						onChange={changeDate}
 					>
 						<MoveDateOptions />
@@ -196,7 +198,7 @@ export default function Todo(props) {
 
 					<select
 						name="moveTask"
-						value={moveTaskSelectState.moveTask}
+						value={moveTaskSelectState}
 						onChange={changeTask}
 					>
 						<option value="undefined">{t[19]}</option>

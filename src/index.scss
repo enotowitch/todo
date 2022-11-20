@@ -6,6 +6,7 @@ $main-color-inverse:#fff;
 $doing: orange;
 $done: #97f50a;
 $canceled: tomato;
+$gray: #727272;
 // ! width
 $input-width: 290px;
 $todo-max-width: 400px;
@@ -60,7 +61,7 @@ code {
 	padding: 5px 0;
 	justify-content: center;
 	user-select: none;
-	border: 2px solid #727272;
+	border: 2px solid $gray;
 	border-radius: 50px;
 	height: 35px;
 }
@@ -227,6 +228,9 @@ button,.todos-title,.like, .hide{
 	font-weight: 700;
 	padding-left: 8px;
 }
+.date_today{
+	color: $gray;
+}
 /* MOVE */
 .move-down{
 	transform: rotate(90deg);
@@ -306,6 +310,13 @@ button,.todos-title,.like, .hide{
 	align-items: center;
 	font-weight: 700;
 	margin: 22px auto 15px;
+}
+.year{
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%);
+	top: -15px;
+	color: $gray;
 }
 
 .get-todo-date{
@@ -435,7 +446,7 @@ button,.todos-title,.like, .hide{
 	position: absolute;
 	width: 100%;
 	height: 2px;
-	background: #616161;
+	background: $gray;
 	transition-duration: 0.25s;
  }
  .burger__btn > span::before {
@@ -458,6 +469,7 @@ button,.todos-title,.like, .hide{
 	position: fixed;
 	top: 0;
 	left: 0;
+	// mandatory: opacity!
 	background: rgba(255, 255, 255, 0.95);
 	z-index: 8;
  }
@@ -720,7 +732,7 @@ button,.todos-title,.like, .hide{
 	background: $canceled;	
 }
 .no-bg{
-	background: #b6b6b6;
+	background: lighten($gray, 30%);
 }
 .dnd{
 	margin-right: 15px;
