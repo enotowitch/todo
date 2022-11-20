@@ -1,6 +1,4 @@
 import React from "react"
-import search from "./../img/search.svg"
-import del from "./../img/del.svg"
 import add from "./../img/add.svg"
 import Todo from "./Todo"
 import SearchTag from "./SearchTag"
@@ -224,13 +222,10 @@ export default function Search(props) {
 	// ! return
 	return (
 		<>
-			{props.showWeek && <img className="search__icon" src={search} onClick={props.toggleWeek} />}
 
-			{!props.showWeek &&
+
 				<div className="search">
 					<div className="search__title">{t[14]}</div>
-					<img className="search__icon search__icon_del" src={del} onClick={props.toggleWeek} />
-
 					<>
 						<input type="text"
 							name="text"
@@ -301,7 +296,6 @@ export default function Search(props) {
 					</>
 					<div className="search__bg"></div>
 				</div>
-			}
 		</>
 	)
 }

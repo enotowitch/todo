@@ -85,7 +85,7 @@ export default function MyTasks(props) {
 					break
 				}
 				if (eachTask.includes("task")) {
-					const num = Number(eachTask.match(/\d+/)[0])
+					const num = eachTask.match(/\d+/) ? Number(eachTask.match(/\d+/)[0]) : 0
 					found = `task${num + 1}`
 					color = "#ffffff"
 					break

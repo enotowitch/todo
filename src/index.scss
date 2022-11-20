@@ -8,7 +8,8 @@ $done: #97f50a;
 $canceled: tomato;
 // ! width
 $input-width: 290px;
-$todo-max-width:400px;
+$todo-max-width: 400px;
+$search-select-width: 214px;
 
 body {
   margin: 0;
@@ -38,6 +39,12 @@ code {
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 8px;
+}
+.todo{
+	cursor: grab;
+}
+.fake-todo{
+	cursor: pointer;
 }
 .todo__date{
 	font-weight: 700;
@@ -170,12 +177,10 @@ button:active{
 	text-indent: 2px;
 }
 .add-todo {
-	position: fixed;
-	top: 0px;
-	left: 0;
+	position: relative;
 	z-index: 4;
 	width: 100%;
-	height: 100%;
+	height: 100vh;
 	padding: 22px 0 0;
 	text-align: center;
 	background: $main-color-inverse;
@@ -378,10 +383,10 @@ button,.todos-title,.like, .hide{
 	margin: 10px auto 0;
 }
 .tasks{
-	max-height: 45vh;
 	overflow-y: auto;
 	max-width: calc($input-width + 30px);
 	margin: 0 auto;
+	padding-bottom: 60px;
 }
 /* ! scrollbar */
 ::-webkit-scrollbar {
@@ -588,7 +593,7 @@ button,.todos-title,.like, .hide{
 }
  .search__icon {
 	position: fixed;
-	z-index: 3;
+	z-index: 4;
 	top: 16px;
 	right: 10px;
 	width: 38px;
@@ -615,7 +620,7 @@ button,.todos-title,.like, .hide{
 	width: 200px;
 }
 [name="status"], [name="task"]{
-	width: 214px;
+	width: $search-select-width;
 }
 [name="text"]{
 	border: 1px solid;
@@ -654,6 +659,7 @@ button,.todos-title,.like, .hide{
 .search-tag__text{
 	padding-left: 6px;
 	font-weight: 700;
+	word-break: break-all;
 }
 .search-tags {
     margin: 0 auto 30px auto;
@@ -664,8 +670,10 @@ button,.todos-title,.like, .hide{
 }
 .add-todo-task{
 	position: absolute;
+	padding-left: 4px;
 	top: -4px;
-	right: 5px;
+	left: 50%;
+	margin-left: $search-select-width / 2;
 }
 .task-wrap{
 	position: relative;
@@ -675,6 +683,7 @@ button,.todos-title,.like, .hide{
 /* ! scroll */
 .scroll{
 	position: fixed;
+	z-index: 9;
 	bottom: 6px;
 	right: 12px;
 	transform: rotate(180deg) scale(.8);

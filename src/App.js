@@ -16,6 +16,7 @@ import { Context } from "./context"
 import defineLang from "./functions/defineLang"
 import defineLocation from "./functions/defineLocation"
 import year from "./year"
+import SearchIcon from "./components/SearchIcon"
 
 
 export default function App() {
@@ -60,8 +61,8 @@ export default function App() {
 		localStorage.setItem(1, JSON.stringify({ id: 1, doing: true, done: false, canceled: false }))
 		localStorage.setItem(2, JSON.stringify({ id: 2, doing: false, done: true, canceled: false }))
 		localStorage.setItem(3, JSON.stringify({ id: 3, doing: false, done: false, canceled: true }))
-		// todo, mandatory
-		// window.location.reload()
+		// mandatory
+		window.location.reload()
 	}
 	// ? default cookies
 
@@ -169,18 +170,8 @@ export default function App() {
 		nextOrPrev === "next" ? setWeekNum(prevState => prevState + 1) : setWeekNum(prevState => prevState - 1)
 	}
 
-	const [showAddTodo, setShowAddTodo] = React.useState(false)
-	function toggleAddTodo() {
-		setShowAddTodo(prevState => !prevState)
-	}
-
 	function popUpHide() {
 		setShowPopUp(false)
-	}
-
-	const [showWeek, setShowWeek] = React.useState(true)
-	function toggleWeek() {
-		setShowWeek(prevState => !prevState)
 	}
 	// ! draggable
 	const [draggable, setDraggable] = React.useState(false)
@@ -208,24 +199,29 @@ export default function App() {
 
 	const [taskForAddTodo, setTaskForAddTodo] = React.useState()
 	const [inputOfAddTodo, setInputOfAddTodo] = React.useState()
+	// ! showSection
+	const [showSection, setShowSection] = React.useState({ addTodo: false, week: true, search: false })
 
 	// ! return
 	return (
 		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo }}>
-			<Burger toggleAddTodo={toggleAddTodo} />
 
-			{showAddTodo && <AddTodo addTodo={addTodo} todos={todos} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}
+			<Burger showSection={showSection} setShowSection={setShowSection} />
+			{showSection.addTodo && <AddTodo addTodo={addTodo} todos={todos} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}
 
-			{showWeek &&
+			{showSection.week &&
 				<>
 					<ChangeWeek changeWeek={changeWeek} weekNum={weekNum} />
 					{daysHtmlElements}
 					<ChangeWeek changeWeek={changeWeek} weekNum={weekNum} />
 				</>
 			}
+
 			{showPopUp && <PopUp {...popUpState} popUpHide={popUpHide} todos={todos} setTodos={setTodos} />}
 
-			<Search showWeek={showWeek} toggleWeek={toggleWeek} todos={todos} action={action} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />
+			<SearchIcon showSection={showSection} setShowSection={setShowSection} />
+			{!showSection.week && !showSection.addTodo && <Search showSection={showSection} setShowSection={setShowSection} todos={todos} action={action} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />}
+
 			<Scroll />
 		</Context.Provider>
 	)
