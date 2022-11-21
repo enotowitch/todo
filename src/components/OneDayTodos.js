@@ -11,12 +11,12 @@ import { Context } from "../context"
 
 export default function OneDayTodos(props) {
 
-	const { yearForAddTodo } = React.useContext(Context)
+	const { todos, yearForAddTodo } = React.useContext(Context)
 
 	const t = translate()
 
 	const thisDayTodos = []
-	props.todos.map(todo => {
+	todos.map(todo => {
 		return todo.date === props.date && todo.year == yearForAddTodo ? thisDayTodos.push(todo) : todo
 	})
 

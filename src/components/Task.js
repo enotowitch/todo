@@ -1,7 +1,7 @@
 import React from "react"
 import { Context } from "../context"
 import add from "./../img/add.svg"
-import del from "./../img/del.svg"
+import dlt from "./../img/dlt.svg"
 
 export default function Task(props) {
 
@@ -34,7 +34,7 @@ export default function Task(props) {
 				value={props.taskColor}
 				onChange={props.changeTaskState}
 			/>
-			{props.showIcon && <img src={del} onClick={() => deleteTask(props.taskName)} />}
+			{props.showIcon && <img src={dlt} onClick={() => deleteTask(props.taskName)} />}
 		</div>
 	)
 }

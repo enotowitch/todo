@@ -7,7 +7,7 @@ import SelectLang from "./SelectLang";
 
 export default function PopUp(props) {
 
-	const { setTasks, setPopUpState, setShowPopUp } = React.useContext(Context)
+	const { todos, tasks, setTasks, setPopUpState, setShowPopUp } = React.useContext(Context)
 
 	const t = translate()
 
@@ -15,7 +15,7 @@ export default function PopUp(props) {
 
 	// ! find current todo text to display in editTodo, deleteTodo ...
 	let curTodoText
-	props.todos.map(todo => todo.id === props.todoId && (curTodoText = todo.text))
+	todos.map(todo => todo.id === props.todoId && (curTodoText = todo.text))
 
 	// ! deleteTasks
 	function deleteTasks() {
@@ -40,7 +40,7 @@ export default function PopUp(props) {
 	// fix slow state for editTodo (state is one step behind)
 	React.useEffect(() => {
 		let text
-		props.todos.map(elem => {
+		todos.map(elem => {
 			return elem.id === props.todoId && (text = elem.text)
 		})
 		const edit = document.querySelector('[name="edit"]')
@@ -88,12 +88,19 @@ export default function PopUp(props) {
 		case "select": firstButtonText = t[29]
 			break;
 	}
+	// ! taskName + taskColor
+	let taskName
+	todos.map(todo => todo.id === props.todoId && (taskName = todo.task))
+	let taskColor
+	tasks.map(task => Object.keys(task) == taskName && (taskColor = String(Object.values(task))))
 
+	// ! return
 	return (
 		<>
 			<div className={props.modalWindowType || "popup"}>
 				<img className="popup__img" src={path} />
 				<span className="popup__title">{props.title}</span>
+				<span style={{ color: taskColor }}>&nbsp;{taskName}</span>
 				<span className="popup__text">{props.text}</span>
 				<img className="popup__hide" src="img/del.svg" onClick={props.popUpHide} />
 

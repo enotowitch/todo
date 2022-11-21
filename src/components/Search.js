@@ -14,7 +14,7 @@ export default function Search(props) {
 
 	const t = translate()
 
-	const { tasks, lang, setTaskForAddTodo, setInputOfAddTodo } = React.useContext(Context)
+	const { todos, tasks, lang, setTaskForAddTodo, setInputOfAddTodo } = React.useContext(Context)
 	const taskOptions = tasks.reverse().map(task => <option>{Object.keys(task)}</option>)
 
 	const [searchCount, setSearchCount] = React.useState(0)
@@ -50,13 +50,18 @@ export default function Search(props) {
 	}, [searchState])
 
 	// ! define textIds
-	let textIds = props.todos.map((todo) => {
-		if (todo.text)
+	let textIds = todos.map((todo) => {
+		if (todo.text && searchState.text) {
+			return todo.text.toLowerCase().includes(searchState.text.toLowerCase()) && todo.id
+		}
+		// searchState.text == undefined when .SHOW-ALL is clicked
+		if (todo.text && !searchState.text) {
 			return todo.text.includes(searchState.text) && todo.id
+		}
 	})
 	textIds = textIds.filter(isTrue => isTrue)
 	// ! define statusIds
-	let statusIds = props.todos.map((todo) => {
+	let statusIds = todos.map((todo) => {
 		// don't show fake-todos (have id 0-3) => used for drag & drop to (block) title
 		if (todo.id <= 3) {
 			return
@@ -83,7 +88,7 @@ export default function Search(props) {
 	})
 	statusIds = statusIds.filter(isTrue => isTrue)
 	// ! define taskIds	
-	let taskIds = props.todos.map((todo) => {
+	let taskIds = todos.map((todo) => {
 		// ! OUTPUT LOGIC
 		// if search status is chosen add all task ids to search
 		if (searchState.status) {
@@ -133,7 +138,7 @@ export default function Search(props) {
 	let searched = []
 	for (let i = 0; i < result.length; i++) {
 
-		props.todos.map((todo, ind) => {
+		todos.map((todo, ind) => {
 			todo.id === result[i] && searched.push(shortTodo(todo, ind))
 		})
 	}

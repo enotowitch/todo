@@ -11,6 +11,8 @@ export default function SearchHint(props) {
 			<div>{t[28]} <span className="doing" onClick={() => props.setSearchState({ task: '', status: 'doing', text: undefined, optionText: t[1] })}>{t[1]}</span></div>
 			<div>{t[28]} <span className="done" onClick={() => props.setSearchState({ task: '', status: 'done', text: undefined, optionText: t[2] })}>{t[2]}</span></div>
 			<div>{t[28]} <span className="canceled" onClick={() => props.setSearchState({ task: '', status: 'canceled', text: undefined, optionText: t[3] })}>{t[3]}</span></div>
+
+			<div className="show-all" onClick={() => props.setSearchState({ task: '', status: '', text: '' })}>{t[34]}</div>
 		</div>
 	)
 }

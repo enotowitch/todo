@@ -94,7 +94,7 @@ export default function App() {
 		x1Set(2)
 	}
 
-	const daysHtmlElements = weeks.EN[weekNum].map((day, ind) => <OneDayTodos todos={todos} action={action} date={day} dateTranslated={weeks[lang][weekNum][ind]} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />)
+	const daysHtmlElements = weeks.EN[weekNum].map((day, ind) => <OneDayTodos action={action} date={day} dateTranslated={weeks[lang][weekNum][ind]} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />)
 
 	// ! addTodo
 	function addTodo() {
@@ -115,7 +115,7 @@ export default function App() {
 		document.cookie = `lastTodo="${lastTodo}"`
 		// ! PopUp
 		const dateTranslated = getCookie("dateTranslated")
-		makePopUp({ imgName: "add", title: dateTranslated, text: text, setPopUpState, setShowPopUp })
+		makePopUp({ imgName: "add", title: dateTranslated, text: text, todoId: lastTodo, setPopUpState, setShowPopUp })
 	}
 	// ! action: propName: done/doing/canceled,etc... works only with BOOLS!
 	function action(todoID, propName, propNameTranslated) {
@@ -219,6 +219,10 @@ export default function App() {
 	const cookieTasks = document.cookie.match(/tasks=\[.+?]/)[0].replace(/tasks=/, '')
 	const [tasks, setTasks] = React.useState(eval(cookieTasks))
 
+	React.useEffect(() => {
+		document.cookie = `tasks=${JSON.stringify(tasks)}`
+	}, [tasks])
+
 	const [taskForAddTodo, setTaskForAddTodo] = React.useState()
 	const [inputOfAddTodo, setInputOfAddTodo] = React.useState()
 	// ! showSection
@@ -229,7 +233,7 @@ export default function App() {
 		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo, yearForAddTodo }}>
 
 			<Burger showSection={showSection} setShowSection={setShowSection} />
-			{showSection.addTodo && <AddTodo addTodo={addTodo} todos={todos} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}
+			{showSection.addTodo && <AddTodo addTodo={addTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}
 
 			{showSection.week &&
 				<>
@@ -239,10 +243,10 @@ export default function App() {
 				</>
 			}
 
-			{showPopUp && <PopUp {...popUpState} popUpHide={popUpHide} todos={todos} setTodos={setTodos} />}
+			{showPopUp && <PopUp {...popUpState} popUpHide={popUpHide} setTodos={setTodos} />}
 
 			<SearchIcon showSection={showSection} setShowSection={setShowSection} />
-			{!showSection.week && !showSection.addTodo && <Search showSection={showSection} setShowSection={setShowSection} todos={todos} action={action} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />}
+			{!showSection.week && !showSection.addTodo && <Search showSection={showSection} setShowSection={setShowSection} action={action} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />}
 
 			<Scroll />
 		</Context.Provider>

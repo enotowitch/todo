@@ -77,9 +77,12 @@ code {
 		padding: 15px 0 0 0;
 }
 /*  */
-.like, .hide, .del{
+.like, .hide, .del, .edit{
 	margin: 2px;
 
+}
+.edit{
+	transform: scale(.95)
 }
 .actions{
 	position: absolute;
@@ -101,14 +104,13 @@ code {
 .todos-num{
 	border: 2px solid;
 	border-radius: 50%;
-	width: 30px;
-	height: 30px;
+	width: 32px;
+	height: 32px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	text-indent: -2px;
-	margin-left: 10px;
-	padding-bottom: 2px;
+	margin: 0 0 2px 10px;
 	pointer-events: none;
 	font-weight: 400;
 }
@@ -143,12 +145,13 @@ button{
 	border-radius: 50px;
 }
 button:hover{
-	background: lighten($main-color, 30%);
+	background: $main-color;
 	color: $main-color-inverse;
 }
 button:active{
 	background: $main-color;
 	color: $main-color-inverse;
+	transform: scale(.9);
 }
 // ? all buttons
 // ! button_main
@@ -156,7 +159,7 @@ button:active{
 	background: $main-color;
 	color: $main-color-inverse;
 }
-.button_main:active{
+.button_main:hover,.button_main:active{
 	background: $main-color-inverse;
 	color: $main-color;
 }
@@ -457,11 +460,25 @@ button,.todos-title,.like, .hide{
 	content: "";
 	top: 8px;
  }
- /* ! checkbox */
- [type="checkbox"] {
-	min-width: 20px;
-	min-height: 20px;
- }
+ /* ! todo checkbox */
+.todo__checkbox{
+	display: none;
+	&_label{
+		width: 20px;
+		height: 20px;
+		border: 1.5px solid;
+		border-radius: 4px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 4px;
+		img{
+			width: 16px;
+			height: 16px;
+		}
+	}
+}
+
  /* ! popup */
 .popup__bg{
 	width: 100vw;
@@ -485,7 +502,7 @@ button,.todos-title,.like, .hide{
 	height: 60px;
 	border-radius: 8px;
 	background: $main-color-inverse;
-	border: 2px solid #29a6ff;
+	border: 2px solid;
  }
  .popup{
 	animation: popUpAnimation .5s;
@@ -589,6 +606,12 @@ button,.todos-title,.like, .hide{
  .search__hint span{
 	text-decoration: underline;
  }
+ .show-all{
+	margin-top: 15px;
+	font-weight: 700;
+	text-decoration: underline;
+	text-align: center;
+ }
  .search__pagination{
 	width: 140px;
 	display: flex;
@@ -606,9 +629,9 @@ button,.todos-title,.like, .hide{
  .search__icon {
 	position: fixed;
 	z-index: 4;
-	top: 16px;
+	top: 21px;
 	right: 10px;
-	width: 38px;
+	width: 28px;
 }
 .search__icon_del{
 	transform: scale(.75);

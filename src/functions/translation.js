@@ -33,7 +33,8 @@ export default [
 		"Будь ласка, виберіть мову", // 30
 		"Всі завдання очищені", // 31
 		"Відредаґовано", // 32
-		"Видалено" // 33
+		"Видалено", // 33
+		"Показати Всі" // 34
 	],
 	// EN
 	["Todo", // 0
@@ -69,6 +70,7 @@ export default [
 		"Please select a language", // 30
 		"All tasks cleared", // 31
 		"Edited", // 32
-		"Deleted" // 33
+		"Deleted", // 33
+		"Show All" // 34
 	]
 ]

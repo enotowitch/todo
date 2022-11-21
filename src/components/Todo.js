@@ -6,13 +6,14 @@ import canceled from "./../img/canceled.svg"
 import dots from "./../img/dots.svg"
 import dots2 from "./../img/dots2.svg"
 import edit from "./../img/edit.svg"
-import del from "./../img/del.svg"
+import dlt from "./../img/dlt.svg"
 import dnd from "./../img/dnd.svg"
 import makePopUp from "../functions/makePopUp"
 import translate from "../functions/Translate"
 import { Context } from "./../context"
 import MoveDateOptions from "./MoveDateOptions"
 import year from "./../year"
+import Checkbox from "./Checkbox"
 
 
 export default function Todo(props) {
@@ -23,8 +24,6 @@ export default function Todo(props) {
 
 	const likedOrNot = props.doing ? liked : like
 	const canceledOrNot = props.canceled ? canceled : cancel
-	const checkbox = props.done ? <input type="checkbox" checked onChange={() => props.action(props.id, "done", t[2])} /> :
-		<input type="checkbox" onChange={() => props.action(props.id, "done", t[2])} />
 
 	// ! color todo
 	let color
@@ -45,7 +44,7 @@ export default function Todo(props) {
 		makePopUp({ title: t[21] + "?", text: props.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTodo", todoId: props.id })
 	}
 	// ! moveDate
-	const [moveDateSelectState, setMoveDateSelectState] = React.useState(props.date + ", " + yearForAddTodo)
+	const [moveDateSelectState, setMoveDateSelectState] = React.useState(props.date + ", " + props.year)
 
 	function changeDate(event) {
 		const { value } = event.target // Nov 20, 2022
@@ -119,18 +118,23 @@ export default function Todo(props) {
 			return todo.id == OverId ? (overObj = todo) : todo
 		})
 
+		// ! status
 		let newStatus, newStatusTranslated
 		if (overObj.doing) { newStatus = 'doing'; newStatusTranslated = t[1] }
 		if (overObj.done) { newStatus = 'done'; newStatusTranslated = t[2] }
 		if (overObj.canceled) { newStatus = 'canceled'; newStatusTranslated = t[3] }
 
-		startObj.doing = false
-		startObj.done = false
-		startObj.canceled = false
-		startObj[newStatus] = true
+		// ! status is overwriten here; don't overwrite STATUS if in SEARCH
+		if (props.section !== "search") {
+			startObj.doing = false
+			startObj.done = false
+			startObj.canceled = false
+			startObj[newStatus] = true
+		}
 
 		// ! WARNING now newStatus = add (for using img "add"), NOT (doing,done,canceled)
 		if (newStatus === undefined) { newStatus = 'add'; newStatusTranslated = t[0] }
+		// ? status
 
 		// if date NOT changing => show popup with new status; else show popup with new date+status => (true = this day, false = other day)
 		if (startObj.date === OverDate) {
@@ -169,7 +173,7 @@ export default function Todo(props) {
 	// ! return
 	return (
 		<div className={`todo ${props.cssClass}`} style={style} draggable={draggable} onDragStart={dragStart} onDragOver={dragOver} onDragEnd={dragEnd}>
-			{checkbox}
+			<Checkbox done={props.done} action={props.action} id={props.id} />
 			{props.showDate && <p className="todo__date">{props.dateTranslated}</p>}
 			<p className="todo__text">{props.text}</p>
 
@@ -194,7 +198,7 @@ export default function Todo(props) {
 
 					<img className="edit" src={edit} onClick={editPopUp} />
 
-					<img className="del" src={del} onClick={deleteTodo} />
+					<img className="del" src={dlt} onClick={deleteTodo} />
 
 					<select
 						name="moveTask"
