@@ -152,7 +152,7 @@ export default function App() {
 		}))
 		// PopUp
 		setLastTodoId(todoId) // for makePopUp
-		makePopUp({ imgName: "add", title: newDateTranslated, text: todos[todoId].text, setPopUpState, setShowPopUp })
+		makePopUp({ imgName: "dnd", title: newDateTranslated, text: todos[todoId].text, setPopUpState, setShowPopUp })
 	}
 	// ! moveTask
 	function moveTask(todoId, newTask) {

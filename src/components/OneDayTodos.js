@@ -60,9 +60,6 @@ export default function OneDayTodos(props) {
 		event.target.closest('.one-day-todos').classList.add('chosen-day')
 	}
 
-
-
-
 	function toggleDay(event) {
 		event.target.closest('.one-day-todos').classList.toggle('section-minimized')
 		document.querySelectorAll('.one-day-todos').forEach(elem => elem.classList.remove('chosen-day'))
@@ -74,9 +71,14 @@ export default function OneDayTodos(props) {
 		setShowBlock(prevState => ({ ...prevState, [blockName]: !showBlock[blockName] }))
 	}
 
+	// ! return
 	return (
 		// adding to this class each date of the year, so App can scroll to current date on load
 		<div className={`one-day-todos ${props.date} section-minimized`}>
+
+			<div onClick={toggleDay}>
+				<Todo id={0} date={props.date} year={yearForAddTodo} cssClass="fake-todo-day" />
+			</div>
 
 			<div className="one-day-todos__top">
 				<div>
@@ -88,7 +90,7 @@ export default function OneDayTodos(props) {
 
 				<ActionNums allNum={(allNum - doingNum - doneNum - canceledNum)} doingNum={doingNum} doneNum={doneNum} canceledNum={canceledNum} />
 
-				{thisDayTodos.length > 0 && <div className="toggle-day" onClick={toggleDay}><img className="arrow arrow_view arrow_day" src={arrow} /></div>}
+				{thisDayTodos.length > 0 && <div className="toggle-day"><img className="arrow arrow_view arrow_day" src={arrow} /></div>}
 			</div>
 
 			{thisDayTodos.length > 0 &&

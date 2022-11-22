@@ -44,8 +44,16 @@ code {
 .todo{
 	cursor: grab;
 }
-.fake-todo{
+.fake-todo, .fake-todo-day{
 	cursor: pointer;
+	opacity: 0;
+	height: 50px;
+}
+.fake-todo-day{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100% !important;
 }
 .todo__date{
 	font-weight: 700;
@@ -136,10 +144,6 @@ code {
 	display: flex;
 	align-items: center;
 }
-.fake-todo{
-	opacity: 0;
-	height: 50px;
-}
 // ! all buttons
 button{
 	padding: 0 20px;
@@ -226,6 +230,7 @@ button,.todos-title,.like, .hide{
 	cursor: pointer;
 }
 .one-day-todos{
+	position: relative;
 	font-style: italic;
 	border-top: 2px solid #f8f1ff;
 	border-bottom: 2px solid #f8f1ff;
@@ -262,6 +267,7 @@ button,.todos-title,.like, .hide{
 	position: relative;
 	display: flex;
 	align-items: center;
+	pointer-events: none;
 }
 .todos-nums{
 	padding-left: 10px;
@@ -300,8 +306,8 @@ button,.todos-title,.like, .hide{
 .toggle-day{
 	position: absolute;
 	display: flex;
-	width: 100%;
 	height: 100%;
+	right: 0;
 }
 .arrow_day{
 	margin-left: auto;
@@ -333,6 +339,7 @@ button,.todos-title,.like, .hide{
 	position: relative;
 	z-index: 2;
 	margin-left: 8px;
+	pointer-events: all;
 }
 /* ! pick-color */
 .pick-color{

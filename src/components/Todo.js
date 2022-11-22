@@ -138,11 +138,13 @@ export default function Todo(props) {
 			startObj[newStatus] = true
 		}
 
-		// ! WARNING now newStatus = add (for using img "add"), NOT (doing,done,canceled)
-		if (newStatus === undefined) { newStatus = 'add'; newStatusTranslated = t[0] }
+		// ! WARNING now newStatus = dnd (for using img "dnd"), NOT (doing,done,canceled)
+		if (newStatus === undefined) { newStatus = 'dnd'; newStatusTranslated = t[0] }
 		// ? status
 
-		OverId > 3 && setLastTodoId(OverId) // for makePopUp
+		// ! for makePopUp
+		OverId > 3 && setLastTodoId(OverId) // steal id if not fake-todo
+		OverId <= 3 && setLastTodoId(StartId) // DON'T steal id if fake-todo
 		// if date NOT changing => show popup with new status; else show popup with new date+status => (true = this day, false = other day)
 		if (startObj.date === OverDate) {
 			makePopUp({ imgName: newStatus, title: newStatusTranslated, text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
