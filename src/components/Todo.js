@@ -20,7 +20,7 @@ export default function Todo(props) {
 
 	const t = translate()
 
-	const { todos, setTodos, lang, yearForAddTodo } = React.useContext(Context)
+	const { todos, setTodos, lang } = React.useContext(Context)
 
 	const likedOrNot = props.doing ? liked : like
 	const canceledOrNot = props.canceled ? canceled : cancel
@@ -65,7 +65,11 @@ export default function Todo(props) {
 		props.moveTask(props.id, value)
 	}
 
-	const moveTaskOptions = tasks.map(task => <option>{Object.keys(task)}</option>)
+	let moveTaskOptions = tasks.map(task => <option>{Object.keys(task)}</option>)
+	// refresh taskOptions in todo, when task changed in lastTodo
+	React.useEffect(() => {
+		setMoveTaskSelectState(props.task)
+	}, [todos])
 
 	// ! todo bg
 	let bg
@@ -75,9 +79,8 @@ export default function Todo(props) {
 	!props.doing && !props.done && !props.canceled && (bg = "no-bg")
 
 	// ! DRAG & DROP 
-	const { draggable } = React.useContext(Context)
-	const { setDraggable } = React.useContext(Context)
-	const { mobile } = React.useContext(Context)
+	// todo one line
+	const { draggable, setDraggable, mobile, setLastTodoId } = React.useContext(Context)
 	// make all todo draggable on desktop; on mobile only .dnd icon is draggable
 	!mobile && setDraggable(true)
 	// prevent fake-todo from dragging
@@ -95,19 +98,22 @@ export default function Todo(props) {
 	// ! dragOver
 	let OverId
 	let OverDate
+	let OverYear
 	function dragOver(event) {
 		event.preventDefault()
-		OverId = props.id // 2
+		OverId = props.id
 		document.cookie = `OverId=${OverId}`
 		document.cookie = `OverDate=${props.date}`
+		document.cookie = `OverYear=${props.year}`
 	}
 
-	// ! dragEnd
+	// ! dragEnd; !!! OverId 0-3 are for fake-todos
 	function dragEnd(event) {
-		OverId = Number(document.cookie.match(/OverId=\d+/)[0].replace(/OverId=/, ''))
-		StartId = Number(document.cookie.match(/StartId=\d+/)[0].replace(/StartId=/, ''))
+		OverId = Number(document.cookie.match(/OverId=\d+/)[0].replace(/OverId=/, '')) // e.g 5
+		StartId = Number(document.cookie.match(/StartId=\d+/)[0].replace(/StartId=/, '')) // e.g 4
 
-		OverDate = document.cookie.match(/OverDate=\S+\s\d+/)[0].replace(/OverDate=/, '')
+		OverDate = document.cookie.match(/OverDate=\S+\s\d+/)[0].replace(/OverDate=/, '') // Jan 2
+		OverYear = document.cookie.match(/OverYear=\d+/)[0].replace(/OverYear=/, '') // 2023
 
 		let startObj
 		todos.map(todo => {
@@ -136,6 +142,7 @@ export default function Todo(props) {
 		if (newStatus === undefined) { newStatus = 'add'; newStatusTranslated = t[0] }
 		// ? status
 
+		OverId > 3 && setLastTodoId(OverId) // for makePopUp
 		// if date NOT changing => show popup with new status; else show popup with new date+status => (true = this day, false = other day)
 		if (startObj.date === OverDate) {
 			makePopUp({ imgName: newStatus, title: newStatusTranslated, text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
@@ -143,8 +150,9 @@ export default function Todo(props) {
 			const dateTranslated = year.EN.indexOf(OverDate) // index 0-364, "use" year[UK][114]
 			makePopUp({ imgName: newStatus, title: year[lang][dateTranslated], text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
 		}
-		// ! date is overwriten here; don't overwrite DATE if in SEARCH
+		// ! date & year is overwriten here; don't overwrite DATE & YEAR if in SEARCH
 		OverDate != "undefined" && props.section !== "search" && (startObj.date = OverDate)
+		OverYear != "undefined" && props.section !== "search" && (startObj.year = OverYear)
 		// DONT steal info(id,status, etc...) from fake-todos, correct STATUS is overwritten above
 		// fake-todos have id 0-3
 		if (OverId <= 3) {

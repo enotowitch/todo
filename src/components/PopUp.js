@@ -3,11 +3,13 @@ import { Context } from "../context";
 import makePopUp from "../functions/makePopUp";
 import translate from '../functions/Translate'
 import SelectLang from "./SelectLang";
+import edit from "./../img/edit.svg"
+import Todo from "./Todo";
 
 
 export default function PopUp(props) {
 
-	const { todos, tasks, setTasks, setPopUpState, setShowPopUp } = React.useContext(Context)
+	const { todos, tasks, setTasks, setPopUpState, setShowPopUp, action, moveTodo, moveTask, toggleAction, lastTodoId, setLastTodoId } = React.useContext(Context)
 
 	const t = translate()
 
@@ -35,6 +37,8 @@ export default function PopUp(props) {
 		})
 		// popUpHide
 		props.popUpHide()
+
+		setLastTodoId(props.todoId) // for makePopUp 
 		makePopUp({ imgName: "edit", text: curTodoText, title: t[32], setPopUpState, setShowPopUp })
 	}
 	// fix slow state for editTodo (state is one step behind)
@@ -90,9 +94,15 @@ export default function PopUp(props) {
 	}
 	// ! taskName + taskColor
 	let taskName
-	todos.map(todo => todo.id === props.todoId && (taskName = todo.task))
+	todos.map(todo => todo.id === lastTodoId && (taskName = todo.task))
 	let taskColor
 	tasks.map(task => Object.keys(task) == taskName && (taskColor = String(Object.values(task))))
+
+	taskName = taskName === "undefined" ? t[19] : taskName
+	// ! lastTodo
+	const lastTodo = todos.filter(todo => todo.id === lastTodoId && todo) // lastTodo[0]
+	const [showLastTodo, setShowLastTodo] = React.useState(false)
+
 
 	// ! return
 	return (
@@ -100,9 +110,13 @@ export default function PopUp(props) {
 			<div className={props.modalWindowType || "popup"}>
 				<img className="popup__img" src={path} />
 				<span className="popup__title">{props.title}</span>
-				<span style={{ color: taskColor }}>&nbsp;{taskName}</span>
+
+				{taskName && <span style={{ color: taskColor, fontWeight: 700 }}>&nbsp;{taskName}</span>}
+
 				<span className="popup__text">{props.text}</span>
 				<img className="popup__hide" src="img/del.svg" onClick={props.popUpHide} />
+
+				{showLastTodo && <img className="popup__hide2" src="img/del.svg" onClick={props.popUpHide} />}
 
 				{props.modalWindowType === "prompt" &&
 					<textarea
@@ -116,11 +130,16 @@ export default function PopUp(props) {
 				}
 
 				{(props.modalWindowType) &&
-					<div className="confirm__buttons">
+					<div className="buttons">
 						<button className={buttonClass} onClick={modalWindowFunction}>{firstButtonText}</button>
 						<button onClick={props.popUpHide}>{t[23]}</button>
 					</div>
 				}
+				{/* show .edit_last-todo only in popup & when not deleting */}
+				{!props.modalWindowType && props.imgName !== "del" &&
+					<img className="edit_last-todo" src={edit} onClick={() => setShowLastTodo(true)} />
+				}
+				{showLastTodo && <Todo {...lastTodo[0]} cssClass={"last-todo"} action={action} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />}
 			</div>
 			{(props.modalWindowType) && <div className="popup__bg"></div>}
 		</>

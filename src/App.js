@@ -57,10 +57,10 @@ export default function App() {
 	}
 	if (localStorage.length === 0) {
 		// create FAKE todos on start for DRAG & DROP to status title
-		localStorage.setItem(0, JSON.stringify({ id: 0, doing: false, done: false, canceled: false }))
-		localStorage.setItem(1, JSON.stringify({ id: 1, doing: true, done: false, canceled: false }))
-		localStorage.setItem(2, JSON.stringify({ id: 2, doing: false, done: true, canceled: false }))
-		localStorage.setItem(3, JSON.stringify({ id: 3, doing: false, done: false, canceled: true }))
+		localStorage.setItem(0, JSON.stringify({ id: 0, doing: false, done: false, canceled: false, year: new Date().getFullYear() }))
+		localStorage.setItem(1, JSON.stringify({ id: 1, doing: true, done: false, canceled: false, year: new Date().getFullYear() }))
+		localStorage.setItem(2, JSON.stringify({ id: 2, doing: false, done: true, canceled: false, year: new Date().getFullYear() }))
+		localStorage.setItem(3, JSON.stringify({ id: 3, doing: false, done: false, canceled: true, year: new Date().getFullYear() }))
 		// mandatory
 		window.location.reload()
 	}
@@ -115,22 +115,24 @@ export default function App() {
 		document.cookie = `lastTodo="${lastTodo}"`
 		// ! PopUp
 		const dateTranslated = getCookie("dateTranslated")
-		makePopUp({ imgName: "add", title: dateTranslated, text: text, todoId: lastTodo, setPopUpState, setShowPopUp })
+		setLastTodoId(lastTodo) // for makePopUp
+		makePopUp({ imgName: "add", title: dateTranslated, text: text, setPopUpState, setShowPopUp })
 	}
 	// ! action: propName: done/doing/canceled,etc... works only with BOOLS!
-	function action(todoID, propName, propNameTranslated) {
+	function action(todoId, propName, propNameTranslated) {
 		setTodos(prevState => {
 			return prevState.map(elem => {
-				return elem.id === todoID ? { ...elem, doing: false, done: false, canceled: false, [propName]: !elem[propName] } : elem
+				return elem.id === todoId ? { ...elem, doing: false, done: false, canceled: false, [propName]: !elem[propName] } : elem
 			})
 		})
 		// localStorage
-		const curTodoStr = localStorage.getItem(todoID)
+		const curTodoStr = localStorage.getItem(todoId)
 		const curTodoObj = JSON.parse(curTodoStr)
 		curTodoObj[propName] = !curTodoObj[propName]
 		// todo remove localStorage.setItem
-		// localStorage.setItem(todoID, JSON.stringify(curTodoObj))
+		// localStorage.setItem(todoId, JSON.stringify(curTodoObj))
 		// ! PopUp
+		setLastTodoId(todoId) // for makePopUp
 		makePopUp({ imgName: propName, title: propNameTranslated, text: curTodoObj.text, setPopUpState, setShowPopUp })
 	}
 	function toggleAction(todoId) {
@@ -149,6 +151,7 @@ export default function App() {
 			return todo.id === todoId ? { ...todo, date: date, year: year } : todo
 		}))
 		// PopUp
+		setLastTodoId(todoId) // for makePopUp
 		makePopUp({ imgName: "add", title: newDateTranslated, text: todos[todoId].text, setPopUpState, setShowPopUp })
 	}
 	// ! moveTask
@@ -158,8 +161,8 @@ export default function App() {
 			return elem.id === todoId ? { ...elem, task: newTask } : elem
 		}))
 		// PopUp
-		newTask = newTask === "undefined" ? t[19] : newTask
-		makePopUp({ imgName: "add", title: newTask, text: todos[todoId].text, setPopUpState, setShowPopUp })
+		setLastTodoId(todoId) // for makePopUp
+		makePopUp({ imgName: "add", text: todos[todoId].text, setPopUpState, setShowPopUp })
 	}
 	// todo
 	// React.useEffect(() => {
@@ -169,7 +172,7 @@ export default function App() {
 	// }, [])
 
 	// ! year & changeWeek
-	// null the year to current once at reload
+	// null the year to current, once at reload
 	x1 === 1 && (document.cookie = `yearForAddTodo=${new Date().getFullYear()}`)
 
 	const cookieYear = Number(document.cookie.match(/yearForAddTodo=\d+/)[0].replace(/yearForAddTodo=/, ''))
@@ -228,9 +231,13 @@ export default function App() {
 	// ! showSection
 	const [showSection, setShowSection] = React.useState({ addTodo: false, week: true, search: false })
 
+	// ! lastTodoId
+	const [lastTodoId, setLastTodoId] = React.useState()
+
+
 	// ! return
 	return (
-		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo, yearForAddTodo }}>
+		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo, yearForAddTodo, action, moveTodo, moveTask, toggleAction, lastTodoId, setLastTodoId }}>
 
 			<Burger showSection={showSection} setShowSection={setShowSection} />
 			{showSection.addTodo && <AddTodo addTodo={addTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}
