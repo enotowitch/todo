@@ -29,7 +29,7 @@ code {
     monospace;
 }
 
-.todo,.todos-title{
+.todo, .todos-title{
 	position: relative;
 	width: $todo-max-width;
 	margin: 0 auto;
@@ -43,6 +43,12 @@ code {
 }
 .todo{
 	cursor: grab;
+	&_settings{
+		pointer-events: none;
+	}
+	&_settings .actions, &_settings .dnd{
+		display: none;
+	}
 }
 .fake-todo, .fake-todo-day{
 	cursor: pointer;
@@ -55,13 +61,20 @@ code {
 	left: 0;
 	width: 100% !important;
 }
-.todo__date{
+.todo__date, .todo__task{
 	font-weight: 700;
 	margin-right: 4px;
+	text-align: center;
+}
+.todo__task{
+	font-style: italic;
+	font-family: Montserrat;
 }
 .todo__text{
 	margin-right: auto;
+	padding-right: 4px;
 	word-break: break-word;
+	text-align: left;
 }
 .todos-title{
 	position: relative;
@@ -237,6 +250,8 @@ button,.todos-title,.like, .hide{
 	margin-left: 2px;
 	margin-bottom: 15px;
 	padding: 8px 0;
+	// todo
+	overflow: hidden;
 }
 /* DATE */
 .date,.date_today{
@@ -790,4 +805,45 @@ button,.todos-title,.like, .hide{
 	margin-right: 15px;
 	padding: 5px;
 	cursor: grab;
+}
+// checkbox / .on-off
+// ! name="showDate"
+.on-off__checkbox{
+	position: absolute;
+	opacity: 0;
+}
+.on-off__label{
+	position: relative;
+	display: inline-block;
+	width: 40px;
+	height: 20px;
+	border-radius: 20px;
+	border: 1px solid;
+	padding: 2px;
+}
+.on-off__checkbox + .on-off__label::before, 
+.on-off__checkbox:checked + .on-off__label::after{
+	content: "";
+	position: absolute;
+	display: block;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background: $canceled;
+}
+.on-off__checkbox:checked + .on-off__label::before{
+	display: none;
+}
+.on-off__checkbox:checked + .on-off__label::after{
+	background: $done;
+	margin-left: 20px;
+}
+// on-off
+.on-off{
+	display: inline-flex;
+	align-items: center;
+	margin: 0 auto;
+	span{
+		padding-right: 5px;
+	}
 }

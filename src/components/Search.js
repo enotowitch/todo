@@ -14,7 +14,7 @@ export default function Search(props) {
 
 	const t = translate()
 
-	const { todos, tasks, lang, setTaskForAddTodo, setInputOfAddTodo } = React.useContext(Context)
+	const { todos, tasks, lang, setTaskForAddTodo, setInputOfAddTodo, showDate, showTask } = React.useContext(Context)
 	const taskOptions = tasks.reverse().map(task => <option>{Object.keys(task)}</option>)
 
 	const [searchCount, setSearchCount] = React.useState(0)
@@ -132,7 +132,7 @@ export default function Search(props) {
 
 	function shortTodo(todo) {
 		let dateTranslated = year.EN.indexOf(todo.date) // index 0-364, "use" year[UK][114]
-		return <Todo section={"search"} showDate={true} key={todo.id} {...todo} dateTranslated={year[lang][dateTranslated]} action={props.action} moveTodo={props.moveTodo} moveTask={props.moveTask} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
+		return <Todo section={"search"} showDate={showDate} showTask={showTask} key={todo.id} {...todo} dateTranslated={year[lang][dateTranslated]} action={props.action} moveTodo={props.moveTodo} moveTask={props.moveTask} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
 	}
 
 	let searched = []

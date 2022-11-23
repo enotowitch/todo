@@ -11,7 +11,7 @@ import { Context } from "../context"
 
 export default function OneDayTodos(props) {
 
-	const { todos, yearForAddTodo } = React.useContext(Context)
+	const { todos, yearForAddTodo, showDate, showTask } = React.useContext(Context)
 
 	const t = translate()
 
@@ -30,7 +30,7 @@ export default function OneDayTodos(props) {
 	let allNum = thisDayTodos.length
 
 	function shortTodo(todo) {
-		return <Todo key={todo.id} {...todo} action={props.action} moveTodo={props.moveTodo} moveTask={props.moveTask} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
+		return <Todo key={todo.id} {...todo} showDate={showDate} showTask={showTask} dateTranslated={props.dateTranslated} action={props.action} moveTodo={props.moveTodo} moveTask={props.moveTask} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
 	}
 
 	// ! OUTPUT LOGIC

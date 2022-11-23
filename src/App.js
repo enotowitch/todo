@@ -64,6 +64,12 @@ export default function App() {
 		// mandatory
 		window.location.reload()
 	}
+	if (!document.cookie.match(/showDate=/)) {
+		document.cookie = `showDate=${true}`
+	}
+	if (!document.cookie.match(/showTask=/)) {
+		document.cookie = `showTask=${true}`
+	}
 	// ? default cookies
 
 	let curWeekNum
@@ -233,11 +239,17 @@ export default function App() {
 
 	// ! lastTodoId
 	const [lastTodoId, setLastTodoId] = React.useState()
+	// ! showDate
+	const cookieShowDate = document.cookie.match(/showDate=\w+/)[0].replace(/showDate=/, '')
+	const [showDate, setShowDate] = React.useState(eval(cookieShowDate))
+	// ! showTask
+	const cookieShowTask = document.cookie.match(/showTask=\w+/)[0].replace(/showTask=/, '')
+	const [showTask, setShowTask] = React.useState(eval(cookieShowTask))
 
 
 	// ! return
 	return (
-		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo, yearForAddTodo, action, moveTodo, moveTask, toggleAction, lastTodoId, setLastTodoId }}>
+		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo, yearForAddTodo, action, moveTodo, moveTask, toggleAction, lastTodoId, setLastTodoId, showDate, setShowDate, showTask, setShowTask }}>
 
 			<Burger showSection={showSection} setShowSection={setShowSection} />
 			{showSection.addTodo && <AddTodo addTodo={addTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}

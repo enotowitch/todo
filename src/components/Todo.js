@@ -79,7 +79,6 @@ export default function Todo(props) {
 	!props.doing && !props.done && !props.canceled && (bg = "no-bg")
 
 	// ! DRAG & DROP 
-	// todo one line
 	const { draggable, setDraggable, mobile, setLastTodoId } = React.useContext(Context)
 	// make all todo draggable on desktop; on mobile only .dnd icon is draggable
 	!mobile && setDraggable(true)
@@ -184,8 +183,11 @@ export default function Todo(props) {
 	return (
 		<div className={`todo ${props.cssClass}`} style={style} draggable={draggable} onDragStart={dragStart} onDragOver={dragOver} onDragEnd={dragEnd}>
 			<Checkbox done={props.done} action={props.action} id={props.id} />
-			{props.showDate && <p className="todo__date">{props.dateTranslated}</p>}
-			<p className="todo__text">{props.text}</p>
+			<p className="todo__text">
+				{props.showDate && <span className="todo__date">{props.dateTranslated}</span>}
+				{props.showTask && props.task && <span className="todo__task">{props.task}</span>}
+				{props.text}
+			</p>
 
 			{props.showAction &&
 				<div className="actions">
