@@ -82,12 +82,6 @@ export default function Todo(props) {
 	const { draggable, setDraggable, mobile, setLastTodoId } = React.useContext(Context)
 	// make all todo draggable on desktop; on mobile only .dnd icon is draggable
 	!mobile && setDraggable(true)
-	// prevent fake-todo from dragging
-	React.useEffect(() => {
-		document.querySelectorAll('.fake-todo').forEach((elem) => {
-			elem.draggable = false
-		})
-	}, [])
 	// ! dragStart
 	let StartId
 	function dragStart(event) {
@@ -130,7 +124,7 @@ export default function Todo(props) {
 		if (overObj.canceled) { newStatus = 'canceled'; newStatusTranslated = t[3] }
 
 		// ! status is overwriten here; don't overwrite STATUS if in SEARCH
-		if (props.section !== "search") {
+		if (props.section !== "search" && StartId > 3) {
 			startObj.doing = false
 			startObj.done = false
 			startObj.canceled = false

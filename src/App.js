@@ -245,6 +245,14 @@ export default function App() {
 	// ! showTask
 	const cookieShowTask = document.cookie.match(/showTask=\w+/)[0].replace(/showTask=/, '')
 	const [showTask, setShowTask] = React.useState(eval(cookieShowTask))
+	// ! prevent fake-todo from dragging
+	React.useEffect(() => {
+		document.querySelectorAll('.fake-todo').forEach((elem) => {
+			setTimeout(() => {
+				elem.draggable = false
+			}, 1);
+		})
+	}, [])
 
 
 	// ! return

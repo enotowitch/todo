@@ -25,6 +25,14 @@ export default function Settings(props) {
 	let dateTranslated
 	todos[4] && (dateTranslated = year.EN.indexOf(todos[4].date)) // index 0-364, "use" year[UK][114]
 
+	// ! todo DELETE LATER
+	function drop() {
+		localStorage.clear()
+		document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+		window.location.reload()
+	}
+	// ? todo DELETE LATER
+
 	return (
 		<>
 			<div className="buttons">
@@ -37,6 +45,9 @@ export default function Settings(props) {
 			<div className="buttons">
 				<button className="button_danger" onClick={props.deleteTodosPopUp}>{t[12]}</button>
 				<button className="button_danger" onClick={props.deleteTasksPopUp}>{t[13]}</button>
+				{/* // ! todo DELETE LATER */}
+				<button className="button_danger" onClick={drop}>DROP</button>
+				{/* // ? todo DELETE LATER */}
 			</div>
 		</>
 	)

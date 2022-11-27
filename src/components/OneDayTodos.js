@@ -77,7 +77,7 @@ export default function OneDayTodos(props) {
 		<div className={`one-day-todos ${props.date} section-minimized`}>
 
 			<div onClick={toggleDay}>
-				<Todo id={0} date={props.date} year={yearForAddTodo} cssClass="fake-todo-day" />
+				<Todo id={0} date={props.date} year={yearForAddTodo} cssClass="fake-todo" />
 			</div>
 
 			<div className="one-day-todos__top">

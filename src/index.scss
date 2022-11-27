@@ -50,16 +50,14 @@ code {
 		display: none;
 	}
 }
-.fake-todo, .fake-todo-day{
-	cursor: pointer;
+.fake-todo{
 	opacity: 0;
 	height: 50px;
-}
-.fake-todo-day{
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100% !important;
+	cursor: pointer;
 }
 .todo__date, .todo__task{
 	font-weight: 700;
@@ -216,8 +214,8 @@ button:active{
 	border-left: 2px solid $main-color;
 }
 .chosen-day{
-	border-top: 2px solid #bc79ff !important;
-    border-bottom: 2px solid #bc79ff !important;
+	border-top: 2px solid $main-color !important;
+    border-bottom: 2px solid $main-color !important;
 	/* background: #f3fcff; */
 }
 .buttons{
@@ -245,13 +243,13 @@ button,.todos-title,.like, .hide{
 .one-day-todos{
 	position: relative;
 	font-style: italic;
-	border-top: 2px solid #f8f1ff;
-	border-bottom: 2px solid #f8f1ff;
+	border-top: 2px solid lighten($main-color, 90%);
+	border-bottom: 2px solid lighten($main-color, 90%);
 	margin-left: 2px;
 	margin-bottom: 15px;
 	padding: 8px 0;
 	// todo
-	overflow: hidden;
+	// overflow: hidden;
 }
 /* DATE */
 .date,.date_today{
