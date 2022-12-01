@@ -158,7 +158,7 @@ export default function Search(props) {
 		document.cookie = `dateForAddTodo=${getToday()}`
 		document.querySelector('.burger__btn').click()
 		setTaskForAddTodo(searchState.task)
-		setInputOfAddTodo(searchState.task + " ")
+		setInputOfAddTodo(" ")
 	}
 	// ! searchReverse
 	const cookieSearchReverse = document.cookie.match(/searchReverse/) ? document.cookie.match(/searchReverse=\w+/)[0].replace(/searchReverse=/, '') : false

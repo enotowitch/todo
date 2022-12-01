@@ -17,7 +17,8 @@ export default function Task(props) {
 	}
 	function addTaskName() {
 		setTaskForAddTodo(props.taskName)
-		setInputOfAddTodo(props.taskName + " ")
+		// mandatoty, triggers input__text change => inputPadding for taskColor / add-todo__task
+		setInputOfAddTodo(" ")
 		document.querySelector('.input__text').focus()
 	}
 	function validation(e) {

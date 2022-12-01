@@ -113,13 +113,12 @@ code {
 	margin: 2px;
 }
 .edit {
-	// todo width, not scale
 	transform: scale(0.95);
 	&_last-todo {
-		transform: scale(0.65);
+		width: 18px;
 		position: absolute;
-		bottom: 0;
-		right: 0;
+		bottom: 4px;
+		right: 4px;
 	}
 }
 .actions {
@@ -217,9 +216,8 @@ button:active {
 // ?? button_danger
 .input__text {
 	height: 30px;
-	width: $input-width;
+	width: 90%;
 	display: block;
-	text-indent: 2px;
 }
 .add-todo {
 	position: relative;
@@ -233,12 +231,22 @@ button:active {
 	&__input-flex{
 		display: flex;
 		align-items: center;
+		width: $input-width;
 		margin: -25px auto 0;
 		padding: 0 15px;
 	}
 	&__add-img{
 		margin-right: 5px;
 		margin-left: -8px;
+	}
+	&__task{
+			position: absolute;
+			margin-left: 37px;
+			padding-bottom: 3px;
+			max-width: 90px;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
 	}
 }
 .chosen-day {
@@ -920,4 +928,10 @@ button,
 	span {
 		padding-right: 5px;
 	}
+}
+img:hover:not(.arrow,.tutorial,.popup__img){
+	transform: scale(.9);
+}
+img:active:not(.arrow,.tutorial,.popup__img){
+	transform: scale(.8);
 }

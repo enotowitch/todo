@@ -14,7 +14,7 @@ export default function AddTodo(props) {
 
 	const t = translate()
 
-	const { inputOfAddTodo, setInputOfAddTodo, taskForAddTodo, setTaskForAddTodo } = React.useContext(Context)
+	const { inputOfAddTodo, setInputOfAddTodo, taskForAddTodo, setTaskForAddTodo, tasks } = React.useContext(Context)
 	// ! deleteTasksPopUp
 	function deleteTasksPopUp() {
 		makePopUp({ title: t[13].charAt(0).toUpperCase() + t[13].slice(1) + "?", setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTasks", showTask: false })
@@ -68,6 +68,7 @@ export default function AddTodo(props) {
 
 	const dateTranslated = getCookie("dateTranslated")
 
+	// ! prevTask
 	const prevTask = document.cookie.match(/prevTask/) ? document.cookie.match(/prevTask=.*?}/)[0].replace(/prevTask=/, '').replace(/}/, '') : undefined
 
 	React.useEffect(() => {
@@ -75,12 +76,17 @@ export default function AddTodo(props) {
 	}, [taskForAddTodo])
 
 	function addPrevTask() {
-		setTimeout(() => {
-			setTaskForAddTodo(prevTask)
-		}, 1);
+		setTaskForAddTodo(prevTask)
 
-		setInputOfAddTodo(prevTask + " ")
+		// mandatoty, triggers input__text change => inputPadding for taskColor / add-todo__task
+		setInputOfAddTodo(" ")
 		document.querySelector('.input__text').focus()
+	}
+	// ? prevTask
+	// ! taskColor
+	let taskColor
+	if (taskForAddTodo) {
+		tasks.map(task => String(Object.keys(task)).trim().replace(/\s{2,}/, ' ') == taskForAddTodo.trim().replace(/\s{2,}/, ' ') && (taskColor = String(Object.values(task))))
 	}
 
 	// ! return
@@ -88,7 +94,8 @@ export default function AddTodo(props) {
 		<div className="add-todo">
 			<div className="add-todo__date">{t[5]}: {dateTranslated}</div>
 			<div className="add-todo__input-flex">
-				{prevTask !== undefined && <img className="add-todo__add-img" src={add} onClick={addPrevTask} />}
+				<img className="add-todo__add-img" src={add} onClick={addPrevTask} style={{ opacity: prevTask === undefined && 0 }} />
+				<span className="add-todo__task" style={{ color: taskColor }}>{taskForAddTodo}</span>
 				<input
 					className="input__text"
 					type="text"

@@ -109,13 +109,10 @@ export default function App() {
 		// ! date
 		const date = getCookie("dateForAddTodo")
 		// ? date
-		let textWithoutTask
-		inputOfAddTodo && (textWithoutTask = inputOfAddTodo.trim().replace(/\s{2,}/g, ' '))
-		let task
-		taskForAddTodo && (task = taskForAddTodo.trim().replace(/\s{2,}/g, ' '))
-		task && (textWithoutTask = textWithoutTask.replace(task, ''))
-		const text = textWithoutTask || `${t[68]} ${lastTodo - 3 + 1}`
+		const text = inputOfAddTodo && inputOfAddTodo.trim() || `${t[68]} ${lastTodo - 3 + 1}`
 		lastTodo++
+
+		const task = taskForAddTodo && taskForAddTodo.trim().replace(/\s{2,}/, ' ')
 
 		setTodos(prevState => {
 			return [...prevState, { task: task, id: lastTodo, date: date, year: yearForAddTodo, text: text, doing: false, done: false, canceled: false, showAction: false }]
@@ -277,7 +274,11 @@ export default function App() {
 			}, 1);
 		})
 	}, [])
-
+	// ! inputPadding => addTodo
+	React.useEffect(() => {
+		const inputPadding = document.querySelector('.add-todo__task') && document.querySelector('.add-todo__task').clientWidth + 5 + "px"
+		document.querySelector('.input__text') && (document.querySelector('.input__text').style.paddingLeft = inputPadding)
+	}, [taskForAddTodo, []])
 
 	// ! return
 	return (
