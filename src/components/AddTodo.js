@@ -16,13 +16,11 @@ export default function AddTodo(props) {
 	const { inputOfAddTodo, setInputOfAddTodo, setTaskForAddTodo } = React.useContext(Context)
 	// ! deleteTasksPopUp
 	function deleteTasksPopUp() {
-		props.setShowPopUp(prevState => !prevState)
-		makePopUp({ title: t[13].charAt(0).toUpperCase() + t[13].slice(1) + "?", setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTasks" })
+		makePopUp({ title: t[13].charAt(0).toUpperCase() + t[13].slice(1) + "?", setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTasks", showTask: false })
 	}
 	// ! deleteTodosPopUp
 	function deleteTodosPopUp() {
-		props.setShowPopUp(prevState => !prevState)
-		makePopUp({ title: t[12].charAt(0).toUpperCase() + t[12].slice(1) + "?", setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTodos" })
+		makePopUp({ title: t[12].charAt(0).toUpperCase() + t[12].slice(1) + "?", setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTodos", showTask: false })
 	}
 
 	const menuArr = [

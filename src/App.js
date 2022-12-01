@@ -47,7 +47,7 @@ export default function App() {
 	if (!document.cookie.match(/tasks=\[.+?]/)) {
 		const date = new Date()
 		const month = date.toLocaleString(lang, { month: 'long' }).toLowerCase()
-		document.cookie = `tasks=[{work: "#aeffa3"},{ideas: "#7ec5fb"}, {${month}: "#ff8585"}]`
+		document.cookie = `tasks=[{${t[71]}: "#aeffa3"},{${t[72]}: "#7ec5fb"}, {${month}: "#ff8585"}]`
 	}
 	if (!document.cookie.match(/lastTodo/)) {
 		document.cookie = `lastTodo="3"`
@@ -96,7 +96,7 @@ export default function App() {
 	// show change lang popup ONLY at very first load
 	const [x1, x1Set] = React.useState(1)
 	if (!document.cookie.match(/langPopUp/) && x1 === 1) {
-		makePopUp({ title: t[30], setPopUpState, setShowPopUp, modalWindowType: "select" })
+		makePopUp({ title: t[30], setPopUpState, setShowPopUp, modalWindowType: "select", showTask: false })
 		x1Set(2)
 	}
 
@@ -109,20 +109,24 @@ export default function App() {
 		// ! date
 		const date = getCookie("dateForAddTodo")
 		// ? date
-		let textWithoutTask = inputOfAddTodo
-		taskForAddTodo && (textWithoutTask = textWithoutTask.replace(taskForAddTodo, ''))
-		const text = textWithoutTask || `Test Task ${lastTodo - 3 + 1}`
+		let textWithoutTask
+		inputOfAddTodo && (textWithoutTask = inputOfAddTodo.trim().replace(/\s{2,}/g, ' '))
+		let task
+		taskForAddTodo && (task = taskForAddTodo.trim().replace(/\s{2,}/g, ' '))
+		task && (textWithoutTask = textWithoutTask.replace(task, ''))
+		const text = textWithoutTask || `${t[68]} ${lastTodo - 3 + 1}`
 		lastTodo++
 
 		setTodos(prevState => {
-			return [...prevState, { task: taskForAddTodo, id: lastTodo, date: date, year: yearForAddTodo, text: text, doing: false, done: false, canceled: false, showAction: false }]
+			return [...prevState, { task: task, id: lastTodo, date: date, year: yearForAddTodo, text: text, doing: false, done: false, canceled: false, showAction: false }]
 		})
 
 		document.cookie = `lastTodo="${lastTodo}"`
 		// ! PopUp
 		const dateTranslated = getCookie("dateTranslated")
+		// todo need this? got => lastTodo
 		setLastTodoId(lastTodo) // for makePopUp
-		makePopUp({ imgName: "add", title: dateTranslated, text: text, setPopUpState, setShowPopUp })
+		makePopUp({ imgName: "add", title: dateTranslated + " - " + t[0], text: text, setPopUpState, setShowPopUp, todoId: lastTodo })
 	}
 	// ! action: propName: done/doing/canceled,etc... works only with BOOLS!
 	function action(todoId, propName, propNameTranslated) {
@@ -138,8 +142,9 @@ export default function App() {
 		// todo remove localStorage.setItem
 		// localStorage.setItem(todoId, JSON.stringify(curTodoObj))
 		// ! PopUp
+		// todo need this? got => todoId
 		setLastTodoId(todoId) // for makePopUp
-		makePopUp({ imgName: propName, title: propNameTranslated, text: curTodoObj.text, setPopUpState, setShowPopUp })
+		makePopUp({ imgName: propName, title: propNameTranslated, text: curTodoObj.text, setPopUpState, setShowPopUp, todoId: todoId })
 	}
 	function toggleAction(todoId) {
 		setTodos(prevState => {
@@ -151,31 +156,43 @@ export default function App() {
 	// ! moveTodo
 	function moveTodo(todoId, newDate, newDateTranslated) {
 		const date = newDate.match(/\w+\s\d+/)[0]
-		const year = newDate.match(/\d{4}/)[0]
+		const newYear = newDate.match(/\d{4}/)[0]
 		// state
+		let text
+		let oldDate
+		let oldYear
 		setTodos(prevState => prevState.map(todo => {
-			return todo.id === todoId ? { ...todo, date: date, year: year } : todo
+			if (todo.id === todoId) {
+				text = todo.text
+				oldDate = todo.date
+				oldYear = todo.year
+			}
+			return todo.id === todoId ? { ...todo, date: date, year: newYear } : todo
 		}))
+		const dateTranslated = year.EN.indexOf(oldDate) // index 0-364, "use" year[UK][114]
+		const oldDateTranslated = year[lang][dateTranslated]
 		// PopUp
+		// todo need this? got => todoId
 		setLastTodoId(todoId) // for makePopUp
-		makePopUp({ imgName: "dnd", title: newDateTranslated, text: todos[todoId].text, setPopUpState, setShowPopUp })
+		makePopUp({ imgName: "date", title: oldDateTranslated + ", " + oldYear + "->" + newDateTranslated, text: text, setPopUpState, setShowPopUp, todoId: todoId })
 	}
 	// ! moveTask
 	function moveTask(todoId, newTask) {
 		// state
-		setTodos(prevState => prevState.map(elem => {
-			return elem.id === todoId ? { ...elem, task: newTask } : elem
+		let text
+		let dateTranslated
+		setTodos(prevState => prevState.map(todo => {
+			if (todo.id === todoId) {
+				text = todo.text
+				dateTranslated = year.EN.indexOf(todo.date) // index 0-364, "use" year[UK][114]
+			}
+			return todo.id === todoId ? { ...todo, task: newTask } : todo
 		}))
 		// PopUp
+		// todo need this? got => todoId
 		setLastTodoId(todoId) // for makePopUp
-		makePopUp({ imgName: "add", text: todos[todoId].text, setPopUpState, setShowPopUp })
+		makePopUp({ imgName: "task", title: year[lang][dateTranslated], text: text, setPopUpState, setShowPopUp, todoId: todoId })
 	}
-	// todo
-	// React.useEffect(() => {
-	// 	// style chosen-day set in cookie "dateForAddTodo"
-	// 	const dateChosen = getCookie("dateForAddTodo")
-	// 	document.querySelector(`.${dateChosen}`).classList.add('chosen-day')
-	// }, [])
 
 	// ! year & changeWeek
 	// null the year to current, once at reload
@@ -257,7 +274,7 @@ export default function App() {
 
 	// ! return
 	return (
-		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo, yearForAddTodo, action, moveTodo, moveTask, toggleAction, lastTodoId, setLastTodoId, showDate, setShowDate, showTask, setShowTask }}>
+		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo, yearForAddTodo, action, moveTodo, moveTask, toggleAction, lastTodoId, setLastTodoId, showDate, setShowDate, showTask, setShowTask, showSection }}>
 
 			<Burger showSection={showSection} setShowSection={setShowSection} />
 			{showSection.addTodo && <AddTodo addTodo={addTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}

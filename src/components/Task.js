@@ -1,11 +1,15 @@
 import React from "react"
 import { Context } from "../context"
+import makePopUp from "../functions/makePopUp"
+import translate from './../functions/Translate'
 import add from "./../img/add.svg"
 import dlt from "./../img/dlt.svg"
 
 export default function Task(props) {
 
-	const { tasks, setTasks, setTaskForAddTodo, setInputOfAddTodo } = React.useContext(Context)
+	const t = translate()
+
+	const { tasks, setTasks, setTaskForAddTodo, setInputOfAddTodo, setPopUpState, setShowPopUp } = React.useContext(Context)
 
 	function deleteTask(taskName) {
 		const deleted = tasks.filter(task => String(Object.keys(task)) != taskName)
@@ -16,6 +20,16 @@ export default function Task(props) {
 		setInputOfAddTodo(props.taskName + " ")
 		document.querySelector('.input__text').focus()
 	}
+	function validation(e) {
+		const exp = `[;{}\\[\\]]`
+		const regExp = new RegExp(exp)
+		if (e.target.value.match(regExp)) {
+			console.log(e.target.value)
+			makePopUp({ imgName: "dlt", title: e.target.value.match(regExp)[0] + " " + t[70], setPopUpState, setShowPopUp, showTask: false })
+			return
+		}
+		props.changeTaskState(e)
+	}
 
 	return (
 		<div className="pick-color">
@@ -25,7 +39,7 @@ export default function Task(props) {
 				type="text"
 				name={props.taskName}
 				value={props.taskName}
-				onChange={props.changeTaskState}
+				onChange={validation}
 				onFocus={() => props.toggleIcon(props.taskName)}
 			/>
 			<input

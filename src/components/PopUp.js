@@ -5,6 +5,7 @@ import translate from '../functions/Translate'
 import SelectLang from "./SelectLang";
 import edit from "./../img/edit.svg"
 import Todo from "./Todo";
+import getCookie from "../functions/getCookie";
 
 
 export default function PopUp(props) {
@@ -24,7 +25,7 @@ export default function PopUp(props) {
 		setTasks([])
 		props.popUpHide()
 		// todo makePopUp without passing setPopUpState, setShowPopUp each time => so it's already there...
-		makePopUp({ imgName: "del", title: t[31], setPopUpState, setShowPopUp })
+		makePopUp({ imgName: "dlt", title: t[31], setPopUpState, setShowPopUp, showTask: false })
 	}
 	// ! editTodo
 	function editTodo() {
@@ -38,8 +39,9 @@ export default function PopUp(props) {
 		// popUpHide
 		props.popUpHide()
 
+		// todo need this? got => props.todoId
 		setLastTodoId(props.todoId) // for makePopUp 
-		makePopUp({ imgName: "edit", text: curTodoText, title: t[32], setPopUpState, setShowPopUp })
+		makePopUp({ imgName: "edit", text: curTodoText, title: t[32], setPopUpState, setShowPopUp, todoId: props.todoId })
 	}
 	// fix slow state for editTodo (state is one step behind)
 	React.useEffect(() => {
@@ -57,9 +59,8 @@ export default function PopUp(props) {
 		props.setTodos(prevState => prevState.filter(todo => {
 			return todo.id !== props.todoId
 		}))
-		props.popUpHide()
 		localStorage.removeItem(props.todoId)
-		makePopUp({ imgName: "del", text: curTodoText, title: t[33], setPopUpState, setShowPopUp })
+		makePopUp({ imgName: "dlt", text: curTodoText, title: t[33], setPopUpState, setShowPopUp })
 	}
 	// ! deleteTodos
 	function deleteTodos() {
@@ -94,11 +95,19 @@ export default function PopUp(props) {
 	}
 	// ! taskName + taskColor
 	let taskName
-	todos.map(todo => todo.id === lastTodoId && (taskName = todo.task))
-	let taskColor
-	tasks.map(task => Object.keys(task) == taskName && (taskColor = String(Object.values(task))))
+	todos.map(todo => todo.id === props.todoId && (taskName = todo.task))
 
-	taskName = taskName === "undefined" ? t[19] : taskName
+	// ! if todo is deleted => write taskName to cookie
+	props.imgName !== "dlt" && (document.cookie = `deletedTodoTask=${taskName}}`)
+	// get taskName - it's already deleted from state and locastorage, so only cookie works
+	props.imgName === "dlt" && (taskName = document.cookie.match(/deletedTodoTask=.*?}/)[0].replace(/deletedTodoTask=/, '').replace(/}/, ''))
+	// ? if todo is deleted => write taskname to cookie
+
+	let taskColor
+	tasks.map(task => String(Object.keys(task)).trim().replace(/\s{2,}/g, ' ') == taskName && (taskColor = String(Object.values(task))))
+
+	taskName = (taskName === undefined || taskName === "undefined") ? t[19] : taskName
+	// ? taskName + taskColor
 	// ! lastTodo
 	const lastTodo = todos.filter(todo => todo.id === lastTodoId && todo) // lastTodo[0]
 	const [showLastTodo, setShowLastTodo] = React.useState(false)
@@ -109,11 +118,16 @@ export default function PopUp(props) {
 		<>
 			<div className={props.modalWindowType || "popup"}>
 				<img className="popup__img" src={path} />
-				<span className="popup__title">{props.title}</span>
+				<p className="popup__title">
+					<span>{props.title}</span>
+					<br />
+					{/* !!! undefined & true => showTask */}
+					{props.showTask !== false && <span style={{ color: taskColor, fontWeight: 700, 'fontFamily': 'Montserrat' }}>{taskName}</span>}
+					<br />
+					<span className="popup__text">{props.text}</span>
+				</p>
 
-				{taskName && <span style={{ color: taskColor, fontWeight: 700 }}>&nbsp;{taskName}</span>}
 
-				<span className="popup__text">{props.text}</span>
 				<img className="popup__hide" src="img/del.svg" onClick={props.popUpHide} />
 
 				{showLastTodo && <img className="popup__hide2" src="img/del.svg" onClick={props.popUpHide} />}
@@ -136,10 +150,10 @@ export default function PopUp(props) {
 					</div>
 				}
 				{/* show .edit_last-todo only in popup & when not deleting */}
-				{!props.modalWindowType && props.imgName !== "del" &&
+				{!props.modalWindowType && props.imgName !== "dlt" &&
 					<img className="edit_last-todo" src={edit} onClick={() => setShowLastTodo(true)} />
 				}
-				{showLastTodo && <Todo {...lastTodo[0]} cssClass={"last-todo"} action={action} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />}
+				{showLastTodo && <Todo {...lastTodo[0]} showDate={true} dateTranslated={props.title} showTask={true} cssClass={"last-todo"} action={action} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />}
 			</div>
 			{(props.modalWindowType) && <div className="popup__bg"></div>}
 		</>

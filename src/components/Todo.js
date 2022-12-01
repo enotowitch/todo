@@ -20,7 +20,7 @@ export default function Todo(props) {
 
 	const t = translate()
 
-	const { todos, setTodos, lang } = React.useContext(Context)
+	const { todos, setTodos, lang, setShowPopUp, showSection } = React.useContext(Context)
 
 	const likedOrNot = props.doing ? liked : like
 	const canceledOrNot = props.canceled ? canceled : cancel
@@ -28,7 +28,7 @@ export default function Todo(props) {
 	// ! color todo
 	let color
 	const { tasks } = React.useContext(Context)
-	tasks.map(task => Object.keys(task) == props.task && (color = Object.values(task)))
+	tasks.map(task => String(Object.keys(task)).trim().replace(/\s{2,}/g, ' ') == props.task && (color = Object.values(task)))
 
 	const style = {
 		background: color
@@ -37,7 +37,7 @@ export default function Todo(props) {
 	// ! editPopUp
 	function editPopUp() {
 		props.setShowPopUp(prevState => !prevState)
-		makePopUp({ title: t[20] + "...", text: props.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "prompt", doFunction: "editTodo", todoId: props.id })
+		makePopUp({ title: t[20] + " ", text: props.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "prompt", doFunction: "editTodo", todoId: props.id })
 	}
 	// ! delete todo
 	function deleteTodo() {
@@ -45,6 +45,10 @@ export default function Todo(props) {
 	}
 	// ! moveDate
 	const [moveDateSelectState, setMoveDateSelectState] = React.useState(props.date + ", " + props.year)
+	// refresh moveDateSelectState on dnd
+	React.useEffect(() => {
+		setMoveDateSelectState(props.date + ", " + props.year)
+	}, [todos])
 
 	function changeDate(event) {
 		const { value } = event.target // Nov 20, 2022
@@ -65,7 +69,7 @@ export default function Todo(props) {
 		props.moveTask(props.id, value)
 	}
 
-	let moveTaskOptions = tasks.map(task => <option>{Object.keys(task)}</option>)
+	let moveTaskOptions = tasks.map(task => <option>{String(Object.keys(task))}</option>)
 	// refresh taskOptions in todo, when task changed in lastTodo
 	React.useEffect(() => {
 		setMoveTaskSelectState(props.task)
@@ -124,30 +128,48 @@ export default function Todo(props) {
 		if (overObj.canceled) { newStatus = 'canceled'; newStatusTranslated = t[3] }
 
 		// ! status is overwriten here; don't overwrite STATUS if in SEARCH
-		if (props.section !== "search" && StartId > 3) {
+		let curSection
+		Object.keys(showSection).map(s => showSection[s] && (curSection = s))
+		if (curSection !== "search" && StartId > 3) {
 			startObj.doing = false
 			startObj.done = false
 			startObj.canceled = false
 			startObj[newStatus] = true
 		}
 
-		// ! WARNING now newStatus = dnd (for using img "dnd"), NOT (doing,done,canceled)
-		if (newStatus === undefined) { newStatus = 'dnd'; newStatusTranslated = t[0] }
+		// ! WARNING now newStatus = dnd (for using img "add"), NOT (doing,done,canceled)
+		if (newStatus === undefined) { newStatus = 'add'; newStatusTranslated = t[0] }
 		// ? status
 
 		// ! for makePopUp
 		OverId > 3 && setLastTodoId(OverId) // steal id if not fake-todo
 		OverId <= 3 && setLastTodoId(StartId) // DON'T steal id if fake-todo
-		// if date NOT changing => show popup with new status; else show popup with new date+status => (true = this day, false = other day)
-		if (startObj.date === OverDate) {
-			makePopUp({ imgName: newStatus, title: newStatusTranslated, text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
-		} else {
-			const dateTranslated = year.EN.indexOf(OverDate) // index 0-364, "use" year[UK][114]
-			makePopUp({ imgName: newStatus, title: year[lang][dateTranslated], text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
+		// if date NOT changing => show popup with new status
+		if (startObj.date === OverDate && curSection !== "search") {
+			// don't show PopUp if this same todo
+			if (startObj === overObj) {
+				return
+			}
+			// in this case todo steals id from other todo, so correct task is from overObj
+			OverId > 3 && makePopUp({ todoId: overObj.id, imgName: newStatus, title: newStatusTranslated, text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
+			// in this case todo DON'T steal id from other todo, so correct task is from startObj
+			OverId <= 3 && makePopUp({ todoId: startObj.id, imgName: newStatus, title: newStatusTranslated, text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
+		}
+		//  if date CHANGING => show popup with date1->date2
+		if (startObj.date !== OverDate && curSection !== "search") {
+			const dateTranslated1 = year.EN.indexOf(startObj.date) // index 0-364, "use" year[UK][114]
+			const dateTranslated2 = year.EN.indexOf(OverDate) // index 0-364, "use" year[UK][114]
+			// in this case todo steals id from other todo, so correct task is from overObj
+			OverId > 3 && makePopUp({ todoId: overObj.id, imgName: newStatus, title: year[lang][dateTranslated1] + "->" + year[lang][dateTranslated2] + " - " + newStatusTranslated, text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
+			// in this case todo DON'T steal id from other todo, so correct task is from startObj
+			OverId <= 3 && makePopUp({ todoId: startObj.id, imgName: newStatus, title: year[lang][dateTranslated1] + "->" + year[lang][dateTranslated2] + " - " + newStatusTranslated, text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
+		}
+		if (curSection === "search") {
+			setShowPopUp(false)
 		}
 		// ! date & year is overwriten here; don't overwrite DATE & YEAR if in SEARCH
-		OverDate != "undefined" && props.section !== "search" && (startObj.date = OverDate)
-		OverYear != "undefined" && props.section !== "search" && (startObj.year = OverYear)
+		OverDate != "undefined" && curSection !== "search" && (startObj.date = OverDate)
+		OverYear != "undefined" && curSection !== "search" && (startObj.year = OverYear)
 		// DONT steal info(id,status, etc...) from fake-todos, correct STATUS is overwritten above
 		// fake-todos have id 0-3
 		if (OverId <= 3) {
@@ -172,15 +194,18 @@ export default function Todo(props) {
 	}
 	// ? DRAG & DROP 
 
+	const taskName = (props.task === undefined || props.task === "undefined") ? t[19] : props.task
 
 	// ! return
 	return (
 		<div className={`todo ${props.cssClass}`} style={style} draggable={draggable} onDragStart={dragStart} onDragOver={dragOver} onDragEnd={dragEnd}>
 			<Checkbox done={props.done} action={props.action} id={props.id} />
-			<p className="todo__text">
+			<p className="todo__info">
 				{props.showDate && <span className="todo__date">{props.dateTranslated}</span>}
-				{props.showTask && props.task && <span className="todo__task">{props.task}</span>}
-				{props.text}
+				{(props.showDate && props.showTask) && <br />}
+				{props.showTask && <span className="todo__task">{taskName || t[19]}</span>}
+				{(props.showDate || props.showTask) && <br />}
+				<span className="todo__text">{props.text}</span>
 			</p>
 
 			{props.showAction &&

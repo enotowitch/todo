@@ -36,8 +36,8 @@ export default function Settings(props) {
 	return (
 		<>
 			<div className="buttons">
-				<OnOff title="Date" name="showDate" showState={showDate} showSetState={setShowDate} />
-				<OnOff title="Task" name="showTask" showState={showTask} showSetState={setShowTask} />
+				<OnOff title={t[69]} name="showDate" showState={showDate} showSetState={setShowDate} />
+				<OnOff title={t[17]} name="showTask" showState={showTask} showSetState={setShowTask} />
 			</div>
 
 			{todos[4] && <Todo {...todos[4]} showDate={showDate} showTask={showTask} dateTranslated={year[lang][dateTranslated]} cssClass={"todo_settings"} />}

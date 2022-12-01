@@ -7,6 +7,7 @@ import add from "./../img/add.svg"
 import translate from '../functions/Translate'
 import TodoBlock from "./TodoBlock"
 import { Context } from "../context"
+import getCookie from "../functions/getCookie"
 
 
 export default function OneDayTodos(props) {
@@ -55,15 +56,10 @@ export default function OneDayTodos(props) {
 		document.cookie = `dateTranslated=${props.dateTranslated}`
 		// turn on addTodo
 		document.querySelector('.burger__btn').click()
-		// style
-		document.querySelectorAll('.one-day-todos').forEach(elem => elem.classList.remove('chosen-day'))
-		event.target.closest('.one-day-todos').classList.add('chosen-day')
 	}
 
 	function toggleDay(event) {
 		event.target.closest('.one-day-todos').classList.toggle('section-minimized')
-		document.querySelectorAll('.one-day-todos').forEach(elem => elem.classList.remove('chosen-day'))
-		event.target.closest('.one-day-todos').classList.add('chosen-day')
 	}
 
 	const [showBlock, setShowBlock] = React.useState({ allNum: false, doingNum: false, doneNum: false, canceledNum: false })
@@ -71,10 +67,33 @@ export default function OneDayTodos(props) {
 		setShowBlock(prevState => ({ ...prevState, [blockName]: !showBlock[blockName] }))
 	}
 
+	// ! chosen-day
+	React.useEffect(() => {
+		// style chosen-day on click inside
+		document.querySelectorAll('.one-day-todos').forEach(function (elem) {
+			elem.addEventListener('click', function (event) {
+				document.querySelectorAll('.one-day-todos').forEach(function (elem) {
+					elem.classList.remove('chosen-day')
+				})
+				event.target.closest('.one-day-todos').classList.add('chosen-day')
+			})
+		})
+	}, [])
+
+	React.useEffect(() => {
+		// style chosen-day when toggle week/addTodo
+		const dateChosen = getCookie("dateForAddTodo").replace(/\s/, '')
+		setTimeout(() => {
+			document.querySelectorAll('.one-day-todos').forEach(elem => elem.classList.remove('chosen-day'))
+			document.querySelector(`.${dateChosen}`).classList.add('chosen-day')
+		}, 1);
+	}, [])
+	// ? chosen-day
+
 	// ! return
 	return (
 		// adding to this class each date of the year, so App can scroll to current date on load
-		<div className={`one-day-todos ${props.date} section-minimized`}>
+		<div className={`one-day-todos ${props.date.replace(/\s/, '')} section-minimized`}>
 
 			<div onClick={toggleDay}>
 				<Todo id={0} date={props.date} year={yearForAddTodo} cssClass="fake-todo" />

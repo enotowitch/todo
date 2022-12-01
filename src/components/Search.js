@@ -8,6 +8,7 @@ import arrow from "./../img/arrow.svg"
 import year from "./../year"
 import SearchHint from "./SearchHint"
 import { Context } from "./../context"
+import makePopUp from "../functions/makePopUp"
 
 
 export default function Search(props) {
@@ -15,7 +16,7 @@ export default function Search(props) {
 	const t = translate()
 
 	const { todos, tasks, lang, setTaskForAddTodo, setInputOfAddTodo, showDate, showTask } = React.useContext(Context)
-	const taskOptions = tasks.reverse().map(task => <option>{Object.keys(task)}</option>)
+	const taskOptions = tasks.map(task => <option>{Object.keys(task)}</option>)
 
 	const [searchCount, setSearchCount] = React.useState(0)
 
@@ -35,6 +36,12 @@ export default function Search(props) {
 
 		// when text = "" drop it to undefined, so search does not show all todos (having empty text)
 		if (name === "text") {
+			// don't search ; {} []
+			if (value.match(/[;{}\[\]]/g)) {
+				setSearchState(prevState => ({ ...prevState, text: "" }))
+				makePopUp({ imgName: "dlt", title: value.match(/[;{}\[\]]/g)[0] + " " + t[70], setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, showTask: false })
+				return
+			}
 			value == "" && (value = undefined)
 		}
 		// add optionText for translated status
@@ -132,7 +139,7 @@ export default function Search(props) {
 
 	function shortTodo(todo) {
 		let dateTranslated = year.EN.indexOf(todo.date) // index 0-364, "use" year[UK][114]
-		return <Todo section={"search"} showDate={showDate} showTask={showTask} key={todo.id} {...todo} dateTranslated={year[lang][dateTranslated]} action={props.action} moveTodo={props.moveTodo} moveTask={props.moveTask} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
+		return <Todo showDate={showDate} showTask={showTask} key={todo.id} {...todo} dateTranslated={year[lang][dateTranslated]} action={props.action} moveTodo={props.moveTodo} moveTask={props.moveTask} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
 	}
 
 	let searched = []
@@ -264,7 +271,7 @@ export default function Search(props) {
 							onChange={changeSearchState}
 						>
 							<option value="" selected>{t[27]}</option>
-							{taskOptions}
+							{taskOptions.reverse()}
 						</select>
 						{searchState.task && <img className="add-todo-task" src={add} onClick={addTodoTask} />}
 					</div>

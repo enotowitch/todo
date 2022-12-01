@@ -1,6 +1,6 @@
 import React from "react"
 
-export default function CompName(props) {
+export default function OnOff(props) {
 	return (
 		<div className="on-off">
 			<span>{props.title}</span>

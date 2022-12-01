@@ -44,6 +44,13 @@ export default function MyTasks(props) {
 		}
 	}
 	React.useEffect(() => {
+		tasks.map((task, ind) => {
+			// if taskName is "" => write to cookie e.g: {1: "prevColor"}
+			const taskName = String(Object.keys(task))
+			if (taskName === "") {
+				tasks[ind] = { [ind + 1]: String(Object.values(tasks[ind])) }
+			}
+		})
 		document.cookie = `tasks=${JSON.stringify(tasks)}`
 	}, [tasks])
 	// ! showIcon
@@ -63,7 +70,7 @@ export default function MyTasks(props) {
 	// ! addTask
 	function addTask() {
 		const newColors = ['#ff94c6', '#08b4ff', '#39a33d', '#4387c7', '#ffc1a9', '#c25b7a', '#ffd06a', '#89b10e', '#ffbbd2', '#ff9be5', '#cbfff5', '#dc8d96', '#f6a6b8', '#c9c5e8', '#9c9dd2', '#ffc19d', '#a0ffe6', '#a8b69a', '#b4a0bf', '#ff9407', '#c9bbd8', '#f6a3c1', '#e098c1', '#817ecd', '#f1c570', '#f7d5ca', '#f7f7ca', '#caf7ca', '#caf7f7', '#cad5f7', '#e0caf7', '#d293d2']
-		const newTasks = ['important', 'always', 'learn', 'remember', 'holiday', 'weekend', 'hobby', 'cook', 'buy', 'prepare', 'read', 'complete', 'sport', 'brainstorm', 'write', 'compose', 'meeting', 'upcoming', 'home', 'family', 'call', 'order', 'sell', 'visit', 'help', 'try', 'remind', 'check', 'repeat', 'report', 'fix', 'keep']
+		const newTasks = [t[36], t[37], t[38], t[39], t[40], t[41], t[42], t[43], t[44], t[45], t[46], t[47], t[48], t[49], t[50], t[51], t[52], t[53], t[54], t[55], t[56], t[57], t[58], t[59], t[60], t[61], t[62], t[63], t[64], t[65], t[66], t[67]]
 
 		let newTaskObj
 
