@@ -160,28 +160,44 @@ export default function Search(props) {
 		setTaskForAddTodo(searchState.task)
 		setInputOfAddTodo(searchState.task + " ")
 	}
-	// ! reverse
-	const [reverseState, setReverseState] = React.useState(false)
+	// ! searchReverse
+	const cookieSearchReverse = document.cookie.match(/searchReverse/) ? document.cookie.match(/searchReverse=\w+/)[0].replace(/searchReverse=/, '') : false
+	const [searchReverse, setSearchReverse] = React.useState(eval(cookieSearchReverse))
 
 	function toggleReverse() {
-		setReverseState(prevState => !prevState)
+		setSearchReverse(prevState => !prevState)
 	}
 
-	searched = !reverseState ? searched.reverse() : searched
-	// ? reverse
+	React.useEffect(() => {
+		document.cookie = `searchReverse=${searchReverse}`
+	}, [searchReverse])
 
-	// ! page, quantity
-	const [page, setPage] = React.useState(0)
-	const [quantityState, setQuantityState] = React.useState({ quantity: 5 })
+	searched = !searchReverse ? searched.reverse() : searched
+	// ? searchReverse
+
+	// ! quantity
+	if (!document.cookie.match(/quantity/)) {
+		document.cookie = `quantity=5`
+	}
+	const cookieQuantity = document.cookie.match(/quantity=\d+/)[0].replace(/quantity=/, '') * 1
+	const [quantity, setQuantity] = React.useState(cookieQuantity)
 	function changeQuantity(event) {
 
 		setPage(0)
 
-		const { name, value } = event.target
-		setQuantityState(prevState => ({ ...prevState, [name]: Number(value) }))
+		setQuantity(Number(event.target.value))
 	}
-	// ! pages
-	const pages = Math.ceil(searched.length / quantityState.quantity)
+	React.useEffect(() => {
+		document.cookie = `quantity=${quantity}`
+	}, [quantity])
+	// ? quantity
+	// ! page, pages, pageOptions
+	if (!document.cookie.match(/page/)) {
+		document.cookie = `page=0`
+	}
+	const cookiePage = document.cookie.match(/page=\d+/)[0].replace(/page=/, '') * 1
+	const [page, setPage] = React.useState(cookiePage)
+	const pages = Math.ceil(searched.length / quantity)
 
 	const pageOptions = []
 	for (let i = 0; i < pages; i++) {
@@ -191,7 +207,10 @@ export default function Search(props) {
 	function changePage(event) {
 		setPage(Number(event.target.value))
 	}
-
+	React.useEffect(() => {
+		document.cookie = `page=${page}`
+	}, [page])
+	// ? page, pages, pageOptions
 	function nextPage() {
 		// prevent going to page that does not exist
 		page !== pages - 1 && setPage(prevState => prevState + 1)
@@ -217,7 +236,7 @@ export default function Search(props) {
 	for (let i = 0, pages = 0, limit = 0; i < searched.length; i++) {
 		searchedMini[pages].push(searched[i])
 		limit++
-		if (limit == quantityState.quantity) {
+		if (limit == quantity) {
 			searchedMini.push([])
 			limit = 0
 			pages++
@@ -226,17 +245,17 @@ export default function Search(props) {
 	// ! search NUMS
 	let num1, num2
 
-	num1 = quantityState.quantity * page + 1
-	num2 = quantityState.quantity * page + quantityState.quantity
+	num1 = quantity * page + 1
+	num2 = quantity * page + quantity
 
-	if (!reverseState) {
-		num1 = searched.length - (quantityState.quantity * page)
-		num2 = searched.length - (quantityState.quantity * page + quantityState.quantity - 1)
+	if (!searchReverse) {
+		num1 = searched.length - (quantity * page)
+		num2 = searched.length - (quantity * page + quantity - 1)
 		num2 < 0 && (num2 = 1)
 	}
 
 	let searchedNum
-	reverseState ? (searchedNum = `1-${searched.length}`) : (searchedNum = `${searched.length}-1`)
+	searchReverse ? (searchedNum = `1-${searched.length}`) : (searchedNum = `${searched.length}-1`)
 
 	// watch if after action (done, doing, cancel, moveTask, etc) => nothing to display => go to prev page
 	searchedMini[page].length === 0 && prevPage()
@@ -285,11 +304,11 @@ export default function Search(props) {
 
 					{searched.length === 0 && searchCount > 0 && <SearchHint setSearchState={setSearchState} />}
 
-					{searched.length > quantityState.quantity &&
+					{searched.length > quantity &&
 						<div className="search__pagination-wrap">
 							<select
 								name="quantity"
-								value={quantityState.quantity}
+								value={quantity}
 								onChange={changeQuantity}
 							>
 								<option value="5">{t[24]}:&nbsp;5</option>
