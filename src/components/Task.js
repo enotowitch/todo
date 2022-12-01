@@ -2,8 +2,8 @@ import React from "react"
 import { Context } from "../context"
 import makePopUp from "../functions/makePopUp"
 import translate from './../functions/Translate'
-import add from "./../img/add.svg"
-import dlt from "./../img/dlt.svg"
+import add from "./../img/add2.svg"
+import dlt from "./../img/dlt2.svg"
 
 export default function Task(props) {
 

@@ -7,13 +7,14 @@ import Language from "./Language"
 import getCookie from "./../functions/getCookie"
 import translate from '../functions/Translate'
 import { Context } from "../context"
+import add from "./../img/add2.svg"
 
 
 export default function AddTodo(props) {
 
 	const t = translate()
 
-	const { inputOfAddTodo, setInputOfAddTodo, setTaskForAddTodo } = React.useContext(Context)
+	const { inputOfAddTodo, setInputOfAddTodo, taskForAddTodo, setTaskForAddTodo } = React.useContext(Context)
 	// ! deleteTasksPopUp
 	function deleteTasksPopUp() {
 		makePopUp({ title: t[13].charAt(0).toUpperCase() + t[13].slice(1) + "?", setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTasks", showTask: false })
@@ -67,16 +68,35 @@ export default function AddTodo(props) {
 
 	const dateTranslated = getCookie("dateTranslated")
 
+	const prevTask = document.cookie.match(/prevTask/) ? document.cookie.match(/prevTask=.*?}/)[0].replace(/prevTask=/, '').replace(/}/, '') : undefined
+
+	React.useEffect(() => {
+		taskForAddTodo && (document.cookie = `prevTask=${taskForAddTodo}}`)
+	}, [taskForAddTodo])
+
+	function addPrevTask() {
+		setTimeout(() => {
+			setTaskForAddTodo(prevTask)
+		}, 1);
+
+		setInputOfAddTodo(prevTask + " ")
+		document.querySelector('.input__text').focus()
+	}
+
+	// ! return
 	return (
 		<div className="add-todo">
 			<div className="add-todo__date">{t[5]}: {dateTranslated}</div>
-			<input
-				className="input__text"
-				type="text"
-				placeholder={t[6]}
-				autoFocus
-				value={inputOfAddTodo}
-				onChange={(e) => setInputOfAddTodo(e.target.value)} />
+			<div className="add-todo__input-flex">
+				{prevTask !== undefined && <img className="add-todo__add-img" src={add} onClick={addPrevTask} />}
+				<input
+					className="input__text"
+					type="text"
+					placeholder={t[6]}
+					autoFocus
+					value={inputOfAddTodo}
+					onChange={(e) => setInputOfAddTodo(e.target.value)} />
+			</div>
 			<div className="buttons">
 				<button className="button_main" onClick={() =>
 					(props.addTodo(), setInputOfAddTodo(""), setTaskForAddTodo())

@@ -219,7 +219,6 @@ button:active {
 	height: 30px;
 	width: $input-width;
 	display: block;
-	margin: 15px auto 0;
 	text-indent: 2px;
 }
 .add-todo {
@@ -231,6 +230,16 @@ button:active {
 	background: $main-color-inverse;
 	left: 5px;
 	border-left: 2px solid $main-color;
+	&__input-flex{
+		display: flex;
+		align-items: center;
+		margin: -25px auto 0;
+		padding: 0 15px;
+	}
+	&__add-img{
+		margin-right: 5px;
+		margin-left: -8px;
+	}
 }
 .chosen-day {
 	border-top: 2px solid $main-color !important;
@@ -496,7 +505,7 @@ button,
 	padding-top: 15px;
 	left: 15px;
 	width: 30px;
-	height: 30px;
+	height: 16px;
 	cursor: pointer;
 	z-index: 5;
 }

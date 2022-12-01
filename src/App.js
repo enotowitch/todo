@@ -130,9 +130,11 @@ export default function App() {
 	}
 	// ! action: propName: done/doing/canceled,etc... works only with BOOLS!
 	function action(todoId, propName, propNameTranslated) {
+		let status
 		setTodos(prevState => {
-			return prevState.map(elem => {
-				return elem.id === todoId ? { ...elem, doing: false, done: false, canceled: false, [propName]: !elem[propName] } : elem
+			return prevState.map(todo => {
+				todo.id === todoId && (status = !todo[propName])
+				return todo.id === todoId ? { ...todo, doing: false, done: false, canceled: false, [propName]: !todo[propName] } : todo
 			})
 		})
 		// localStorage
@@ -144,6 +146,11 @@ export default function App() {
 		// ! PopUp
 		// todo need this? got => todoId
 		setLastTodoId(todoId) // for makePopUp
+		// show correct status in makePopUp
+		if (!status) { // doing/done/canceled === false => status is todo
+			propName = "add"
+			propNameTranslated = t[0]
+		}
 		makePopUp({ imgName: propName, title: propNameTranslated, text: curTodoObj.text, setPopUpState, setShowPopUp, todoId: todoId })
 	}
 	function toggleAction(todoId) {
@@ -274,7 +281,7 @@ export default function App() {
 
 	// ! return
 	return (
-		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo, yearForAddTodo, action, moveTodo, moveTask, toggleAction, lastTodoId, setLastTodoId, showDate, setShowDate, showTask, setShowTask, showSection }}>
+		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, taskForAddTodo, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo, yearForAddTodo, action, moveTodo, moveTask, toggleAction, lastTodoId, setLastTodoId, showDate, setShowDate, showTask, setShowTask, showSection }}>
 
 			<Burger showSection={showSection} setShowSection={setShowSection} />
 			{showSection.addTodo && <AddTodo addTodo={addTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}
