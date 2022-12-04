@@ -14,6 +14,7 @@ import { Context } from "./../context"
 import MoveDateOptions from "./MoveDateOptions"
 import year from "./../year"
 import Checkbox from "./Checkbox"
+import setCookie from "../functions/setCookie"
 
 
 export default function Todo(props) {
@@ -90,7 +91,7 @@ export default function Todo(props) {
 	let StartId
 	function dragStart(event) {
 		StartId = props.id // 1
-		document.cookie = `StartId=${StartId}`
+		setCookie(`StartId=${StartId}`)
 	}
 	// ! dragOver
 	let OverId
@@ -99,9 +100,9 @@ export default function Todo(props) {
 	function dragOver(event) {
 		event.preventDefault()
 		OverId = props.id
-		document.cookie = `OverId=${OverId}`
-		document.cookie = `OverDate=${props.date}`
-		document.cookie = `OverYear=${props.year}`
+		setCookie(`OverId=${OverId}`)
+		setCookie(`OverDate=${props.date}`)
+		setCookie(`OverYear=${props.year}`)
 	}
 
 	// ! dragEnd; !!! OverId 0-3 are for fake-todos

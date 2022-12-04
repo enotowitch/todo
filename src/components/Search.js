@@ -9,6 +9,7 @@ import year from "./../year"
 import SearchHint from "./SearchHint"
 import { Context } from "./../context"
 import makePopUp from "../functions/makePopUp"
+import setCookie from "../functions/setCookie"
 
 
 export default function Search(props) {
@@ -22,7 +23,7 @@ export default function Search(props) {
 
 	// ! searchMemo
 	if (!document.cookie.match(/searchState=/)) {
-		document.cookie = `searchState=${JSON.stringify({ task: '', status: '', text: undefined })}`
+		setCookie(`searchState=${JSON.stringify({ task: '', status: '', text: undefined })}`)
 	}
 	const searchMemo = JSON.parse(document.cookie.match(/searchState={.*?}/)[0].replace(/searchState=/, ''))
 
@@ -53,7 +54,7 @@ export default function Search(props) {
 	}
 	// ! searchMemo
 	React.useEffect(() => {
-		document.cookie = `searchState=${JSON.stringify(searchState)}`
+		setCookie(`searchState=${JSON.stringify(searchState)}`)
 	}, [searchState])
 
 	// ! define textIds
@@ -155,7 +156,7 @@ export default function Search(props) {
 	}
 
 	function addTodoTask() {
-		document.cookie = `dateForAddTodo=${getToday()}`
+		setCookie(`dateForAddTodo=${getToday()}`)
 		document.querySelector('.burger__btn').click()
 		setTaskForAddTodo(searchState.task)
 		setInputOfAddTodo(" ")
@@ -169,7 +170,7 @@ export default function Search(props) {
 	}
 
 	React.useEffect(() => {
-		document.cookie = `searchReverse=${searchReverse}`
+		setCookie(`searchReverse=${searchReverse}`)
 	}, [searchReverse])
 
 	searched = !searchReverse ? searched.reverse() : searched
@@ -177,7 +178,7 @@ export default function Search(props) {
 
 	// ! quantity
 	if (!document.cookie.match(/quantity/)) {
-		document.cookie = `quantity=5`
+		setCookie(`quantity=5`)
 	}
 	const cookieQuantity = document.cookie.match(/quantity=\d+/)[0].replace(/quantity=/, '') * 1
 	const [quantity, setQuantity] = React.useState(cookieQuantity)
@@ -188,12 +189,12 @@ export default function Search(props) {
 		setQuantity(Number(event.target.value))
 	}
 	React.useEffect(() => {
-		document.cookie = `quantity=${quantity}`
+		setCookie(`quantity=${quantity}`)
 	}, [quantity])
 	// ? quantity
 	// ! page, pages, pageOptions
 	if (!document.cookie.match(/page/)) {
-		document.cookie = `page=0`
+		setCookie(`page=0`)
 	}
 	const cookiePage = document.cookie.match(/page=\d+/)[0].replace(/page=/, '') * 1
 	const [page, setPage] = React.useState(cookiePage)
@@ -208,7 +209,7 @@ export default function Search(props) {
 		setPage(Number(event.target.value))
 	}
 	React.useEffect(() => {
-		document.cookie = `page=${page}`
+		setCookie(`page=${page}`)
 	}, [page])
 	// ? page, pages, pageOptions
 	function nextPage() {

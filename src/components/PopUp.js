@@ -6,6 +6,7 @@ import SelectLang from "./SelectLang";
 import edit from "./../img/edit.svg"
 import Todo from "./Todo";
 import getCookie from "../functions/getCookie";
+import setCookie from "../functions/setCookie";
 
 
 export default function PopUp(props) {
@@ -64,13 +65,13 @@ export default function PopUp(props) {
 	}
 	// ! deleteTodos
 	function deleteTodos() {
-		document.cookie = `lastTodo="3"`
+		setCookie(`lastTodo="3"`)
 		localStorage.clear()
 		window.location.reload()
 	}
 	// ! selectFn
 	function selectFn() {
-		document.cookie = `langPopUp="shownOnce"`
+		setCookie(`langPopUp="shownOnce"`)
 		props.popUpHide()
 	}
 	// ! modalWindowFunction
@@ -98,7 +99,7 @@ export default function PopUp(props) {
 	todos.map(todo => todo.id === props.todoId && (taskName = todo.task))
 
 	// ! if todo is deleted => write taskName to cookie
-	props.imgName !== "dlt" && (document.cookie = `deletedTodoTask=${taskName}}`)
+	props.imgName !== "dlt" && (setCookie(`deletedTodoTask=${taskName}}`))
 	// get taskName - it's already deleted from state and locastorage, so only cookie works
 	props.imgName === "dlt" && (taskName = document.cookie.match(/deletedTodoTask=.*?}/)[0].replace(/deletedTodoTask=/, '').replace(/}/, ''))
 	// ? if todo is deleted => write taskname to cookie

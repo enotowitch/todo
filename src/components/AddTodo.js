@@ -8,6 +8,7 @@ import getCookie from "./../functions/getCookie"
 import translate from '../functions/Translate'
 import { Context } from "../context"
 import add from "./../img/add2.svg"
+import setCookie from "../functions/setCookie"
 
 
 export default function AddTodo(props) {
@@ -72,7 +73,7 @@ export default function AddTodo(props) {
 	const prevTask = document.cookie.match(/prevTask/) ? document.cookie.match(/prevTask=.*?}/)[0].replace(/prevTask=/, '').replace(/}/, '') : undefined
 
 	React.useEffect(() => {
-		taskForAddTodo && (document.cookie = `prevTask=${taskForAddTodo}}`)
+		taskForAddTodo && (setCookie(`prevTask=${taskForAddTodo}}`))
 	}, [taskForAddTodo])
 
 	function addPrevTask() {

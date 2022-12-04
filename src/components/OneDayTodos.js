@@ -8,6 +8,7 @@ import translate from '../functions/Translate'
 import TodoBlock from "./TodoBlock"
 import { Context } from "../context"
 import getCookie from "../functions/getCookie"
+import setCookie from "../functions/setCookie"
 
 
 export default function OneDayTodos(props) {
@@ -52,8 +53,8 @@ export default function OneDayTodos(props) {
 
 	function getTodoDate(event) {
 		// write to cookie => on which day AddTodo() is used
-		document.cookie = `dateForAddTodo=${props.date}`
-		document.cookie = `dateTranslated=${props.dateTranslated}`
+		setCookie(`dateForAddTodo=${props.date}`)
+		setCookie(`dateTranslated=${props.dateTranslated}`)
 		// turn on addTodo
 		document.querySelector('.burger__btn').click()
 	}

@@ -3,6 +3,7 @@ import Task from "./Task"
 import Tutorial from "./Tutorial"
 import translate from "../functions/Translate"
 import { Context } from "./../context"
+import setCookie from "../functions/setCookie"
 
 
 export default function MyTasks(props) {
@@ -51,7 +52,7 @@ export default function MyTasks(props) {
 				tasks[ind] = { [ind + 1]: String(Object.values(tasks[ind])) }
 			}
 		})
-		document.cookie = `tasks=${JSON.stringify(tasks)}`
+		setCookie(`tasks=${JSON.stringify(tasks)}`)
 	}, [tasks])
 	// ! showIcon
 	const iconState = {}

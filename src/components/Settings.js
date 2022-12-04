@@ -4,6 +4,7 @@ import { Context } from "../context"
 import translate from '../functions/Translate'
 import year from "../year"
 import Todo from "./Todo"
+import setCookie from "../functions/setCookie"
 
 
 export default function Settings(props) {
@@ -14,11 +15,11 @@ export default function Settings(props) {
 
 	// showDate
 	React.useEffect(() => {
-		document.cookie = `showDate=${showDate}`
+		setCookie(`showDate=${showDate}`)
 	}, [showDate])
 	// showTask
 	React.useEffect(() => {
-		document.cookie = `showTask=${showTask}`
+		setCookie(`showTask=${showTask}`)
 	}, [showTask])
 
 	// todo HAS 3 more DUPS => search "dateTranslated ="

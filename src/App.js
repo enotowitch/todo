@@ -17,6 +17,7 @@ import defineLang from "./functions/defineLang"
 import defineLocation from "./functions/defineLocation"
 import year from "./year"
 import SearchIcon from "./components/SearchIcon"
+import setCookie from "./functions/setCookie"
 
 
 export default function App() {
@@ -26,34 +27,31 @@ export default function App() {
 	// ! lang
 	const [lang, setLang] = React.useState(defineLang()) // UK, EN ...
 	React.useEffect(() => {
-		document.cookie = `lang="${lang}"`
+		setCookie(`lang="${lang}"`)
 		// rewrite dateTranslated on lang change
 		const date = getCookie("dateForAddTodo") // Nov 17
 		const dateInd = year.EN.indexOf(date) // 320
 		const dateTranslated = year[lang][dateInd] // Лист 17
-		document.cookie = `dateTranslated=${dateTranslated}`
+		setCookie(`dateTranslated=${dateTranslated}`)
 	}, [lang])
 	// ? lang
 
 	// ! default cookies => on first load
 	if (!document.cookie.match(/lang=/)) {
-		document.cookie = `lang="${defineLocation()}"`
+		setCookie(`lang="${defineLocation()}"`)
 		// todo, mandatory
 		// window.location.reload()
-	}
-	if (!document.cookie.match(/colors/)) {
-		document.cookie = `colors={"work":"#7ec5fb","buy":"#ff8585","cook":"#aeffa3"};`
 	}
 	if (!document.cookie.match(/tasks=\[.+?]/)) {
 		const date = new Date()
 		const month = date.toLocaleString(lang, { month: 'long' }).toLowerCase()
-		document.cookie = `tasks=[{${t[71]}: "#aeffa3"},{${t[72]}: "#7ec5fb"}, {${month}: "#ff8585"}]`
+		setCookie(`tasks=[{${t[71]}: "#aeffa3"},{${t[72]}: "#7ec5fb"}, {${month}: "#ff8585"}]`)
 	}
 	if (!document.cookie.match(/lastTodo/)) {
-		document.cookie = `lastTodo="3"`
+		setCookie(`lastTodo="3"`)
 	}
 	if (!document.cookie.match(/dateForAddTodo/)) {
-		document.cookie = `dateForAddTodo=${getToday()}`
+		setCookie(`dateForAddTodo=${getToday()}`)
 	}
 	if (localStorage.length === 0) {
 		// create FAKE todos on start for DRAG & DROP to status title
@@ -65,10 +63,10 @@ export default function App() {
 		window.location.reload()
 	}
 	if (!document.cookie.match(/showDate=/)) {
-		document.cookie = `showDate=${true}`
+		setCookie(`showDate=${true}`)
 	}
 	if (!document.cookie.match(/showTask=/)) {
-		document.cookie = `showTask=${true}`
+		setCookie(`showTask=${true}`)
 	}
 	// ? default cookies
 
@@ -77,7 +75,7 @@ export default function App() {
 
 	React.useEffect(() => {
 		// on reload AddTodo adds to today
-		document.cookie = `dateForAddTodo=${getToday()}`
+		setCookie(`dateForAddTodo=${getToday()}`)
 	}, [])
 
 	const [todos, setTodos] = React.useState(data)
@@ -118,7 +116,7 @@ export default function App() {
 			return [...prevState, { task: task, id: lastTodo, date: date, year: yearForAddTodo, text: text, doing: false, done: false, canceled: false, showAction: false }]
 		})
 
-		document.cookie = `lastTodo="${lastTodo}"`
+		setCookie(`lastTodo="${lastTodo}"`)
 		// ! PopUp
 		const dateTranslated = getCookie("dateTranslated")
 		// todo need this? got => lastTodo
@@ -200,7 +198,7 @@ export default function App() {
 
 	// ! year & changeWeek
 	// null the year to current, once at reload
-	x1 === 1 && (document.cookie = `yearForAddTodo=${new Date().getFullYear()}`)
+	x1 === 1 && (setCookie(`yearForAddTodo=${new Date().getFullYear()}`))
 
 	const cookieYear = Number(document.cookie.match(/yearForAddTodo=\d+/)[0].replace(/yearForAddTodo=/, ''))
 	// todo name it year and yearArr (for cur year)
@@ -218,7 +216,7 @@ export default function App() {
 		}
 	}
 	React.useEffect(() => {
-		document.cookie = `yearForAddTodo=${yearForAddTodo}`
+		setCookie(`yearForAddTodo=${yearForAddTodo}`)
 	}, [yearForAddTodo])
 	// ? year & changeWeek
 
@@ -250,7 +248,7 @@ export default function App() {
 	const [tasks, setTasks] = React.useState(eval(cookieTasks))
 
 	React.useEffect(() => {
-		document.cookie = `tasks=${JSON.stringify(tasks)}`
+		setCookie(`tasks=${JSON.stringify(tasks)}`)
 	}, [tasks])
 
 	const [taskForAddTodo, setTaskForAddTodo] = React.useState()
