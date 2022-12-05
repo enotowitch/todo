@@ -11,7 +11,7 @@ import setCookie from "../functions/setCookie";
 
 export default function PopUp(props) {
 
-	const { todos, tasks, setTasks, setPopUpState, setShowPopUp, action, moveTodo, moveTask, toggleAction, lastTodoId, setLastTodoId } = React.useContext(Context)
+	const { todos, tasks, setTasks, setPopUpState, setShowPopUp, action, moveTodo, moveTask, toggleAction } = React.useContext(Context)
 
 	const t = translate()
 
@@ -40,8 +40,6 @@ export default function PopUp(props) {
 		// popUpHide
 		props.popUpHide()
 
-		// todo need this? got => props.todoId
-		setLastTodoId(props.todoId) // for makePopUp 
 		makePopUp({ imgName: "edit", text: curTodoText, title: t[32], setPopUpState, setShowPopUp, todoId: props.todoId })
 	}
 	// fix slow state for editTodo (state is one step behind)
@@ -110,7 +108,7 @@ export default function PopUp(props) {
 	taskName = (taskName === undefined || taskName === "undefined") ? t[19] : taskName
 	// ? taskName + taskColor
 	// ! lastTodo
-	const lastTodo = todos.filter(todo => todo.id === lastTodoId && todo) // lastTodo[0]
+	const lastTodo = todos.filter(todo => todo.id === props.todoId && todo) // lastTodo[0]
 	const [showLastTodo, setShowLastTodo] = React.useState(false)
 
 

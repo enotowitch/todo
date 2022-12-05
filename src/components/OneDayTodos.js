@@ -22,7 +22,6 @@ export default function OneDayTodos(props) {
 		return todo.date === props.date && todo.year == yearForAddTodo ? thisDayTodos.push(todo) : todo
 	})
 
-	// todo HAS DUP
 	let doingNum = 0
 	thisDayTodos.map(elem => elem.doing && doingNum++)
 	let canceledNum = 0

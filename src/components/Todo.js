@@ -12,9 +12,9 @@ import makePopUp from "../functions/makePopUp"
 import translate from "../functions/Translate"
 import { Context } from "./../context"
 import MoveDateOptions from "./MoveDateOptions"
-import year from "./../year"
 import Checkbox from "./Checkbox"
 import setCookie from "../functions/setCookie"
+import dateTranslate from "../functions/dateTranslate"
 
 
 export default function Todo(props) {
@@ -56,8 +56,8 @@ export default function Todo(props) {
 		const date = value.match(/\w+\s\d+/)[0] // Nov 20
 		const moveYear = ", " + value.match(/\d{4}/)[0] // 2023
 		setMoveDateSelectState(value)
-		const dateTranslated = year.EN.indexOf(date) // index 0-364, "use" year[UK][114]
-		props.moveTodo(props.id, value, year[lang][dateTranslated] + moveYear)
+		const dateTranslated = dateTranslate(date, lang)
+		props.moveTodo(props.id, value, dateTranslated + moveYear)
 	}
 
 	// ? moveDate
@@ -84,7 +84,7 @@ export default function Todo(props) {
 	!props.doing && !props.done && !props.canceled && (bg = "no-bg")
 
 	// ! DRAG & DROP 
-	const { draggable, setDraggable, mobile, setLastTodoId } = React.useContext(Context)
+	const { draggable, setDraggable, mobile } = React.useContext(Context)
 	// make all todo draggable on desktop; on mobile only .dnd icon is draggable
 	!mobile && setDraggable(true)
 	// ! dragStart
@@ -98,11 +98,18 @@ export default function Todo(props) {
 	let OverDate
 	let OverYear
 	function dragOver(event) {
+		// todo writes cookie every milisecond
 		event.preventDefault()
 		OverId = props.id
 		setCookie(`OverId=${OverId}`)
 		setCookie(`OverDate=${props.date}`)
 		setCookie(`OverYear=${props.year}`)
+		// style todo__over
+		document.querySelectorAll('.todo').forEach(todo => todo.classList.remove('todo__over'))
+		event.target.closest('.todo').classList.add('todo__over')
+		// style day__over
+		document.querySelectorAll('.one-day-todos').forEach(todo => todo.classList.remove('one-day-todos__over'))
+		event.target.closest('.one-day-todos').classList.add('one-day-todos__over')
 	}
 
 	// ! dragEnd; !!! OverId 0-3 are for fake-todos
@@ -142,9 +149,6 @@ export default function Todo(props) {
 		if (newStatus === undefined) { newStatus = 'add'; newStatusTranslated = t[0] }
 		// ? status
 
-		// ! for makePopUp
-		OverId > 3 && setLastTodoId(OverId) // steal id if not fake-todo
-		OverId <= 3 && setLastTodoId(StartId) // DON'T steal id if fake-todo
 		// if date NOT changing => show popup with new status
 		if (startObj.date === OverDate && curSection !== "search") {
 			// don't show PopUp if this same todo
@@ -158,12 +162,12 @@ export default function Todo(props) {
 		}
 		//  if date CHANGING => show popup with date1->date2
 		if (startObj.date !== OverDate && curSection !== "search") {
-			const dateTranslated1 = year.EN.indexOf(startObj.date) // index 0-364, "use" year[UK][114]
-			const dateTranslated2 = year.EN.indexOf(OverDate) // index 0-364, "use" year[UK][114]
+			const dateTranslated1 = dateTranslate(startObj.date, lang)
+			const dateTranslated2 = dateTranslate(OverDate, lang)
 			// in this case todo steals id from other todo, so correct task is from overObj
-			OverId > 3 && makePopUp({ todoId: overObj.id, imgName: newStatus, title: year[lang][dateTranslated1] + "->" + year[lang][dateTranslated2] + " - " + newStatusTranslated, text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
+			OverId > 3 && makePopUp({ todoId: overObj.id, imgName: newStatus, title: dateTranslated1 + "->" + dateTranslated2 + " - " + newStatusTranslated, text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
 			// in this case todo DON'T steal id from other todo, so correct task is from startObj
-			OverId <= 3 && makePopUp({ todoId: startObj.id, imgName: newStatus, title: year[lang][dateTranslated1] + "->" + year[lang][dateTranslated2] + " - " + newStatusTranslated, text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
+			OverId <= 3 && makePopUp({ todoId: startObj.id, imgName: newStatus, title: dateTranslated1 + "->" + dateTranslated2 + " - " + newStatusTranslated, text: startObj.text, setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp })
 		}
 		if (curSection === "search") {
 			setShowPopUp(false)

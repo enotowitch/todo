@@ -41,7 +41,7 @@ export default function Task(props) {
 				name={props.taskName}
 				value={props.taskName}
 				onChange={validation}
-				onFocus={() => props.toggleIcon(props.taskName)}
+				onFocus={() => (props.toggleIcon(props.taskName), setShowPopUp(false))}
 			/>
 			<input
 				type="color"

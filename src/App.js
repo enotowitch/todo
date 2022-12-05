@@ -15,9 +15,9 @@ import translate from './functions/Translate'
 import { Context } from "./context"
 import defineLang from "./functions/defineLang"
 import defineLocation from "./functions/defineLocation"
-import year from "./year"
 import SearchIcon from "./components/SearchIcon"
 import setCookie from "./functions/setCookie"
+import dateTranslate from "./functions/dateTranslate"
 
 
 export default function App() {
@@ -30,8 +30,7 @@ export default function App() {
 		setCookie(`lang="${lang}"`)
 		// rewrite dateTranslated on lang change
 		const date = getCookie("dateForAddTodo") // Nov 17
-		const dateInd = year.EN.indexOf(date) // 320
-		const dateTranslated = year[lang][dateInd] // Лист 17
+		const dateTranslated = dateTranslate(date, lang)
 		setCookie(`dateTranslated=${dateTranslated}`)
 	}, [lang])
 	// ? lang
@@ -39,8 +38,6 @@ export default function App() {
 	// ! default cookies => on first load
 	if (!document.cookie.match(/lang=/)) {
 		setCookie(`lang="${defineLocation()}"`)
-		// todo, mandatory
-		// window.location.reload()
 	}
 	if (!document.cookie.match(/tasks=\[.+?]/)) {
 		const date = new Date()
@@ -119,8 +116,6 @@ export default function App() {
 		setCookie(`lastTodo="${lastTodo}"`)
 		// ! PopUp
 		const dateTranslated = getCookie("dateTranslated")
-		// todo need this? got => lastTodo
-		setLastTodoId(lastTodo) // for makePopUp
 		makePopUp({ imgName: "add", title: dateTranslated + " - " + t[0], text: text, setPopUpState, setShowPopUp, todoId: lastTodo })
 	}
 	// ! action: propName: done/doing/canceled,etc... works only with BOOLS!
@@ -136,11 +131,7 @@ export default function App() {
 		const curTodoStr = localStorage.getItem(todoId)
 		const curTodoObj = JSON.parse(curTodoStr)
 		curTodoObj[propName] = !curTodoObj[propName]
-		// todo remove localStorage.setItem
-		// localStorage.setItem(todoId, JSON.stringify(curTodoObj))
 		// ! PopUp
-		// todo need this? got => todoId
-		setLastTodoId(todoId) // for makePopUp
 		// show correct status in makePopUp
 		if (!status) { // doing/done/canceled === false => status is todo
 			propName = "add"
@@ -171,11 +162,8 @@ export default function App() {
 			}
 			return todo.id === todoId ? { ...todo, date: date, year: newYear } : todo
 		}))
-		const dateTranslated = year.EN.indexOf(oldDate) // index 0-364, "use" year[UK][114]
-		const oldDateTranslated = year[lang][dateTranslated]
+		const oldDateTranslated = dateTranslate(oldDate, lang)
 		// PopUp
-		// todo need this? got => todoId
-		setLastTodoId(todoId) // for makePopUp
 		makePopUp({ imgName: "date", title: oldDateTranslated + ", " + oldYear + "->" + newDateTranslated, text: text, setPopUpState, setShowPopUp, todoId: todoId })
 	}
 	// ! moveTask
@@ -186,14 +174,12 @@ export default function App() {
 		setTodos(prevState => prevState.map(todo => {
 			if (todo.id === todoId) {
 				text = todo.text
-				dateTranslated = year.EN.indexOf(todo.date) // index 0-364, "use" year[UK][114]
+				dateTranslated = dateTranslate(todo.date, lang)
 			}
 			return todo.id === todoId ? { ...todo, task: newTask } : todo
 		}))
 		// PopUp
-		// todo need this? got => todoId
-		setLastTodoId(todoId) // for makePopUp
-		makePopUp({ imgName: "task", title: year[lang][dateTranslated], text: text, setPopUpState, setShowPopUp, todoId: todoId })
+		makePopUp({ imgName: "task", title: dateTranslated, text: text, setPopUpState, setShowPopUp, todoId: todoId })
 	}
 
 	// ! year & changeWeek
@@ -201,7 +187,6 @@ export default function App() {
 	x1 === 1 && (setCookie(`yearForAddTodo=${new Date().getFullYear()}`))
 
 	const cookieYear = Number(document.cookie.match(/yearForAddTodo=\d+/)[0].replace(/yearForAddTodo=/, ''))
-	// todo name it year and yearArr (for cur year)
 	const [yearForAddTodo, setYearForAddTodo] = React.useState(cookieYear)
 
 	function changeWeek(nextOrPrev) {
@@ -256,8 +241,6 @@ export default function App() {
 	// ! showSection
 	const [showSection, setShowSection] = React.useState({ addTodo: false, week: true, search: false })
 
-	// ! lastTodoId
-	const [lastTodoId, setLastTodoId] = React.useState()
 	// ! showDate
 	const cookieShowDate = document.cookie.match(/showDate=\w+/)[0].replace(/showDate=/, '')
 	const [showDate, setShowDate] = React.useState(eval(cookieShowDate))
@@ -280,7 +263,7 @@ export default function App() {
 
 	// ! return
 	return (
-		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, taskForAddTodo, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo, yearForAddTodo, action, moveTodo, moveTask, toggleAction, lastTodoId, setLastTodoId, showDate, setShowDate, showTask, setShowTask, showSection }}>
+		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, taskForAddTodo, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo, yearForAddTodo, action, moveTodo, moveTask, toggleAction, showDate, setShowDate, showTask, setShowTask, showSection }}>
 
 			<Burger showSection={showSection} setShowSection={setShowSection} />
 			{showSection.addTodo && <AddTodo addTodo={addTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}

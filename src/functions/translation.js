@@ -81,7 +81,7 @@ export default [
 		"Canceled", // 3
 		"Today", // 4
 		"Add Todo", // 5
-		"Todo text", // 6
+		"todo text", // 6
 		"add todo", // 7
 		"My Tasks", // 8
 		"Settings", // 9

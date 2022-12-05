@@ -48,6 +48,17 @@ code {
 }
 .todo {
 	cursor: grab;
+	&__bg {
+		position: absolute;
+		top: -4px;
+		left: -10px;
+		width: 5px;
+		height: calc(100% + 15px);
+	}
+	&__over{
+		box-shadow: inset 2px 2px 6px #d9d9d9, -2px -2px 6px $main-color-inverse;
+		left: 5px;
+	 }
 	&_settings {
 		pointer-events: none;
 	}
@@ -117,8 +128,9 @@ code {
 	&_last-todo {
 		width: 18px;
 		position: absolute;
-		bottom: 4px;
-		right: 4px;
+		bottom: 0px;
+		right: 0px;
+		padding: 6px;
 	}
 }
 .actions {
@@ -136,7 +148,7 @@ code {
 	box-shadow: 2px 2px 6px #d9d9d9, -2px -2px 6px $main-color-inverse;
 }
 .dots {
-	padding-right: 8px;
+	padding: 0 8px;
 }
 .todos-num {
 	border: 2px solid;
@@ -275,11 +287,17 @@ button:active {
 	font-weight: 300;
 }
 /* cursor pointer */
-/* todo .todos-title:not(:first-child) */
 button,
+label,
+img:not(.tutorial,.popup__img),
+select,
+.search-tag,
+.menu__title,
+.tutorial-on,
+[type="color"],
 .todos-title,
-.like,
-.hide {
+.show-all,
+.search__hint span {
 	cursor: pointer;
 }
 .one-day-todos {
@@ -290,8 +308,9 @@ button,
 	margin-left: 2px;
 	margin-bottom: 15px;
 	padding: 8px 0;
-	// todo
-	// overflow: hidden;
+	&__over{
+		background: lighten($main-color, 97%);
+	}
 }
 /* DATE */
 .date,
@@ -453,7 +472,7 @@ button,
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	height: 80vh;
+	height: 70vh;
 }
 /* ? tutorial */
 .my-tasks {
@@ -648,6 +667,7 @@ button,
 .prompt,
 .select {
 	min-width: $input-width;
+	max-width: $input-width * 2;
 	width: 50vw;
 	left: 50%;
 	top: 50%;
@@ -678,18 +698,22 @@ button,
 .prompt [name="edit"] {
 	height: 190px;
 	min-width: $input-width - 30px;
+	max-width: $input-width * 2 - 30px;
 	width: calc(50vw - 30px);
 	resize: none;
 }
 /* ! menu-item */
 .menu__title {
-	border-top: 1px solid;
-	border-bottom: 1px solid;
+	border-top: 1px solid $main-color;
+	border-bottom: 1px solid $main-color;
 	padding: 10px 15px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	font-weight: 700;
+	&:last-child{
+		border-bottom: 2px solid $main-color;
+	}
 }
 /* ! search */
 .search__bg {
@@ -796,6 +820,7 @@ button,
 [name="lang"] {
 	max-width: 100px;
 	margin-top: 15px;
+	height: 31px;
 }
 [name="quantity"],
 [name="page"] {
@@ -864,13 +889,6 @@ button,
 	border-bottom-left-radius: 8px;
 	border-bottom-right-radius: 8px;
 }
-.todo__bg {
-	position: absolute;
-	top: -4px;
-	left: -10px;
-	height: 115%;
-	width: 5px;
-}
 .doing-bg {
 	background: $doing;
 }
@@ -884,7 +902,7 @@ button,
 	background: lighten($gray, 30%);
 }
 .dnd {
-	margin-right: 15px;
+	margin-right: 5px;
 	padding: 5px;
 	cursor: grab;
 }
@@ -929,9 +947,24 @@ button,
 		padding-right: 5px;
 	}
 }
+// ! ICONS - hover & active
 img:hover:not(.arrow,.tutorial,.popup__img){
-	transform: scale(.9);
+	transform: scale(1.1);
 }
 img:active:not(.arrow,.tutorial,.popup__img){
-	transform: scale(.8);
+	animation: activeIcon 1s;
+}
+ @keyframes activeIcon {
+	0%{
+		transform: rotate(0deg);
+	}
+	100%{
+		transform: rotate(360deg);
+	}
+ }
+// ! hover
+.one-day-todos, .menu__title, .popup, .prompt, .confirm, .tutorial-on, .task, .todos-title, .todo__checkbox_label, .arrow, .search__icon, .burger__btn, .on-off__label, .search-tag, select, input{
+	&:hover{	
+		background: lighten($main-color, 97%);
+	}
 }

@@ -1,7 +1,7 @@
 /* ! MEDIA */
-@media(max-width:1665px) {
+@media(max-width:1681px) {
 	.todo,.todos-title{
-		width: 60vw !important;
+		width: 50vw !important;
 	}
 }
 @media(max-width:768px) {
@@ -19,6 +19,11 @@
 	.one-day-todos__top .todos-num{
 		margin-left: 6px;
 }
+}
+@media(max-width:450px) {
+	.scroll{
+		right: 11% !important;
+	}
 }
 @media(max-width:359px) {
 	.arrow_day{

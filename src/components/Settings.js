@@ -5,6 +5,7 @@ import translate from '../functions/Translate'
 import year from "../year"
 import Todo from "./Todo"
 import setCookie from "../functions/setCookie"
+import dateTranslate from "../functions/dateTranslate"
 
 
 export default function Settings(props) {
@@ -22,9 +23,8 @@ export default function Settings(props) {
 		setCookie(`showTask=${showTask}`)
 	}, [showTask])
 
-	// todo HAS 3 more DUPS => search "dateTranslated ="
 	let dateTranslated
-	todos[4] && (dateTranslated = year.EN.indexOf(todos[4].date)) // index 0-364, "use" year[UK][114]
+	todos[4] && (dateTranslated = dateTranslate(todos[4].date, lang))
 
 	// ! todo DELETE LATER
 	function drop() {
