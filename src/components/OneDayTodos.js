@@ -62,7 +62,8 @@ export default function OneDayTodos(props) {
 		event.target.closest('.one-day-todos').classList.toggle('section-minimized')
 	}
 
-	const [showBlock, setShowBlock] = React.useState({ allNum: false, doingNum: false, doneNum: false, canceledNum: false })
+	// x4 true = perfomance loss, usability gain
+	const [showBlock, setShowBlock] = React.useState({ allNum: true, doingNum: true, doneNum: true, canceledNum: true })
 	function toggleBlock(blockName) {
 		setShowBlock(prevState => ({ ...prevState, [blockName]: !showBlock[blockName] }))
 	}

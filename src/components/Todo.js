@@ -104,12 +104,15 @@ export default function Todo(props) {
 		setCookie(`OverId=${OverId}`)
 		setCookie(`OverDate=${props.date}`)
 		setCookie(`OverYear=${props.year}`)
-		// style todo__over
+		// style todo over
 		document.querySelectorAll('.todo').forEach(todo => todo.classList.remove('todo__over'))
 		event.target.closest('.todo').classList.add('todo__over')
-		// style day__over
+		// style day over
 		document.querySelectorAll('.one-day-todos').forEach(todo => todo.classList.remove('one-day-todos__over'))
 		event.target.closest('.one-day-todos').classList.add('one-day-todos__over')
+		// style title over
+		document.querySelectorAll('.todos-title').forEach(todo => todo.classList.remove('todos-title__over'))
+		event.target.closest('.todos-title') && event.target.closest('.todos-title').classList.add('todos-title__over')
 	}
 
 	// ! dragEnd; !!! OverId 0-3 are for fake-todos

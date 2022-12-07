@@ -202,7 +202,7 @@ button:hover {
 button:active {
 	background: $main-color;
 	color: $main-color-inverse;
-	transform: scale(0.9);
+	transform: scale(0.95);
 }
 // ? all buttons
 // ! button_main
@@ -821,6 +821,9 @@ select,
 	max-width: 100px;
 	margin-top: 15px;
 	height: 31px;
+}
+.select [name="lang"]{
+	margin-top: 0;
 }
 [name="quantity"],
 [name="page"] {
