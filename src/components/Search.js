@@ -5,7 +5,6 @@ import SearchTag from "./SearchTag"
 import getToday from "../functions/getToday"
 import translate from "../functions/Translate"
 import arrow from "./../img/arrow.svg"
-import year from "./../year"
 import SearchHint from "./SearchHint"
 import { Context } from "./../context"
 import makePopUp from "../functions/makePopUp"
@@ -13,11 +12,11 @@ import setCookie from "../functions/setCookie"
 import dateTranslate from "../functions/dateTranslate"
 
 
-export default function Search(props) {
+export default function Search() {
 
 	const t = translate()
 
-	const { todos, tasks, lang, setTaskForAddTodo, setInputOfAddTodo, showDate, showTask } = React.useContext(Context)
+	const { todos, tasks, lang, setTaskForAddTodo, setInputOfAddTodo, setPopUpState, setShowPopUp } = React.useContext(Context)
 	const taskOptions = tasks.map(task => <option>{Object.keys(task)}</option>)
 
 	const [searchCount, setSearchCount] = React.useState(0)
@@ -38,10 +37,11 @@ export default function Search(props) {
 
 		// when text = "" drop it to undefined, so search does not show all todos (having empty text)
 		if (name === "text") {
-			// don't search ; {} []
-			if (value.match(/[;{}\[\]]/g)) {
+			// validation
+			const regExp = new RegExp(`[;{}\\[\\]]`)
+			if (value.match(regExp)) {
 				setSearchState(prevState => ({ ...prevState, text: "" }))
-				makePopUp({ imgName: "dlt", title: value.match(/[;{}\[\]]/g)[0] + " " + t[70], setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, showTask: false })
+				makePopUp({ imgName: "dlt", title: value.match(regExp)[0] + " " + t[70], setPopUpState, setShowPopUp, showTask: false })
 				return
 			}
 			value == "" && (value = undefined)
@@ -63,7 +63,7 @@ export default function Search(props) {
 		if (todo.text && searchState.text) {
 			return todo.text.toLowerCase().includes(searchState.text.toLowerCase()) && todo.id
 		}
-		// searchState.text == undefined when .SHOW-ALL is clicked
+		// searchState.text == "" when .SHOW-ALL is clicked => so it's working
 		if (todo.text && !searchState.text) {
 			return todo.text.includes(searchState.text) && todo.id
 		}
@@ -81,11 +81,11 @@ export default function Search(props) {
 		if (searchState.status === "todo") {
 			return (!todo.doing && !todo.done && !todo.canceled) && todo.id
 		}
-		// DOING: +doing, -done, -canceled
+		// DOING: +doing
 		if (searchState.status === "doing") {
 			return todo.doing && todo.id
 		}
-		// DONE: +done, -canceled
+		// DONE: +done
 		if (searchState.status === "done") {
 			return todo.done && todo.id
 		}
@@ -141,7 +141,7 @@ export default function Search(props) {
 
 	function shortTodo(todo) {
 		let dateTranslated = dateTranslate(todo.date, lang)
-		return <Todo showDate={showDate} showTask={showTask} key={todo.id} {...todo} dateTranslated={dateTranslated} action={props.action} moveTodo={props.moveTodo} moveTask={props.moveTask} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
+		return <Todo key={todo.id} {...todo} dateTranslated={dateTranslated} />
 	}
 
 	let searched = []
@@ -160,7 +160,7 @@ export default function Search(props) {
 		setCookie(`dateForAddTodo=${getToday()}`)
 		document.querySelector('.burger__btn').click()
 		setTaskForAddTodo(searchState.task)
-		setInputOfAddTodo(" ")
+		setInputOfAddTodo(" ") // mandatory
 	}
 	// ! searchReverse
 	const cookieSearchReverse = document.cookie.match(/searchReverse/) ? document.cookie.match(/searchReverse=\w+/)[0].replace(/searchReverse=/, '') : false

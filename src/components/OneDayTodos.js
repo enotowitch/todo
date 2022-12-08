@@ -13,7 +13,7 @@ import setCookie from "../functions/setCookie"
 
 export default function OneDayTodos(props) {
 
-	const { todos, yearForAddTodo, showDate, showTask } = React.useContext(Context)
+	const { todos, yearForAddTodo } = React.useContext(Context)
 
 	const t = translate()
 
@@ -31,26 +31,21 @@ export default function OneDayTodos(props) {
 	let allNum = thisDayTodos.length
 
 	function shortTodo(todo) {
-		return <Todo key={todo.id} {...todo} showDate={showDate} showTask={showTask} dateTranslated={props.dateTranslated} action={props.action} moveTodo={props.moveTodo} moveTask={props.moveTask} setPopUpState={props.setPopUpState} setShowPopUp={props.setShowPopUp} toggleAction={props.toggleAction} />
+		return <Todo key={todo.id} {...todo} dateTranslated={props.dateTranslated} />
 	}
 
 	// ! OUTPUT LOGIC
 	// ALL aka TODO: -doing, -done, -canceled
-	let allTodos = thisDayTodos.map((todo, ind) => (!todo.doing && !todo.done && !todo.canceled) && shortTodo(todo, ind))
+	let allTodos = thisDayTodos.map((todo, ind) => (!todo.doing && !todo.done && !todo.canceled) && shortTodo(todo, ind)).filter(isTrue => isTrue)
 	// DOING: +doing, -done, -canceled
-	let doingTodos = thisDayTodos.map((todo, ind) => todo.doing && shortTodo(todo, ind))
+	let doingTodos = thisDayTodos.map((todo, ind) => todo.doing && shortTodo(todo, ind)).filter(isTrue => isTrue)
 	// DONE: +done, -canceled
-	let doneTodos = thisDayTodos.map((todo, ind) => todo.done && shortTodo(todo, ind))
+	let doneTodos = thisDayTodos.map((todo, ind) => todo.done && shortTodo(todo, ind)).filter(isTrue => isTrue)
 	// CANCELED: +canceled
-	let canceledTodos = thisDayTodos.map((todo, ind) => todo.canceled && shortTodo(todo, ind))
+	let canceledTodos = thisDayTodos.map((todo, ind) => todo.canceled && shortTodo(todo, ind)).filter(isTrue => isTrue)
 	// ? OUTPUT LOGIC
-	// filter todos from false values
-	allTodos = allTodos.filter(isTrue => isTrue)
-	doingTodos = doingTodos.filter(isTrue => isTrue)
-	doneTodos = doneTodos.filter(isTrue => isTrue)
-	canceledTodos = canceledTodos.filter(isTrue => isTrue)
 
-	function getTodoDate(event) {
+	function getTodoDate() {
 		// write to cookie => on which day AddTodo() is used
 		setCookie(`dateForAddTodo=${props.date}`)
 		setCookie(`dateTranslated=${props.dateTranslated}`)
@@ -93,7 +88,6 @@ export default function OneDayTodos(props) {
 
 	// ! return
 	return (
-		// adding to this class each date of the year, so App can scroll to current date on load
 		<div className={`one-day-todos ${props.date.replace(/\s/, '')} section-minimized`}>
 
 			<div onClick={toggleDay}>

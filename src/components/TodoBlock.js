@@ -6,7 +6,6 @@ import Todo from "./Todo"
 import { Context } from "../context"
 
 
-
 export default function TodoBlock(props) {
 
 	const { yearForAddTodo } = React.useContext(Context)

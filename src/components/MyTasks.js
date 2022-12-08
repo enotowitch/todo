@@ -6,7 +6,7 @@ import { Context } from "./../context"
 import setCookie from "../functions/setCookie"
 
 
-export default function MyTasks(props) {
+export default function MyTasks() {
 
 	const t = translate()
 
@@ -54,6 +54,7 @@ export default function MyTasks(props) {
 		})
 		setCookie(`tasks=${JSON.stringify(tasks)}`)
 	}, [tasks])
+	// ? tasks
 	// ! showIcon
 	const iconState = {}
 	tasks.map(task => iconState[Object.keys(task)] = false)
@@ -66,7 +67,7 @@ export default function MyTasks(props) {
 	// ? showIcon
 
 	const taskHtmlElems = tasks.map(task => {
-		return <Task taskName={String(Object.keys(task))} taskColor={Object.values(task)} changeTaskState={changeTaskState} showIcon={showIcon[Object.keys(task)]} toggleIcon={toggleIcon} />
+		return <Task taskName={String(Object.keys(task))} taskColor={String(Object.values(task))} changeTaskState={changeTaskState} showIcon={showIcon[Object.keys(task)]} toggleIcon={toggleIcon} />
 	})
 	// ! addTask
 	function addTask() {
@@ -117,7 +118,7 @@ export default function MyTasks(props) {
 	}
 
 
-
+	// ! return
 	return (
 		<>
 			<div className="buttons">

@@ -45,13 +45,13 @@ export default function App() {
 		setCookie(`tasks=[{${t[71]}: "#aeffa3"},{${t[72]}: "#7ec5fb"}, {${month}: "#ff8585"}]`)
 	}
 	if (!document.cookie.match(/lastTodo/)) {
-		setCookie(`lastTodo="3"`)
+		setCookie(`lastTodo="3"`) // ids 0-3 are for FAKE todos, used in DRAG & DROP
 	}
 	if (!document.cookie.match(/dateForAddTodo/)) {
 		setCookie(`dateForAddTodo=${getToday()}`)
 	}
 	if (localStorage.length === 0) {
-		// create FAKE todos on start for DRAG & DROP to status title
+		// create FAKE todos on start for DRAG & DROP
 		localStorage.setItem(0, JSON.stringify({ id: 0, doing: false, done: false, canceled: false, year: new Date().getFullYear() }))
 		localStorage.setItem(1, JSON.stringify({ id: 1, doing: true, done: false, canceled: false, year: new Date().getFullYear() }))
 		localStorage.setItem(2, JSON.stringify({ id: 2, doing: false, done: true, canceled: false, year: new Date().getFullYear() }))
@@ -78,8 +78,8 @@ export default function App() {
 	const [todos, setTodos] = React.useState(data)
 
 	React.useEffect(() => {
-		Object.values(todos).map(elem => {
-			localStorage.setItem(elem.id, JSON.stringify(elem))
+		Object.values(todos).map(todo => {
+			localStorage.setItem(todo.id, JSON.stringify(todo))
 		})
 	}, [todos])
 
@@ -95,7 +95,7 @@ export default function App() {
 		x1Set(2)
 	}
 
-	const daysHtmlElements = weeks.EN[weekNum].map((day, ind) => <OneDayTodos action={action} date={day} dateTranslated={weeks[lang][weekNum][ind]} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />)
+	const daysHtmlElements = weeks.EN[weekNum].map((day, ind) => <OneDayTodos date={day} dateTranslated={weeks[lang][weekNum][ind]} />)
 
 	// ! addTodo
 	function addTodo() {
@@ -121,28 +121,26 @@ export default function App() {
 	// ! action: propName: done/doing/canceled,etc... works only with BOOLS!
 	function action(todoId, propName, propNameTranslated) {
 		let status
+		let text
 		setTodos(prevState => {
 			return prevState.map(todo => {
 				todo.id === todoId && (status = !todo[propName])
+				todo.id === todoId && (text = todo.text)
 				return todo.id === todoId ? { ...todo, doing: false, done: false, canceled: false, [propName]: !todo[propName] } : todo
 			})
 		})
-		// localStorage
-		const curTodoStr = localStorage.getItem(todoId)
-		const curTodoObj = JSON.parse(curTodoStr)
-		curTodoObj[propName] = !curTodoObj[propName]
 		// ! PopUp
 		// show correct status in makePopUp
 		if (!status) { // doing/done/canceled === false => status is todo
 			propName = "add"
 			propNameTranslated = t[0]
 		}
-		makePopUp({ imgName: propName, title: propNameTranslated, text: curTodoObj.text, setPopUpState, setShowPopUp, todoId: todoId })
+		makePopUp({ imgName: propName, title: propNameTranslated, text: text, setPopUpState, setShowPopUp, todoId: todoId })
 	}
 	function toggleAction(todoId) {
 		setTodos(prevState => {
-			return prevState.map(elem => {
-				return elem.id === todoId ? { ...elem, showAction: !elem.showAction } : { ...elem, showAction: false }
+			return prevState.map(todo => {
+				return todo.id === todoId ? { ...todo, showAction: !todo.showAction } : { ...todo, showAction: false }
 			})
 		})
 	}
@@ -205,12 +203,9 @@ export default function App() {
 	}, [yearForAddTodo])
 	// ? year & changeWeek
 
-	function popUpHide() {
-		setShowPopUp(false)
-	}
 	// ! draggable
 	const [draggable, setDraggable] = React.useState(false)
-	// ! mobile (touch int) => detect to show drag & drop (.dnd) icon; on desktop all todo is draggable, on mobile icon is draggable 
+	// ! mobile (touch int) => detect to show drag & drop (.dnd) icon; on desktop all todos are draggable, on mobile icon is draggable 
 	const [mobile, setMobile] = React.useState(false)
 
 	React.useEffect(() => {
@@ -225,7 +220,7 @@ export default function App() {
 	// prevent todo to be draggable on mobile on load
 	if (mobile === true && oneTime === 0) {
 		setDraggable(false)
-		setOneTime(prevState => prevState + 1)
+		setOneTime(1)
 	}
 	// ? mobile
 	// ! tasks
@@ -263,10 +258,10 @@ export default function App() {
 
 	// ! return
 	return (
-		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, taskForAddTodo, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo, yearForAddTodo, action, moveTodo, moveTask, toggleAction, showDate, setShowDate, showTask, setShowTask, showSection }}>
+		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, taskForAddTodo, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo, yearForAddTodo, action, moveTodo, moveTask, toggleAction, showDate, setShowDate, showTask, setShowTask, showSection, setShowSection }}>
 
-			<Burger showSection={showSection} setShowSection={setShowSection} />
-			{showSection.addTodo && <AddTodo addTodo={addTodo} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} />}
+			<Burger />
+			{showSection.addTodo && <AddTodo addTodo={addTodo} />}
 
 			{showSection.week &&
 				<>
@@ -276,10 +271,10 @@ export default function App() {
 				</>
 			}
 
-			{showPopUp && <PopUp {...popUpState} popUpHide={popUpHide} setTodos={setTodos} />}
+			{showPopUp && <PopUp {...popUpState} />}
 
-			<SearchIcon showSection={showSection} setShowSection={setShowSection} />
-			{!showSection.week && !showSection.addTodo && <Search showSection={showSection} setShowSection={setShowSection} action={action} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />}
+			<SearchIcon />
+			{!showSection.week && !showSection.addTodo && <Search />}
 
 			<Scroll />
 		</Context.Provider>

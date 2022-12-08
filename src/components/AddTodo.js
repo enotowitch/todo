@@ -1,5 +1,4 @@
 import React from "react"
-import makePopUp from "../functions/makePopUp"
 import MenuItem from "./MenuItem"
 import MyTasks from "./MyTasks"
 import Settings from "./Settings"
@@ -16,14 +15,6 @@ export default function AddTodo(props) {
 	const t = translate()
 
 	const { inputOfAddTodo, setInputOfAddTodo, taskForAddTodo, setTaskForAddTodo, tasks } = React.useContext(Context)
-	// ! deleteTasksPopUp
-	function deleteTasksPopUp() {
-		makePopUp({ title: t[13].charAt(0).toUpperCase() + t[13].slice(1) + "?", setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTasks", showTask: false })
-	}
-	// ! deleteTodosPopUp
-	function deleteTodosPopUp() {
-		makePopUp({ title: t[12].charAt(0).toUpperCase() + t[12].slice(1) + "?", setPopUpState: props.setPopUpState, setShowPopUp: props.setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTodos", showTask: false })
-	}
 
 	const menuArr = [
 		{
@@ -35,7 +26,7 @@ export default function AddTodo(props) {
 		},
 		{
 			title: t[9],
-			content: <Settings deleteTasksPopUp={deleteTasksPopUp} deleteTodosPopUp={deleteTodosPopUp} />,
+			content: <Settings />,
 			id: 1,
 			isShown: true,
 			hasClose: false
@@ -49,7 +40,7 @@ export default function AddTodo(props) {
 		}
 	]
 	const [menu, setMenu] = React.useState(menuArr)
-	// translate menu when lang changes // todo needs double click on "Language" after lang changes
+	// translate menu when lang changes // todo needs double click on "Language" after lang changes // if fixed when array is in state(menu), then dateTranslated works wrong
 	React.useEffect(() => { setMenu(menuArr) }, [t])
 
 	// ! toggleMenuContent

@@ -1,13 +1,16 @@
 import React from "react"
+import { Context } from "../context"
 
-export default function Burger(props) {
+export default function Burger() {
+
+	const { setShowSection } = React.useContext(Context)
 
 	function toggleAddTodo() {
 		const checked = document.querySelector('#burger__toggle').checked
 		if (checked) {
-			props.setShowSection({ addTodo: true, week: false, search: false })
+			setShowSection({ addTodo: true, week: false, search: false })
 		} else {
-			props.setShowSection({ addTodo: false, week: true, search: false })
+			setShowSection({ addTodo: false, week: true, search: false })
 		}
 	}
 

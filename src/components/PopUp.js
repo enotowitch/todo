@@ -5,13 +5,12 @@ import translate from '../functions/Translate'
 import SelectLang from "./SelectLang";
 import edit from "./../img/edit.svg"
 import Todo from "./Todo";
-import getCookie from "../functions/getCookie";
 import setCookie from "../functions/setCookie";
 
 
 export default function PopUp(props) {
 
-	const { todos, tasks, setTasks, setPopUpState, setShowPopUp, action, moveTodo, moveTask, toggleAction } = React.useContext(Context)
+	const { todos, setTodos, tasks, setTasks, setPopUpState, setShowPopUp } = React.useContext(Context)
 
 	const t = translate()
 
@@ -24,29 +23,24 @@ export default function PopUp(props) {
 	// ! deleteTasks
 	function deleteTasks() {
 		setTasks([])
-		props.popUpHide()
-		// todo makePopUp without passing setPopUpState, setShowPopUp each time => so it's already there...
 		makePopUp({ imgName: "dlt", title: t[31], setPopUpState, setShowPopUp, showTask: false })
 	}
 	// ! editTodo
 	function editTodo() {
 		const editText = document.querySelector('[name="edit"]').value
 		// state
-		props.setTodos(prevState => {
+		setTodos(prevState => {
 			return prevState.map(todo => {
 				return todo.id === props.todoId ? { ...todo, text: editText } : todo
 			})
 		})
-		// popUpHide
-		props.popUpHide()
-
 		makePopUp({ imgName: "edit", text: curTodoText, title: t[32], setPopUpState, setShowPopUp, todoId: props.todoId })
 	}
 	// fix slow state for editTodo (state is one step behind)
 	React.useEffect(() => {
 		let text
-		todos.map(elem => {
-			return elem.id === props.todoId && (text = elem.text)
+		todos.map(todo => {
+			return todo.id === props.todoId && (text = todo.text)
 		})
 		const edit = document.querySelector('[name="edit"]')
 		edit && (edit.value = text + " ")
@@ -55,7 +49,7 @@ export default function PopUp(props) {
 	// ? editTodo
 	// ! deleteTodo
 	function deleteTodo() {
-		props.setTodos(prevState => prevState.filter(todo => {
+		setTodos(prevState => prevState.filter(todo => {
 			return todo.id !== props.todoId
 		}))
 		localStorage.removeItem(props.todoId)
@@ -63,14 +57,14 @@ export default function PopUp(props) {
 	}
 	// ! deleteTodos
 	function deleteTodos() {
-		setCookie(`lastTodo="3"`)
+		setCookie(`lastTodo="3"`) // ids 0-3 are for FAKE todos, used in DRAG & DROP
 		localStorage.clear()
 		window.location.reload()
 	}
 	// ! selectFn
 	function selectFn() {
 		setCookie(`langPopUp="shownOnce"`)
-		props.popUpHide()
+		setShowPopUp(false)
 	}
 	// ! modalWindowFunction
 	function modalWindowFunction() {
@@ -127,9 +121,9 @@ export default function PopUp(props) {
 				</p>
 
 
-				<img className="popup__hide" src="img/del.svg" onClick={props.popUpHide} />
+				<img className="popup__hide" src="img/del.svg" onClick={() => setShowPopUp(false)} />
 
-				{showLastTodo && <img className="popup__hide2" src="img/del.svg" onClick={props.popUpHide} />}
+				{showLastTodo && <img className="popup__hide2" src="img/del.svg" onClick={() => setShowPopUp(false)} />}
 
 				{props.modalWindowType === "prompt" &&
 					<textarea
@@ -145,14 +139,14 @@ export default function PopUp(props) {
 				{(props.modalWindowType) &&
 					<div className="buttons">
 						<button className={buttonClass} onClick={modalWindowFunction}>{firstButtonText}</button>
-						<button onClick={props.popUpHide}>{t[23]}</button>
+						<button onClick={() => setShowPopUp(false)}>{t[23]}</button>
 					</div>
 				}
 				{/* show .edit_last-todo only in popup & when not deleting */}
 				{!props.modalWindowType && props.imgName !== "dlt" &&
 					<img className="edit_last-todo" src={edit} onClick={() => setShowLastTodo(true)} />
 				}
-				{showLastTodo && <Todo {...lastTodo[0]} showDate={true} dateTranslated={props.title} showTask={true} cssClass={"last-todo"} action={action} moveTodo={moveTodo} moveTask={moveTask} setPopUpState={setPopUpState} setShowPopUp={setShowPopUp} toggleAction={toggleAction} />}
+				{showLastTodo && <Todo {...lastTodo[0]} dateTranslated={props.title} cssClass={"last-todo"} />}
 			</div>
 			{(props.modalWindowType) && <div className="popup__bg"></div>}
 		</>

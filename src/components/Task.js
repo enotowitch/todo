@@ -22,8 +22,7 @@ export default function Task(props) {
 		document.querySelector('.input__text').focus()
 	}
 	function validation(e) {
-		const exp = `[;{}\\[\\]]`
-		const regExp = new RegExp(exp)
+		const regExp = new RegExp(`[;{}\\[\\]]`)
 		if (e.target.value.match(regExp)) {
 			console.log(e.target.value)
 			makePopUp({ imgName: "dlt", title: e.target.value.match(regExp)[0] + " " + t[70], setPopUpState, setShowPopUp, showTask: false })

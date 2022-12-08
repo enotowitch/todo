@@ -100,7 +100,6 @@ code {
 	font-weight: 700;
 	padding: 5px 0;
 	justify-content: center;
-	user-select: none;
 	border: 2px solid $gray;
 	border-radius: 50px;
 	height: 35px;
@@ -264,7 +263,6 @@ button:active {
 .chosen-day {
 	border-top: 2px solid $main-color !important;
 	border-bottom: 2px solid $main-color !important;
-	/* background: #f3fcff; */
 }
 .buttons {
 	position: relative;
@@ -320,19 +318,6 @@ select,
 }
 .date_today {
 	color: $gray;
-}
-/* MOVE */
-.move-down {
-	transform: rotate(90deg);
-	height: 19px;
-	/* rotated */
-	padding-top: 6px;
-}
-.move-up {
-	transform: rotate(-90deg);
-	height: 19px;
-	/* rotated */
-	padding-bottom: 6px;
 }
 .dn {
 	display: none;
@@ -433,7 +418,7 @@ select,
 	width: 180px;
 	background: none;
 	border: none;
-	border-bottom: 1px solid;
+	border-bottom: 1px solid $main-color;
 	outline: none;
 	height: 30px;
 	font-size: 20px;
@@ -442,7 +427,7 @@ select,
 	font-weight: 300;
 }
 [type="color"] {
-	border: 0px solid;
+	border: 0px;
 	background: none;
 	height: 40px;
 	width: 80px;
@@ -456,7 +441,7 @@ select,
 	display: inline-block;
 	width: 24px;
 	height: 24px;
-	border: 1px solid;
+	border: 1px solid $main-color;
 	border-radius: 50%;
 }
 .tutorial-wrap {
@@ -475,17 +460,6 @@ select,
 	height: 70vh;
 }
 /* ? tutorial */
-.my-tasks {
-	text-align: center;
-	font-weight: 500;
-	font-size: 18px;
-	margin: 35px 0 0px;
-}
-.delete-tasks {
-	margin-left: 10px;
-	text-decoration: underline;
-	font-weight: 700;
-}
 .add-task {
 	display: block;
 }
@@ -560,7 +534,7 @@ select,
 	&_label {
 		min-width: 20px;
 		height: 20px;
-		border: 1.5px solid;
+		border: 1.5px solid $main-color;
 		border-radius: 4px;
 		display: flex;
 		align-items: center;
@@ -600,7 +574,7 @@ select,
 	height: 60px;
 	border-radius: 8px;
 	background: $main-color-inverse;
-	border: 2px solid;
+	border: 2px solid $main-color;
 }
 .last-todo {
 	position: absolute;
@@ -659,7 +633,7 @@ select,
 	right: -1px;
 	background: #fff;
 	padding: 4px;
-	border: 1px solid;
+	border: 1px solid $main-color;
 	border-radius: 50%;
 }
 /* ! confirm */
@@ -802,7 +776,7 @@ select,
 	width: $search-select-width;
 }
 [name="text"] {
-	border: 1px solid;
+	border: 1px solid $main-color;
 	text-indent: 4px;
 }
 /* ! moveDate, moveTask */
@@ -811,7 +785,7 @@ select,
 [name="lang"],
 [name="quantity"],
 [name="page"] {
-	border: 2px solid;
+	border: 2px solid $main-color;
 	border-radius: 8px;
 	height: 26px;
 	margin: 2px;
@@ -831,7 +805,7 @@ select,
 }
 /* ! search-tag */
 .search-tag {
-	border: 1px solid;
+	border: 1px solid $main-color;
 	border-radius: 8px;
 	padding: 4px 6px;
 	display: inline-flex;
@@ -878,7 +852,7 @@ select,
 	transform: rotate(180deg) scale(0.8);
 	background: $main-color-inverse;
 	border-radius: 50%;
-	border: 1px solid;
+	border: 1px solid $main-color;
 	padding: 8px;
 }
 .top-icons-bg {
@@ -921,7 +895,7 @@ select,
 	width: 40px;
 	height: 20px;
 	border-radius: 20px;
-	border: 1px solid;
+	border: 1px solid $main-color;
 	padding: 2px;
 }
 .on-off__checkbox + .on-off__label::before,
