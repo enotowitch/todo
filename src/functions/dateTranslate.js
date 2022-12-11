@@ -1,11 +1,9 @@
-import year from "../year"
-
 export default function dateTranslate(date, lang) {
 
-	const dateInd = year.EN.indexOf(date) // 320
-	const dateTranslated = year[lang][dateInd] // Лист 17
-	
+	const month = new Date(`${date}`).toLocaleTimeString(lang, { month: 'short' }).match(/.*?\s/)[0].replace(/[,:]/g, '')
+	const day = date.match(/\d+/)[0]
+
 	return (
-		dateTranslated
+		month.slice(0, 1).toUpperCase() + month.slice(1) + day
 	)
 }

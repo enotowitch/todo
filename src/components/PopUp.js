@@ -146,7 +146,7 @@ export default function PopUp(props) {
 				{!props.modalWindowType && props.imgName !== "dlt" &&
 					<img className="edit_last-todo" src={edit} onClick={() => setShowLastTodo(true)} />
 				}
-				{showLastTodo && <Todo {...lastTodo[0]} dateTranslated={props.title} cssClass={"last-todo"} />}
+				{showLastTodo && <Todo {...lastTodo[0]} cssClass={"last-todo"} />}
 			</div>
 			{(props.modalWindowType) && <div className="popup__bg"></div>}
 		</>

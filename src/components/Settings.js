@@ -4,7 +4,6 @@ import { Context } from "../context"
 import translate from '../functions/Translate'
 import Todo from "./Todo"
 import setCookie from "../functions/setCookie"
-import dateTranslate from "../functions/dateTranslate"
 import makePopUp from "../functions/makePopUp"
 
 
@@ -32,9 +31,6 @@ export default function Settings() {
 		setCookie(`showTask=${showTask}`)
 	}, [showTask])
 
-	let dateTranslated
-	todos[4] && (dateTranslated = dateTranslate(todos[4].date, lang))
-
 	// ! todo DELETE LATER
 	function drop() {
 		localStorage.clear()
@@ -50,7 +46,7 @@ export default function Settings() {
 				<OnOff title={t[17]} name="showTask" showState={showTask} showSetState={setShowTask} />
 			</div>
 
-			{todos[4] && <Todo {...todos[4]} dateTranslated={dateTranslated} cssClass={"todo_settings"} />}
+			{todos[4] && <Todo {...todos[4]} cssClass={"todo_settings"} />}
 
 			<div className="buttons">
 				<button className="button_danger" onClick={deleteTodosPopUp}>{t[12]}</button>

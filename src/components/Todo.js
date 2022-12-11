@@ -21,7 +21,7 @@ export default function Todo(props) {
 
 	const t = translate()
 
-	const { todos, tasks, setTodos, lang, setPopUpState, setShowPopUp, showSection, action, moveTodo, moveTask, toggleAction, showDate, showTask } = React.useContext(Context)
+	const { todos, tasks, setTodos, lang, setPopUpState, setShowPopUp, showSection, action, moveTodo, moveTask, toggleAction, showDate, showTask, yearForAddTodo } = React.useContext(Context)
 
 	const likedOrNot = props.doing ? liked : like
 	const canceledOrNot = props.canceled ? canceled : cancel
@@ -43,10 +43,10 @@ export default function Todo(props) {
 		makePopUp({ title: t[21] + "?", text: props.text, setPopUpState, setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTodo", todoId: props.id })
 	}
 	// ! moveDate
-	const [moveDateSelectState, setMoveDateSelectState] = React.useState(props.date + ", " + props.year)
+	const [moveDateSelectState, setMoveDateSelectState] = React.useState(props.date + ", " + yearForAddTodo)
 	// refresh moveDateSelectState on drag & drop
 	React.useEffect(() => {
-		setMoveDateSelectState(props.date + ", " + props.year)
+		setMoveDateSelectState(props.date + ", " + yearForAddTodo)
 	}, [todos])
 
 	function changeDate(event) {
@@ -100,7 +100,7 @@ export default function Todo(props) {
 		OverId = props.id
 		setCookie(`OverId=${OverId}`)
 		setCookie(`OverDate=${props.date}`)
-		setCookie(`OverYear=${props.year}`)
+		setCookie(`OverYear=${yearForAddTodo}`)
 		// style todo over
 		document.querySelectorAll('.todo').forEach(todo => todo.classList.remove('todo__over'))
 		event.target.closest('.todo').classList.add('todo__over')
@@ -199,15 +199,15 @@ export default function Todo(props) {
 		}
 	}
 	// ? DRAG & DROP 
-
 	const taskName = (props.task === undefined || props.task === "undefined") ? t[19] : props.task
+	const dateTranslated = dateTranslate(props.date, lang)
 
 	// ! return
 	return (
 		<div className={`todo ${props.cssClass}`} style={style} draggable={draggable} onDragStart={dragStart} onDragOver={dragOver} onDragEnd={dragEnd}>
 			<Checkbox done={props.done} id={props.id} />
 			<p className="todo__info">
-				{showDate && <span className="todo__date">{props.dateTranslated}</span>}
+				{showDate && <span className="todo__date">{dateTranslated}</span>}
 				{(showDate && showTask) && <br />}
 				{showTask && <span className="todo__task">{taskName || t[19]}</span>}
 				{(showDate || showTask) && <br />}

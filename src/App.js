@@ -68,7 +68,7 @@ export default function App() {
 	// ? default cookies
 
 	let curWeekNum
-	weeks.EN.map((elem, ind) => elem.includes(getToday()) && (curWeekNum = ind))
+	weeks.map((elem, ind) => elem.includes(getToday()) && (curWeekNum = ind))
 
 	React.useEffect(() => {
 		// on reload AddTodo adds to today
@@ -95,7 +95,7 @@ export default function App() {
 		x1Set(2)
 	}
 
-	const daysHtmlElements = weeks.EN[weekNum].map((day, ind) => <OneDayTodos date={day} dateTranslated={weeks[lang][weekNum][ind]} />)
+	const daysHtmlElements = weeks[weekNum].map((day) => <OneDayTodos date={day} />)
 
 	// ! addTodo
 	function addTodo() {

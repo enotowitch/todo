@@ -140,15 +140,14 @@ export default function Search() {
 
 
 	function shortTodo(todo) {
-		let dateTranslated = dateTranslate(todo.date, lang)
-		return <Todo key={todo.id} {...todo} dateTranslated={dateTranslated} />
+		return <Todo key={todo.id} {...todo} />
 	}
 
 	let searched = []
 	for (let i = 0; i < result.length; i++) {
 
-		todos.map((todo, ind) => {
-			todo.id === result[i] && searched.push(shortTodo(todo, ind))
+		todos.map((todo) => {
+			todo.id === result[i] && searched.push(shortTodo(todo))
 		})
 	}
 
