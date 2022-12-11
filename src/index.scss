@@ -183,6 +183,12 @@ code {
 	display: flex;
 	align-items: center;
 }
+.canceled, .doing, .done{
+	display: flex;
+	align-items: center;
+	margin: 0 auto;
+	justify-content: center;
+}
 // ! all buttons
 button {
 	padding: 0 20px;
@@ -253,7 +259,7 @@ button:active {
 	&__task{
 			position: absolute;
 			margin-left: 37px;
-			padding-bottom: 3px;
+			padding-bottom: 2.5px;
 			max-width: 90px;
 			white-space: nowrap;
 			text-overflow: ellipsis;
@@ -437,7 +443,7 @@ select,
 .tutorial-on {
 	position: absolute;
 	right: 10%;
-	top: 30%;
+	top: 38%;
 	display: inline-block;
 	width: 24px;
 	height: 24px;
@@ -712,9 +718,22 @@ select,
 	position: relative;
 	left: 50%;
 	transform: translate(-50%);
-}
-.search__hint span {
-	text-decoration: underline;
+	&-task {
+		max-width: $input-width - 50px;
+		font-weight: 700;
+		color: $main-color;
+		word-break: break-all;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	&-title{
+		text-align: center;
+		margin: 15px 0;
+	}
+	span {
+		text-decoration: underline;
+	}
 }
 .show-all, .found {
 	margin-top: 15px;
@@ -724,7 +743,7 @@ select,
 }
 .found{
 	text-decoration: none;
-	margin-bottom: 45px;
+	margin-bottom: 30px;
 	font-style: italic;
 }
 .search__pagination {

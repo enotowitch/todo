@@ -9,14 +9,13 @@ import SearchHint from "./SearchHint"
 import { Context } from "./../context"
 import makePopUp from "../functions/makePopUp"
 import setCookie from "../functions/setCookie"
-import dateTranslate from "../functions/dateTranslate"
 
 
 export default function Search() {
 
 	const t = translate()
 
-	const { todos, tasks, lang, setTaskForAddTodo, setInputOfAddTodo, setPopUpState, setShowPopUp } = React.useContext(Context)
+	const { todos, tasks, setTaskForAddTodo, setInputOfAddTodo, setPopUpState, setShowPopUp } = React.useContext(Context)
 	const taskOptions = tasks.map(task => <option>{Object.keys(task)}</option>)
 
 	const [searchCount, setSearchCount] = React.useState(0)
@@ -303,7 +302,7 @@ export default function Search() {
 						{searchState.task && <SearchTag text={searchState.task} title="task" titleTranslated={t[17]} showDel={true} delTag={delTag} setPage={setPage} />}
 					</div>
 
-					{searched.length === 0 && searchCount > 0 && <SearchHint setSearchState={setSearchState} />}
+					{searched.length === 0 && searchCount > 0 && <SearchHint searchState={searchState} setSearchState={setSearchState} />}
 
 					{searched.length > quantity &&
 						<div className="search__pagination-wrap">

@@ -56,7 +56,9 @@ export default function OneDayTodos(props) {
 		document.querySelector('.burger__btn').click()
 	}
 
+	const [showDay, setShowDay] = React.useState({ [props.date]: false })
 	function toggleDay(event) {
+		setShowDay(prevState => ({ [props.date]: !prevState[props.date] }))
 		event.target.closest('.one-day-todos').classList.toggle('section-minimized')
 	}
 
@@ -112,7 +114,7 @@ export default function OneDayTodos(props) {
 				{thisDayTodos.length > 0 && <div className="toggle-day"><img className="arrow arrow_view arrow_day" src={arrow} /></div>}
 			</div>
 
-			{thisDayTodos.length > 0 &&
+			{thisDayTodos.length > 0 && showDay[props.date] &&
 				<div className="all-todos-wrapper">
 					<TodoBlock title={t[0]} date={props.date} num={allNum - doingNum - doneNum - canceledNum} cssClass="allNum" blockTodos={allTodos} showBlock={showBlock.allNum} toggleBlock={toggleBlock} />
 					<TodoBlock title={t[1]} date={props.date} num={doingNum} cssClass="doingNum" blockTodos={doingTodos} showBlock={showBlock.doingNum} toggleBlock={toggleBlock} />

@@ -1,11 +1,15 @@
 import React from "react"
-import { Context } from "../context";
+import { Context } from "../context"
 
 export default function Tutorial() {
 
 	const { lang } = React.useContext(Context)
 
-	const tutorial = require(`./../img/tutorial_${lang}.gif`);
+	try {
+		var tutorial = require(`./../img/tutorial_${lang}.gif`)
+	} catch (ex) {
+		var tutorial = require(`./../img/tutorial_EN.gif`)
+	}
 
 	return (
 		<div className="tutorial-wrap">
