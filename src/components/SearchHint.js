@@ -20,6 +20,7 @@ export default function SearchHint(props) {
 			{props.searchState.task && props.searchState.task != "undefined" &&
 				<>
 					<div className="search__hint-title">{t[28]}:</div>
+					{createHint(props.searchState.task, "todo", 0)}
 					{createHint(props.searchState.task, "doing", 1)}
 					{createHint(props.searchState.task, "done", 2)}
 					{createHint(props.searchState.task, "canceled", 3)}
@@ -28,6 +29,7 @@ export default function SearchHint(props) {
 
 			<div className="search__hint-title">{t[28]}:</div>
 
+			{createHint(undefined, "todo", 0)}
 			{createHint(undefined, "doing", 1)}
 			{createHint(undefined, "done", 2)}
 			{createHint(undefined, "canceled", 3)}

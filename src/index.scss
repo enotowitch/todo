@@ -183,11 +183,12 @@ code {
 	display: flex;
 	align-items: center;
 }
-.canceled, .doing, .done{
+.canceled, .doing, .done, .search__hint .todo{
 	display: flex;
 	align-items: center;
 	margin: 0 auto;
 	justify-content: center;
+	box-shadow: none;
 }
 // ! all buttons
 button {
@@ -779,9 +780,9 @@ select,
 	margin-bottom: 40px;
 	text-align: center;
 }
-[name="status"],
-[name="task"],
-[name="text"] {
+select[name="status"],
+select[name="task"],
+.search [name="text"] {
 	display: block;
 	margin: 0 auto;
 	padding: 5px;
@@ -790,27 +791,27 @@ select,
 	margin-bottom: 10px;
 	width: 200px;
 }
-[name="status"],
-[name="task"] {
+select[name="status"],
+select[name="task"] {
 	width: $search-select-width;
 }
-[name="text"] {
+.search [name="text"] {
 	border: 1px solid $main-color;
 	text-indent: 4px;
 }
 /* ! moveDate, moveTask */
-[name="moveDate"],
-[name="moveTask"],
-[name="lang"],
-[name="quantity"],
-[name="page"] {
+select[name="moveDate"],
+select[name="moveTask"],
+select[name="lang"],
+select[name="quantity"],
+select[name="page"] {
 	border: 2px solid $main-color;
 	border-radius: 8px;
 	height: 26px;
 	margin: 2px;
 	max-width: 70px;
 }
-[name="lang"] {
+select[name="lang"] {
 	max-width: 100px;
 	margin-top: 15px;
 	height: 31px;
@@ -818,8 +819,8 @@ select,
 .select [name="lang"]{
 	margin-top: 0;
 }
-[name="quantity"],
-[name="page"] {
+select[name="quantity"],
+select[name="page"] {
 	max-width: 80px;
 }
 /* ! search-tag */
@@ -898,12 +899,10 @@ select,
 	background: lighten($gray, 30%);
 }
 .dnd {
-	margin-right: 5px;
-	padding: 5px;
+	margin-right: 10px;
 	cursor: grab;
 }
 // checkbox / .on-off
-// ! name="showDate"
 .on-off__checkbox {
 	position: absolute;
 	opacity: 0;
@@ -951,7 +950,7 @@ img:active:not(.arrow,.tutorial,.popup__img){
 	animation: activeIcon 1s;
 }
  @keyframes activeIcon {
-	0%{
+	10%{
 		transform: rotate(0deg);
 	}
 	100%{

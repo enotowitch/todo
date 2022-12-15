@@ -80,8 +80,16 @@ export default function AddTodo(props) {
 	if (taskForAddTodo) {
 		tasks.map(task => String(Object.keys(task)).trim().replace(/\s{2,}/, ' ') == taskForAddTodo.trim().replace(/\s{2,}/, ' ') && (taskColor = String(Object.values(task))))
 	}
+	// ! post todo on enter
+	React.useEffect(() => {
+		document.querySelector('.input__text').addEventListener('keyup', function (e) {
+			e.which === 13 && e.target.value && document.querySelector('.add-todo .button_main').click()
+		})
+	}, [])
 
-	// ! return
+
+	
+	// ! RETURN
 	return (
 		<div className="add-todo">
 			<div className="add-todo__date">{t[5]}: {dateTranslated}</div>

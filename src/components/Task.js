@@ -33,7 +33,7 @@ export default function Task(props) {
 
 	return (
 		<div className="pick-color">
-			{props.showIcon && <img src={add} onClick={addTaskName} />}
+			{props.showIcon && props.taskName && <img src={add} onClick={addTaskName} />}
 			<input
 				className="task"
 				type="text"

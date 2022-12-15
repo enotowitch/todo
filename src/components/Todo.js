@@ -67,7 +67,7 @@ export default function Todo(props) {
 		moveTask(props.id, event.target.value)
 	}
 
-	let moveTaskOptions = tasks.map(task => <option>{String(Object.keys(task))}</option>)
+	let moveTaskOptions = tasks.map(task => String(Object.keys(task)) && <option>{String(Object.keys(task))}</option>)
 	// refresh taskOptions in todo, when task changed in lastTodo
 	React.useEffect(() => {
 		setMoveTaskSelectState(props.task)
@@ -202,7 +202,9 @@ export default function Todo(props) {
 	const taskName = (props.task === undefined || props.task === "undefined") ? t[19] : props.task
 	const dateTranslated = dateTranslate(props.date, lang)
 
-	// ! return
+
+	
+	// ! RETURN
 	return (
 		<div className={`todo ${props.cssClass}`} style={style} draggable={draggable} onDragStart={dragStart} onDragOver={dragOver} onDragEnd={dragEnd}>
 			<Checkbox done={props.done} id={props.id} />

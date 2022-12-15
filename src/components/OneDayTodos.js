@@ -93,7 +93,9 @@ export default function OneDayTodos(props) {
 	// ! weekDay
 	const weekDay = new Date(`${props.date}, ${yearForAddTodo}`).toLocaleTimeString(lang, { weekday: 'short' }).match(/.*?\s/)[0]
 
-	// ! return
+
+	
+	// ! RETURN
 	return (
 		<div className={`one-day-todos ${props.date.replace(/\s/, '')} section-minimized`}>
 

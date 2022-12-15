@@ -45,13 +45,6 @@ export default function MyTasks() {
 		}
 	}
 	React.useEffect(() => {
-		tasks.map((task, ind) => {
-			// if taskName is "" => write to cookie e.g: {1: "prevColor"}
-			const taskName = String(Object.keys(task))
-			if (taskName === "") {
-				tasks[ind] = { [ind + 1]: String(Object.values(tasks[ind])) }
-			}
-		})
 		setCookie(`tasks=${JSON.stringify(tasks)}`)
 	}, [tasks])
 	// ? tasks
@@ -90,13 +83,13 @@ export default function MyTasks() {
 				}
 				if (eachTask == lastNewTask) {
 					found = `task1`
-					color = "#ffffff"
+					color = "#fecece"
 					break
 				}
 				if (eachTask.includes("task")) {
 					const num = eachTask.match(/\d+/) ? Number(eachTask.match(/\d+/)[0]) : 0
 					found = `task${num + 1}`
-					color = "#ffffff"
+					color = "#fecece"
 					break
 				}
 			}
@@ -118,7 +111,8 @@ export default function MyTasks() {
 	}
 
 
-	// ! return
+	
+	// ! RETURN
 	return (
 		<>
 			<div className="buttons">

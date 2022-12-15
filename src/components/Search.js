@@ -1,5 +1,5 @@
 import React from "react"
-import add from "./../img/add.svg"
+import add from "./../img/add2.svg"
 import Todo from "./Todo"
 import SearchTag from "./SearchTag"
 import getToday from "../functions/getToday"
@@ -16,7 +16,7 @@ export default function Search() {
 	const t = translate()
 
 	const { todos, tasks, setTaskForAddTodo, setInputOfAddTodo, setPopUpState, setShowPopUp } = React.useContext(Context)
-	const taskOptions = tasks.map(task => <option>{Object.keys(task)}</option>)
+	const taskOptions = tasks.map(task => String(Object.keys(task)) && <option>{String(Object.keys(task))}</option>)
 
 	const [searchCount, setSearchCount] = React.useState(0)
 
@@ -260,7 +260,9 @@ export default function Search() {
 	// watch if after action (done, doing, cancel, moveTask, etc) => nothing to display => go to prev page
 	searchedMini[page].length === 0 && prevPage()
 
-	// ! return
+
+	
+	// ! RETURN
 	return (
 		<>
 			<div className="search">

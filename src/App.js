@@ -256,7 +256,9 @@ export default function App() {
 		document.querySelector('.input__text') && (document.querySelector('.input__text').style.paddingLeft = inputPadding)
 	}, [taskForAddTodo, []])
 
-	// ! return
+
+	
+	// ! RETURN
 	return (
 		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, taskForAddTodo, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo, yearForAddTodo, action, moveTodo, moveTask, toggleAction, showDate, setShowDate, showTask, setShowTask, showSection, setShowSection }}>
 
