@@ -16,6 +16,7 @@ export default function AddTodo(props) {
 
 	const { inputOfAddTodo, setInputOfAddTodo, taskForAddTodo, setTaskForAddTodo, tasks } = React.useContext(Context)
 
+	// ! menu
 	const menuArr = [
 		{
 			title: t[8],
@@ -42,6 +43,7 @@ export default function AddTodo(props) {
 	const [menu, setMenu] = React.useState(menuArr)
 	// translate menu when lang changes // todo needs double click on "Language" after lang changes // if fixed when array is in state(menu), then dateTranslated works wrong
 	React.useEffect(() => { setMenu(menuArr) }, [t])
+	// ? menu
 
 	// ! toggleMenuContent
 	function toggleMenuContent(toggleId) {
@@ -80,6 +82,7 @@ export default function AddTodo(props) {
 	if (taskForAddTodo) {
 		tasks.map(task => String(Object.keys(task)).trim().replace(/\s{2,}/, ' ') == taskForAddTodo.trim().replace(/\s{2,}/, ' ') && (taskColor = String(Object.values(task))))
 	}
+	// ? taskColor
 	// ! post todo on enter
 	React.useEffect(() => {
 		document.querySelector('.input__text').addEventListener('keyup', function (e) {
@@ -88,7 +91,7 @@ export default function AddTodo(props) {
 	}, [])
 
 
-	
+
 	// ! RETURN
 	return (
 		<div className="add-todo">

@@ -1,3 +1,10 @@
+/* 
+TO SEE COMMENTS (! = start, ? = end) INSTALL EXTENSION:
+Name: Better Comments
+Id: aaron-bond.better-comments 
+*/
+
+
 import React from "react"
 import AddTodo from "./components/AddTodo"
 import OneDayTodos from "./components/OneDayTodos"
@@ -67,6 +74,7 @@ export default function App() {
 	}
 	// ? default cookies
 
+	// ! curWeekNum, dateForAddTodo
 	let curWeekNum
 	weeks.map((elem, ind) => elem.includes(getToday()) && (curWeekNum = ind))
 
@@ -74,7 +82,9 @@ export default function App() {
 		// on reload AddTodo adds to today
 		setCookie(`dateForAddTodo=${getToday()}`)
 	}, [])
+	// ? curWeekNum, dateForAddTodo
 
+	// ! todos, weekNum
 	const [todos, setTodos] = React.useState(data)
 
 	React.useEffect(() => {
@@ -84,9 +94,12 @@ export default function App() {
 	}, [todos])
 
 	const [weekNum, setWeekNum] = React.useState(curWeekNum)
+	// ? todos, weekNum
 
+	// ! popUp
 	const [popUpState, setPopUpState] = React.useState({})
 	const [showPopUp, setShowPopUp] = React.useState(false)
+	// ? popUp
 
 	// show change lang popup ONLY at very first load
 	const [x1, x1Set] = React.useState(1)
@@ -114,10 +127,11 @@ export default function App() {
 		})
 
 		setCookie(`lastTodo="${lastTodo}"`)
-		// ! PopUp
+		// PopUp
 		const dateTranslated = getCookie("dateTranslated")
 		makePopUp({ imgName: "add", title: dateTranslated + " - " + t[0], text: text, setPopUpState, setShowPopUp, todoId: lastTodo })
 	}
+	// ? addTodo
 	// ! action: propName: done/doing/canceled,etc... works only with BOOLS!
 	function action(todoId, propName, propNameTranslated) {
 		let status
@@ -129,7 +143,7 @@ export default function App() {
 				return todo.id === todoId ? { ...todo, doing: false, done: false, canceled: false, [propName]: !todo[propName] } : todo
 			})
 		})
-		// ! PopUp
+		// PopUp
 		// show correct status in makePopUp
 		if (!status) { // doing/done/canceled === false => status is todo
 			propName = "add"
@@ -137,6 +151,8 @@ export default function App() {
 		}
 		makePopUp({ imgName: propName, title: propNameTranslated, text: text, setPopUpState, setShowPopUp, todoId: todoId })
 	}
+	// ? action
+	// ! toggleAction
 	function toggleAction(todoId) {
 		setTodos(prevState => {
 			return prevState.map(todo => {
@@ -144,6 +160,7 @@ export default function App() {
 			})
 		})
 	}
+	// ? toggleAction
 	// ! moveTodo
 	function moveTodo(todoId, newDate, newDateTranslated) {
 		const date = newDate.match(/\w+\s\d+/)[0]
@@ -164,6 +181,7 @@ export default function App() {
 		// PopUp
 		makePopUp({ imgName: "date", title: oldDateTranslated + ", " + oldYear + "->" + newDateTranslated, text: text, setPopUpState, setShowPopUp, todoId: todoId })
 	}
+	// ? moveTodo
 	// ! moveTask
 	function moveTask(todoId, newTask) {
 		// state
@@ -179,6 +197,7 @@ export default function App() {
 		// PopUp
 		makePopUp({ imgName: "task", title: dateTranslated, text: text, setPopUpState, setShowPopUp, todoId: todoId })
 	}
+	// ? moveTask
 
 	// ! year & changeWeek
 	// null the year to current, once at reload
@@ -230,19 +249,25 @@ export default function App() {
 	React.useEffect(() => {
 		setCookie(`tasks=${JSON.stringify(tasks)}`)
 	}, [tasks])
+	// ? tasks
 
+	// ! taskForAddTodo, inputOfAddTodo, showSection
 	const [taskForAddTodo, setTaskForAddTodo] = React.useState()
 	const [inputOfAddTodo, setInputOfAddTodo] = React.useState()
-	// ! showSection
 	const [showSection, setShowSection] = React.useState({ addTodo: false, week: true, search: false })
+	// ? taskForAddTodo, inputOfAddTodo, showSection
 
 	// ! showDate
 	const cookieShowDate = document.cookie.match(/showDate=\w+/)[0].replace(/showDate=/, '')
 	const [showDate, setShowDate] = React.useState(eval(cookieShowDate))
+	// ? showDate
 	// ! showTask
 	const cookieShowTask = document.cookie.match(/showTask=\w+/)[0].replace(/showTask=/, '')
 	const [showTask, setShowTask] = React.useState(eval(cookieShowTask))
-	// ! prevent fake-todo from dragging
+	// ? showTask
+
+	// ! other
+	// prevent fake-todo from dragging
 	React.useEffect(() => {
 		document.querySelectorAll('.fake-todo').forEach((elem) => {
 			setTimeout(() => {
@@ -250,14 +275,15 @@ export default function App() {
 			}, 1);
 		})
 	}, [])
-	// ! inputPadding => addTodo
+
+	// inputPadding => addTodo
 	React.useEffect(() => {
 		const inputPadding = document.querySelector('.add-todo__task') && document.querySelector('.add-todo__task').clientWidth + 5 + "px"
 		document.querySelector('.input__text') && (document.querySelector('.input__text').style.paddingLeft = inputPadding)
 	}, [taskForAddTodo, []])
 
 
-	
+
 	// ! RETURN
 	return (
 		<Context.Provider value={{ todos, setTodos, draggable, setDraggable, mobile, tasks, setTasks, lang, setLang, setPopUpState, setShowPopUp, taskForAddTodo, setTaskForAddTodo, inputOfAddTodo, setInputOfAddTodo, yearForAddTodo, action, moveTodo, moveTask, toggleAction, showDate, setShowDate, showTask, setShowTask, showSection, setShowSection }}>

@@ -38,11 +38,13 @@ export default function Todo(props) {
 	function editPopUp() {
 		makePopUp({ title: t[20] + " ", text: props.text, setPopUpState, setShowPopUp, modalWindowType: "prompt", doFunction: "editTodo", todoId: props.id })
 	}
+	// ? editPopUp
 	// ! delete todo
 	function deleteTodo() {
 		makePopUp({ title: t[21] + "?", text: props.text, setPopUpState, setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTodo", todoId: props.id })
 	}
-	// ! moveDate
+	// ? delete todo
+	// ! changeDate, (moveDate)
 	const [moveDateSelectState, setMoveDateSelectState] = React.useState(props.date + ", " + yearForAddTodo)
 	// refresh moveDateSelectState on drag & drop
 	React.useEffect(() => {
@@ -57,21 +59,23 @@ export default function Todo(props) {
 		const dateTranslated = dateTranslate(date, lang)
 		moveTodo(props.id, value, dateTranslated + moveYear)
 	}
-
-	// ? moveDate
-	// ! moveTask
+	// ? changeDate, (moveDate)
+	// ! changeTask, (moveTask)
 	const [moveTaskSelectState, setMoveTaskSelectState] = React.useState(props.task)
 
 	function changeTask(event) {
 		setMoveTaskSelectState(event.target.value)
 		moveTask(props.id, event.target.value)
 	}
+	// ? changeTask, (moveTask)
 
+	// ! moveTaskOptions
 	let moveTaskOptions = tasks.map(task => String(Object.keys(task)) && <option>{String(Object.keys(task))}</option>)
 	// refresh taskOptions in todo, when task changed in lastTodo
 	React.useEffect(() => {
 		setMoveTaskSelectState(props.task)
 	}, [todos])
+	// ? moveTaskOptions
 
 	// ! todo bg
 	let bg
@@ -79,6 +83,7 @@ export default function Todo(props) {
 	props.done && (bg = "done-bg")
 	props.canceled && (bg = "canceled-bg")
 	!props.doing && !props.done && !props.canceled && (bg = "no-bg")
+	// ? todo bg
 
 	// ! DRAG & DROP 
 	const { draggable, setDraggable, mobile } = React.useContext(Context)
@@ -90,6 +95,7 @@ export default function Todo(props) {
 		StartId = props.id // 1
 		setCookie(`StartId=${StartId}`)
 	}
+	// ? dragStart
 	// ! dragOver
 	let OverId
 	let OverDate
@@ -111,6 +117,7 @@ export default function Todo(props) {
 		document.querySelectorAll('.todos-title').forEach(todo => todo.classList.remove('todos-title__over'))
 		event.target.closest('.todos-title') && event.target.closest('.todos-title').classList.add('todos-title__over')
 	}
+	// ? dragOver
 
 	// ! dragEnd; !!! OverId 0-3 are for fake-todos
 	function dragEnd(event) {
@@ -198,12 +205,15 @@ export default function Todo(props) {
 			}))
 		}
 	}
+	// ? dragEnd
 	// ? DRAG & DROP 
+
+	// ! other
 	const taskName = (props.task === undefined || props.task === "undefined") ? t[19] : props.task
 	const dateTranslated = dateTranslate(props.date, lang)
 
 
-	
+
 	// ! RETURN
 	return (
 		<div className={`todo ${props.cssClass}`} style={style} draggable={draggable} onDragStart={dragStart} onDragOver={dragOver} onDragEnd={dragEnd}>

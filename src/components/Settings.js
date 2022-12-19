@@ -17,28 +17,36 @@ export default function Settings() {
 	function deleteTasksPopUp() {
 		makePopUp({ title: t[13].charAt(0).toUpperCase() + t[13].slice(1) + "?", setPopUpState, setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTasks", showTask: false })
 	}
+	// ? deleteTasksPopUp
+
 	// ! deleteTodosPopUp
 	function deleteTodosPopUp() {
 		makePopUp({ title: t[12].charAt(0).toUpperCase() + t[12].slice(1) + "?", setPopUpState, setShowPopUp, modalWindowType: "confirm", doFunction: "deleteTodos", showTask: false })
 	}
+	// ? deleteTodosPopUp
 
-	// showDate
+	// ! showDate
 	React.useEffect(() => {
 		setCookie(`showDate=${showDate}`)
 	}, [showDate])
-	// showTask
+	// ? showDate
+	// ! showTask
 	React.useEffect(() => {
 		setCookie(`showTask=${showTask}`)
 	}, [showTask])
+	// ? showTask
 
-	// ! todo DELETE LATER
+	// todo DELETE LATER
 	function drop() {
 		localStorage.clear()
 		document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
 		window.location.reload()
 	}
-	// ? todo DELETE LATER
+	// todo DELETE LATER
 
+
+
+	// ! RETURN
 	return (
 		<>
 			<div className="buttons">
@@ -51,9 +59,9 @@ export default function Settings() {
 			<div className="buttons">
 				<button className="button_danger" onClick={deleteTodosPopUp}>{t[12]}</button>
 				<button className="button_danger" onClick={deleteTasksPopUp}>{t[13]}</button>
-				{/* // ! todo DELETE LATER */}
+				{/* // todo DELETE LATER */}
 				<button className="button_danger" onClick={drop}>DROP</button>
-				{/* // ? todo DELETE LATER */}
+				{/* // todo DELETE LATER */}
 			</div>
 		</>
 	)

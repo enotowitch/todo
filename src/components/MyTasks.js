@@ -10,7 +10,7 @@ export default function MyTasks() {
 
 	const t = translate()
 
-	// ! tasks
+	// ! TASKS
 	const { tasks, setTasks } = React.useContext(Context)
 
 	function changeTaskState(event) {
@@ -34,6 +34,7 @@ export default function MyTasks() {
 			})
 
 		}
+		// ? type text
 		// ! type color
 		if (type === "color") {
 			const sameName = name
@@ -43,11 +44,13 @@ export default function MyTasks() {
 				return prevState.map(task => (Object.keys(task) == sameName ? { [sameName]: newColor } : task))
 			})
 		}
+		// ? type color
 	}
 	React.useEffect(() => {
 		setCookie(`tasks=${JSON.stringify(tasks)}`)
 	}, [tasks])
-	// ? tasks
+	// ? TASKS
+
 	// ! showIcon
 	const iconState = {}
 	tasks.map(task => iconState[Object.keys(task)] = false)
@@ -62,6 +65,7 @@ export default function MyTasks() {
 	const taskHtmlElems = tasks.map(task => {
 		return <Task taskName={String(Object.keys(task))} taskColor={String(Object.values(task))} changeTaskState={changeTaskState} showIcon={showIcon[Object.keys(task)]} toggleIcon={toggleIcon} />
 	})
+
 	// ! addTask
 	function addTask() {
 		const newColors = ['#ff94c6', '#08b4ff', '#39a33d', '#4387c7', '#ffc1a9', '#c25b7a', '#ffd06a', '#89b10e', '#ffbbd2', '#ff9be5', '#cbfff5', '#dc8d96', '#f6a6b8', '#c9c5e8', '#9c9dd2', '#ffc19d', '#a0ffe6', '#a8b69a', '#b4a0bf', '#ff9407', '#c9bbd8', '#f6a3c1', '#e098c1', '#817ecd', '#f1c570', '#f7d5ca', '#f7f7ca', '#caf7ca', '#caf7f7', '#cad5f7', '#e0caf7', '#d293d2']
@@ -103,15 +107,16 @@ export default function MyTasks() {
 		setTasks(prevState => [...prevState, newTaskObj])
 	}
 	// ? addTask
-	// ? tasks
+
 	// ! Tutorial
 	const [showTutorial, setShowTutorial] = React.useState(false)
 	function toggleTutorial() {
 		setShowTutorial(prevState => !prevState)
 	}
+	// ? Tutorial
 
 
-	
+
 	// ! RETURN
 	return (
 		<>

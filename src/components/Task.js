@@ -11,16 +11,23 @@ export default function Task(props) {
 
 	const { tasks, setTasks, setTaskForAddTodo, setInputOfAddTodo, setPopUpState, setShowPopUp } = React.useContext(Context)
 
+	// ! deleteTask
 	function deleteTask(taskName) {
 		const deleted = tasks.filter(task => String(Object.keys(task)) != taskName)
 		setTasks(deleted)
 	}
+	// ? deleteTask
+
+	// ! addTaskName
 	function addTaskName() {
 		setTaskForAddTodo(props.taskName)
 		// mandatoty, triggers input__text change => inputPadding for taskColor / add-todo__task
 		setInputOfAddTodo(" ")
 		document.querySelector('.input__text').focus()
 	}
+	// ? addTaskName
+
+	// ! validation
 	function validation(e) {
 		const regExp = new RegExp(`[;{}\\[\\]]`)
 		if (e.target.value.match(regExp)) {
@@ -30,7 +37,11 @@ export default function Task(props) {
 		}
 		props.changeTaskState(e)
 	}
+	// ? validation
 
+
+
+	// ! RETURN
 	return (
 		<div className="pick-color">
 			{props.showIcon && props.taskName && <img src={add} onClick={addTaskName} />}

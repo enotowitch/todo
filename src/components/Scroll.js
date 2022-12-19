@@ -4,6 +4,7 @@ import arrow from "./../img/arrow.svg"
 export default function Scroll() {
 
 	window.onscroll = function () { scroll() }
+	
 	function scroll() {
 		if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
 			document.querySelector(".scroll").style.display = "block"

@@ -16,15 +16,19 @@ export default function PopUp(props) {
 
 	const path = props.imgName ? `img/${props.imgName}.svg` : ""
 
-	// ! find current todo text to display in editTodo, deleteTodo ...
+	// ! curTodoText
+	// find current todo text to display in editTodo, deleteTodo ...
 	let curTodoText
 	todos.map(todo => todo.id === props.todoId && (curTodoText = todo.text))
+	// ? curTodoText
 
 	// ! deleteTasks
 	function deleteTasks() {
 		setTasks([])
 		makePopUp({ imgName: "dlt", title: t[31], setPopUpState, setShowPopUp, showTask: false })
 	}
+	// ? deleteTasks
+
 	// ! editTodo
 	function editTodo() {
 		const editText = document.querySelector('[name="edit"]').value
@@ -34,8 +38,10 @@ export default function PopUp(props) {
 				return todo.id === props.todoId ? { ...todo, text: editText } : todo
 			})
 		})
+		// PopUp
 		makePopUp({ imgName: "edit", text: curTodoText, title: t[32], setPopUpState, setShowPopUp, todoId: props.todoId })
 	}
+
 	// fix slow state for editTodo (state is one step behind)
 	React.useEffect(() => {
 		let text
@@ -47,25 +53,33 @@ export default function PopUp(props) {
 		edit && edit.focus()
 	}, [props.todoId])
 	// ? editTodo
+
 	// ! deleteTodo
 	function deleteTodo() {
 		setTodos(prevState => prevState.filter(todo => {
 			return todo.id !== props.todoId
 		}))
 		localStorage.removeItem(props.todoId)
+		// PopUp
 		makePopUp({ imgName: "dlt", text: curTodoText, title: t[33], setPopUpState, setShowPopUp })
 	}
+	// ? deleteTodo
+
 	// ! deleteTodos
 	function deleteTodos() {
 		setCookie(`lastTodo="3"`) // ids 0-3 are for FAKE todos, used in DRAG & DROP
 		localStorage.clear()
 		window.location.reload()
 	}
+	// ? deleteTodos
+
 	// ! selectFn
 	function selectFn() {
 		setCookie(`langPopUp="shownOnce"`)
 		setShowPopUp(false)
 	}
+	// ? selectFn
+
 	// ! modalWindowFunction
 	function modalWindowFunction() {
 		props.doFunction === "deleteTasks" && deleteTasks()
@@ -74,7 +88,9 @@ export default function PopUp(props) {
 		props.doFunction === "deleteTodos" && deleteTodos()
 		props.modalWindowType === "select" && selectFn()
 	}
+	// ? modalWindowFunction
 
+	// ! firstButtonText, buttonClass
 	let firstButtonText, buttonClass
 	switch (props.modalWindowType) {
 		case "confirm": firstButtonText = t[21]
@@ -86,7 +102,9 @@ export default function PopUp(props) {
 		case "select": firstButtonText = t[29]
 			break;
 	}
-	// ! taskName + taskColor
+	// ? firstButtonText, buttonClass
+
+	// ! taskName, taskColor
 	let taskName
 	todos.map(todo => todo.id === props.todoId && (taskName = todo.task))
 
@@ -100,13 +118,14 @@ export default function PopUp(props) {
 	tasks.map(task => String(Object.keys(task)).trim().replace(/\s{2,}/g, ' ') == taskName && (taskColor = String(Object.values(task))))
 
 	taskName = (taskName === undefined || taskName === "undefined") ? t[19] : taskName
-	// ? taskName + taskColor
-	// ! lastTodo
+	// ? taskName, taskColor
+
+	// ! lastTodo, showLastTodo
 	const lastTodo = todos.filter(todo => todo.id === props.todoId && todo) // lastTodo[0]
 	const [showLastTodo, setShowLastTodo] = React.useState(false)
 
 
-	
+
 	// ! RETURN
 	return (
 		<>
@@ -143,11 +162,14 @@ export default function PopUp(props) {
 						<button onClick={() => setShowPopUp(false)}>{t[23]}</button>
 					</div>
 				}
+
 				{/* show .edit_last-todo only in popup & when not deleting */}
 				{!props.modalWindowType && props.imgName !== "dlt" &&
 					<img className="edit_last-todo" src={edit} onClick={() => setShowLastTodo(true)} />
 				}
+
 				{showLastTodo && <Todo {...lastTodo[0]} cssClass={"last-todo"} />}
+				
 			</div>
 			{(props.modalWindowType) && <div className="popup__bg"></div>}
 		</>

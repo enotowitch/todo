@@ -20,11 +20,14 @@ export default function OneDayTodos(props) {
 
 	const t = translate()
 
+	// ! thisDayTodos
 	const thisDayTodos = []
 	todos.map(todo => {
 		return todo.date === props.date && todo.year == yearForAddTodo ? thisDayTodos.push(todo) : todo
 	})
+	// ? thisDayTodos
 
+	// ! NUMS
 	let doingNum = 0
 	thisDayTodos.map(elem => elem.doing && doingNum++)
 	let canceledNum = 0
@@ -32,22 +35,24 @@ export default function OneDayTodos(props) {
 	let doneNum = 0
 	thisDayTodos.map(elem => elem.done && doneNum++)
 	let allNum = thisDayTodos.length
+	// ? NUMS
 
+	// ! OUTPUT LOGIC
 	function shortTodo(todo) {
 		return <Todo key={todo.id} {...todo} />
 	}
 
-	// ! OUTPUT LOGIC
 	// ALL aka TODO: -doing, -done, -canceled
 	let allTodos = thisDayTodos.map((todo) => (!todo.doing && !todo.done && !todo.canceled) && shortTodo(todo)).filter(isTrue => isTrue)
-	// DOING: +doing, -done, -canceled
+	// DOING: +doing
 	let doingTodos = thisDayTodos.map((todo) => todo.doing && shortTodo(todo)).filter(isTrue => isTrue)
-	// DONE: +done, -canceled
+	// DONE: +done
 	let doneTodos = thisDayTodos.map((todo) => todo.done && shortTodo(todo)).filter(isTrue => isTrue)
 	// CANCELED: +canceled
 	let canceledTodos = thisDayTodos.map((todo) => todo.canceled && shortTodo(todo)).filter(isTrue => isTrue)
 	// ? OUTPUT LOGIC
 
+	// ! getTodoDate
 	function getTodoDate() {
 		// write to cookie => on which day AddTodo() is used
 		setCookie(`dateForAddTodo=${props.date}`)
@@ -55,18 +60,23 @@ export default function OneDayTodos(props) {
 		// turn on addTodo
 		document.querySelector('.burger__btn').click()
 	}
+	// ? getTodoDate
 
+	// ! toggleDay, showDay
 	const [showDay, setShowDay] = React.useState({ [props.date]: false })
 	function toggleDay(event) {
 		setShowDay(prevState => ({ [props.date]: !prevState[props.date] }))
 		event.target.closest('.one-day-todos').classList.toggle('section-minimized')
 	}
+	// ? toggleDay, showDay
 
+	// ! toggleBlock, showBlock
 	// x4 true = perfomance loss, usability gain
 	const [showBlock, setShowBlock] = React.useState({ allNum: true, doingNum: true, doneNum: true, canceledNum: true })
 	function toggleBlock(blockName) {
 		setShowBlock(prevState => ({ ...prevState, [blockName]: !showBlock[blockName] }))
 	}
+	// ? toggleBlock, showBlock
 
 	// ! chosen-day
 	React.useEffect(() => {
@@ -90,11 +100,12 @@ export default function OneDayTodos(props) {
 		}, 1);
 	}, [])
 	// ? chosen-day
+	
 	// ! weekDay
 	const weekDay = new Date(`${props.date}, ${yearForAddTodo}`).toLocaleTimeString(lang, { weekday: 'short' }).match(/.*?\s/)[0]
 
 
-	
+
 	// ! RETURN
 	return (
 		<div className={`one-day-todos ${props.date.replace(/\s/, '')} section-minimized`}>

@@ -20,13 +20,15 @@ export default function Search() {
 
 	const [searchCount, setSearchCount] = React.useState(0)
 
-	// ! searchMemo
+	// ! searchMemo, searchState, changeSearchState
 	if (!document.cookie.match(/searchState=/)) {
 		setCookie(`searchState=${JSON.stringify({ task: '', status: '', text: undefined })}`)
 	}
 	const searchMemo = JSON.parse(document.cookie.match(/searchState={.*?}/)[0].replace(/searchState=/, ''))
 
+	// searchState
 	const [searchState, setSearchState] = React.useState(searchMemo)
+
 	function changeSearchState(event) {
 
 		setSearchCount(1)
@@ -34,7 +36,6 @@ export default function Search() {
 
 		let { name, value } = event.target
 
-		// when text = "" drop it to undefined, so search does not show all todos (having empty text)
 		if (name === "text") {
 			// validation
 			const regExp = new RegExp(`[;{}\\[\\]]`)
@@ -43,6 +44,7 @@ export default function Search() {
 				makePopUp({ imgName: "dlt", title: value.match(regExp)[0] + " " + t[70], setPopUpState, setShowPopUp, showTask: false })
 				return
 			}
+			// when text = "" drop it to undefined, so search does not show all todos (having empty text)
 			value == "" && (value = undefined)
 		}
 		// add optionText for translated status
@@ -52,11 +54,13 @@ export default function Search() {
 		}
 		name !== "status" && setSearchState(prevState => ({ ...prevState, [name]: value }))
 	}
-	// ! searchMemo
+	// write searchState to cookie 
 	React.useEffect(() => {
 		setCookie(`searchState=${JSON.stringify(searchState)}`)
 	}, [searchState])
+	// ? searchMemo, searchState, changeSearchState
 
+	// SEARCH
 	// ! define textIds
 	let textIds = todos.map((todo) => {
 		if (todo.text && searchState.text) {
@@ -68,6 +72,8 @@ export default function Search() {
 		}
 	})
 	textIds = textIds.filter(isTrue => isTrue)
+	// ? define textIds
+
 	// ! define statusIds
 	let statusIds = todos.map((todo) => {
 		// don't show fake-todos (have id 0-3) => used for drag & drop to (block) title
@@ -95,6 +101,8 @@ export default function Search() {
 		// ? OUTPUT LOGIC
 	})
 	statusIds = statusIds.filter(isTrue => isTrue)
+	// ? define statusIds
+
 	// ! define taskIds	
 	let taskIds = todos.map((todo) => {
 		// ! OUTPUT LOGIC
@@ -102,13 +110,14 @@ export default function Search() {
 		if (searchState.status) {
 			return todo.task === searchState.task && todo.id
 		}
-		// if search status is NOT chosen: -doing, -done, -canceled
+		// if search status is NOT chosen: -doing, -done, -canceled: show only todos with "TODO" STATUS
 		if (!searchState.status) {
 			return (todo.task === searchState.task && !todo.doing && !todo.done && !todo.canceled) && todo.id
 		}
 		// ? OUTPUT LOGIC
 	})
 	taskIds = taskIds.filter(isTrue => isTrue)
+	// ? define taskIds
 
 	// ! intersect
 	const intersect = []
@@ -118,6 +127,7 @@ export default function Search() {
 
 	let temp = [[]] // temp[0]
 
+	// ! result
 	let result = []
 	for (let i = 0; i < intersect.length - 1; i++) {
 		temp[i] = intersect[i].filter(val => intersect[i + 1].includes(val))
@@ -131,13 +141,16 @@ export default function Search() {
 
 	// if only one search
 	intersect.length === 1 && (result = intersect[0])
+	// ? intersect
 
 	// if in input/select search is some val, but no ids 
 	searchState.text && textIds.length == 0 && (result = [])
 	searchState.status && statusIds.length == 0 && (result = [])
 	searchState.task && taskIds.length == 0 && (result = [])
+	// ? result
 
 
+	// ! searched
 	function shortTodo(todo) {
 		return <Todo key={todo.id} {...todo} />
 	}
@@ -149,18 +162,24 @@ export default function Search() {
 			todo.id === result[i] && searched.push(shortTodo(todo))
 		})
 	}
+	// ? searched
 
+	// ! delTag
 	function delTag(name) {
 		setSearchState(prevState => ({ ...prevState, [name]: "" }))
 	}
+	// ? delTag
 
+	// ! addTodoTask
 	function addTodoTask() {
 		setCookie(`dateForAddTodo=${getToday()}`)
 		document.querySelector('.burger__btn').click()
 		setTaskForAddTodo(searchState.task)
 		setInputOfAddTodo(" ") // mandatory
 	}
-	// ! searchReverse
+	// ? addTodoTask
+
+	// ! searchReverse, toggleReverse
 	const cookieSearchReverse = document.cookie.match(/searchReverse/) ? document.cookie.match(/searchReverse=\w+/)[0].replace(/searchReverse=/, '') : false
 	const [searchReverse, setSearchReverse] = React.useState(eval(cookieSearchReverse))
 
@@ -173,7 +192,7 @@ export default function Search() {
 	}, [searchReverse])
 
 	searched = !searchReverse ? searched.reverse() : searched
-	// ? searchReverse
+	// ? searchReverse, toggleReverse
 
 	// ! quantity
 	if (!document.cookie.match(/quantity/)) {
@@ -191,7 +210,8 @@ export default function Search() {
 		setCookie(`quantity=${quantity}`)
 	}, [quantity])
 	// ? quantity
-	// ! page, pages, pageOptions
+
+	// ! page, pages, pageOptions, changePage
 	if (!document.cookie.match(/page/)) {
 		setCookie(`page=0`)
 	}
@@ -207,10 +227,13 @@ export default function Search() {
 	function changePage(event) {
 		setPage(Number(event.target.value))
 	}
+	// write page to cookie
 	React.useEffect(() => {
 		setCookie(`page=${page}`)
 	}, [page])
-	// ? page, pages, pageOptions
+	// ? page, pages, pageOptions, changePage
+
+	// ! nextPage, prevPage
 	function nextPage() {
 		// prevent going to page that does not exist
 		page !== pages - 1 && setPage(prevState => prevState + 1)
@@ -218,6 +241,8 @@ export default function Search() {
 	function prevPage() {
 		page !== 0 && setPage(prevState => prevState - 1)
 	}
+	// ? nextPage, prevPage
+
 	// ! hide arrows
 	let arrowNext = document.querySelector('.arrow_search.arrow_next')
 	if (page === pages - 1) {
@@ -231,6 +256,8 @@ export default function Search() {
 	} else {
 		arrowPrev && (arrowPrev.style = "opacity:1")
 	}
+	// ? hide arrows
+
 	// ! searchedMini
 	const searchedMini = [[]]
 	for (let i = 0, pages = 0, limit = 0; i < searched.length; i++) {
@@ -242,6 +269,8 @@ export default function Search() {
 			pages++
 		}
 	}
+	// ? searchedMini
+
 	// ! search NUMS
 	let num1, num2
 
@@ -256,12 +285,14 @@ export default function Search() {
 
 	let searchedNum
 	searchReverse ? (searchedNum = `1-${searched.length}`) : (searchedNum = `${searched.length}-1`)
+	// ? search NUMS
 
+	// ! other
 	// watch if after action (done, doing, cancel, moveTask, etc) => nothing to display => go to prev page
 	searchedMini[page].length === 0 && prevPage()
 
 
-	
+
 	// ! RETURN
 	return (
 		<>
@@ -274,6 +305,7 @@ export default function Search() {
 						onChange={changeSearchState}
 						placeholder={t[15]}
 					/>
+
 					<select
 						name="status"
 						value={searchState.status}
@@ -285,6 +317,7 @@ export default function Search() {
 						<option value="done">{t[2]}</option>
 						<option value="canceled">{t[3]}</option>
 					</select>
+
 					<div className="task-wrap">
 						<select
 							name="task"
@@ -308,6 +341,7 @@ export default function Search() {
 
 					{searched.length > quantity &&
 						<div className="search__pagination-wrap">
+
 							<select
 								name="quantity"
 								value={quantity}
@@ -318,11 +352,13 @@ export default function Search() {
 								<option value="20">{t[24]}:&nbsp;20</option>
 								<option value="30">{t[24]}:&nbsp;30</option>
 							</select>
+
 							<div className="search__pagination">
 								<img className="arrow arrow_search arrow_prev" src={arrow} onClick={prevPage} />
 								{num1}-{num2}
 								<img className="arrow arrow_search arrow_next" src={arrow} onClick={nextPage} />
 							</div>
+
 							<select
 								name="page"
 								value={page}
@@ -330,10 +366,12 @@ export default function Search() {
 							>
 								{pageOptions}
 							</select>
+
 						</div>
 					}
 
 					{searchedMini[page]}
+					
 				</>
 				<div className="search__bg"></div>
 			</div>
